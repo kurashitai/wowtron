@@ -156,32 +156,47 @@ export async function GET(request: NextRequest) {
       const fightStartTime = 0;
       const fightEndTime = fight.endTime - fight.startTime;
       
-      // Fetch all data in parallel
-      const [
-        damageDone, 
-        healingDone, 
-        damageTaken, 
-        deaths, 
-        buffs,
-        casts,
-        playerDetails, 
-        dpsGraph, 
-        hpsGraph, 
-        dpsRankings, 
-        hpsRankings
-      ] = await Promise.all([
-        fetchWCLDamageDone(reportCode, [fightId], token),
-        fetchWCLHealingDone(reportCode, [fightId], token),
-        fetchWCLDamageTaken(reportCode, [fightId], token),
-        fetchWCLDeaths(reportCode, [fightId], fightStartTime, fightEndTime, token),
-        fetchWCLBuffs(reportCode, [fightId], fightStartTime, fightEndTime, token),
-        fetchWCLCasts(reportCode, [fightId], fightStartTime, fightEndTime, token),
-        fetchWCLPlayerDetails(reportCode, [fightId], token),
-        fetchWCLDpsGraph(reportCode, [fightId], fightStartTime, fightEndTime, token),
-        fetchWCLHpsGraph(reportCode, [fightId], fightStartTime, fightEndTime, token),
-        fetchWCLDpsRankings(reportCode, [fightId], token),
-        fetchWCLHpsRankings(reportCode, [fightId], token),
-      ]);
+      // Fetch all data in parallel with error handling for each request
+      let damageDone, healingDone, damageTaken, deaths, buffs, casts, playerDetails, dpsGraph, hpsGraph, dpsRankings, hpsRankings;
+      
+      try {
+        const results = await Promise.allSettled([
+          fetchWCLDamageDone(reportCode, [fightId], token),
+          fetchWCLHealingDone(reportCode, [fightId], token),
+          fetchWCLDamageTaken(reportCode, [fightId], token),
+          fetchWCLDeaths(reportCode, [fightId], fightStartTime, fightEndTime, token),
+          fetchWCLBuffs(reportCode, [fightId], fightStartTime, fightEndTime, token),
+          fetchWCLCasts(reportCode, [fightId], fightStartTime, fightEndTime, token),
+          fetchWCLPlayerDetails(reportCode, [fightId], token),
+          fetchWCLDpsGraph(reportCode, [fightId], fightStartTime, fightEndTime, token),
+          fetchWCLHpsGraph(reportCode, [fightId], fightStartTime, fightEndTime, token),
+          fetchWCLDpsRankings(reportCode, [fightId], token),
+          fetchWCLHpsRankings(reportCode, [fightId], token),
+        ]);
+        
+        // Extract results, using defaults for failed requests
+        damageDone = results[0].status === 'fulfilled' ? results[0].value : { entries: [] };
+        healingDone = results[1].status === 'fulfilled' ? results[1].value : { entries: [] };
+        damageTaken = results[2].status === 'fulfilled' ? results[2].value : { entries: [] };
+        deaths = results[3].status === 'fulfilled' ? results[3].value : [];
+        buffs = results[4].status === 'fulfilled' ? results[4].value : [];
+        casts = results[5].status === 'fulfilled' ? results[5].value : [];
+        playerDetails = results[6].status === 'fulfilled' ? results[6].value : null;
+        dpsGraph = results[7].status === 'fulfilled' ? results[7].value : null;
+        hpsGraph = results[8].status === 'fulfilled' ? results[8].value : null;
+        dpsRankings = results[9].status === 'fulfilled' ? results[9].value : [];
+        hpsRankings = results[10].status === 'fulfilled' ? results[10].value : [];
+        
+        // Log any failures for debugging
+        results.forEach((result, i) => {
+          if (result.status === 'rejected') {
+            console.error(`[WCL] Request ${i} failed:`, result.reason);
+          }
+        });
+      } catch (error: any) {
+        console.error('[WCL] Error fetching data:', error);
+        return NextResponse.json({ error: `Failed to fetch WCL data: ${error.message}` }, { status: 500 });
+      }
       
       // Build actor lookup from masterData
       // The GraphQL query already filters actors(type: "player") so all returned are players
@@ -222,11 +237,17 @@ export async function GET(request: NextRequest) {
       // Build rankings map for percentile lookup - process both DPS and HPS rankings
       const rankingMap = new Map<string, { dps: number; hps: number }>();
       
-      const processRankings = (rankings: WCLRankingsData[], type: 'dps' | 'hps') => {
+      const processRankings = (rankings: WCLRankingsData[] | null | undefined, type: 'dps' | 'hps') => {
+        if (!rankings || !Array.isArray(rankings)) return;
+        
         rankings.forEach((rankingData: WCLRankingsData) => {
-          const processCharacters = (characters: WCLRankingCharacter[]) => {
+          if (!rankingData?.roles) return;
+          
+          const processCharacters = (characters: WCLRankingCharacter[] | null | undefined) => {
+            if (!characters || !Array.isArray(characters)) return;
+            
             characters.forEach((char: WCLRankingCharacter) => {
-              if (char.name && char.rankPercent !== undefined) {
+              if (char?.name && char.rankPercent !== undefined) {
                 const existing = rankingMap.get(char.name) || { dps: 0, hps: 0 };
                 existing[type] = char.rankPercent;
                 rankingMap.set(char.name, existing);
@@ -234,9 +255,9 @@ export async function GET(request: NextRequest) {
             });
           };
           
-          processCharacters(rankingData.roles?.tanks?.characters || []);
-          processCharacters(rankingData.roles?.healers?.characters || []);
-          processCharacters(rankingData.roles?.dps?.characters || []);
+          processCharacters(rankingData.roles.tanks?.characters);
+          processCharacters(rankingData.roles.healers?.characters);
+          processCharacters(rankingData.roles.dps?.characters);
         });
       };
       
@@ -322,8 +343,11 @@ export async function GET(request: NextRequest) {
       const interruptCount = new Map<string, number>();
       
       // Look for actual interrupt events (type = 'interrupt' or 'cast' that interrupts)
-      (casts as WCLEvent[]).forEach((cast: WCLEvent) => {
-        const abilityName = cast.ability?.name?.toLowerCase() || '';
+      const castsArray = Array.isArray(casts) ? casts : [];
+      castsArray.forEach((cast: WCLEvent) => {
+        if (!cast?.ability?.name) return;
+        
+        const abilityName = cast.ability.name.toLowerCase();
         const isInterruptAbility = interruptAbilities.some(ia => abilityName.includes(ia.toLowerCase()));
         
         // Only count if this is an interrupt ability AND the target is an enemy (boss)
@@ -340,11 +364,11 @@ export async function GET(request: NextRequest) {
       // Count dispels from casts - only count dispels by actual players
       const dispelAbilities = ['Purify', 'Cleanse', 'Dispel Magic', 'Remove Curse', 'Purify Spirit', 'Detox', "Nature's Cure", 'Purify Disease'];
       const dispelCount = new Map<string, number>();
-      (casts as WCLEvent[]).forEach((cast: WCLEvent) => {
-        if (cast.ability?.name && dispelAbilities.some(da => 
-          cast.ability!.name.toLowerCase().includes(da.toLowerCase())
-        )) {
-          const sourceName = cast.source?.name || '';
+      castsArray.forEach((cast: WCLEvent) => {
+        if (!cast?.ability?.name || !cast?.source?.name) return;
+        
+        if (dispelAbilities.some(da => cast.ability!.name.toLowerCase().includes(da.toLowerCase()))) {
+          const sourceName = cast.source.name;
           // Only count dispels by actual players
           if (playerNameSet.has(sourceName) || playerDetailsNames.has(sourceName)) {
             dispelCount.set(sourceName, (dispelCount.get(sourceName) || 0) + 1);
@@ -360,9 +384,13 @@ export async function GET(request: NextRequest) {
       
       const playerConsumables = new Map<string, { potion: boolean; flask: boolean; food: boolean; rune: boolean }>();
       
-      (buffs as WCLEvent[]).forEach((buff: WCLEvent) => {
-        const targetName = buff.target?.name || '';
-        const abilityName = buff.ability?.name?.toLowerCase() || '';
+      // Process buffs safely
+      const buffsArray = Array.isArray(buffs) ? buffs : [];
+      buffsArray.forEach((buff: WCLEvent) => {
+        if (!buff?.target?.name || !buff?.ability?.name) return;
+        
+        const targetName = buff.target.name;
+        const abilityName = buff.ability.name.toLowerCase();
         
         if (!playerConsumables.has(targetName)) {
           playerConsumables.set(targetName, { potion: false, flask: false, food: false, rune: false });
@@ -610,10 +638,13 @@ export async function GET(request: NextRequest) {
         }
       });
       
-      // Process death events
-      (deaths as WCLEvent[]).forEach((death: WCLEvent) => {
-        const targetId = death.target?.id;
-        const targetName = death.target?.name;
+      // Process death events safely
+      const deathsArray = Array.isArray(deaths) ? deaths : [];
+      deathsArray.forEach((death: WCLEvent) => {
+        if (!death?.target) return;
+        
+        const targetId = death.target.id;
+        const targetName = death.target.name;
         
         // Find player by ID or name
         let player: PlayerStats | undefined = playerMap.get(targetId || 0);
@@ -679,8 +710,8 @@ export async function GET(request: NextRequest) {
       }
       
       // Add bloodlust (find from casts or assume)
-      const bloodlustCast = (casts as WCLEvent[]).find((c: WCLEvent) => 
-        c.ability?.name && ['Bloodlust', 'Heroism', 'Time Warp', 'Ancient Hysteria', 'Netherwinds']
+      const bloodlustCast = castsArray.find((c: WCLEvent) => 
+        c?.ability?.name && ['Bloodlust', 'Heroism', 'Time Warp', 'Ancient Hysteria', 'Netherwinds']
           .some(bl => c.ability!.name.includes(bl))
       );
       
@@ -754,7 +785,7 @@ export async function GET(request: NextRequest) {
         })) || [],
         
         timeline,
-        combatEvents: casts as WCLEvent[],
+        combatEvents: castsArray,
         
         summary: {
           totalDamage,
