@@ -183,27 +183,41 @@ export async function GET(request: NextRequest) {
         fetchWCLHpsRankings(reportCode, [fightId], token),
       ]);
       
-      // Build actor lookup from masterData - ONLY PLAYERS
+      // Build actor lookup from masterData
+      // The GraphQL query already filters actors(type: "player") so all returned are players
       const actors = wclReport.masterData?.actors || [];
       const actorMap = new Map<number, WCLActor>();
       const actorNameMap = new Map<string, WCLActor>();
       const playerNameSet = new Set<string>();
       
-      // Only add actors that are type='player' to filter out NPCs
+      // Add all actors - they're already filtered by the query to be players only
       actors.forEach(a => {
-        if (a.type === 'player') {
-          actorMap.set(a.id, a);
-          actorNameMap.set(a.name.toLowerCase(), a);
-          playerNameSet.add(a.name);
-        }
+        actorMap.set(a.id, a);
+        actorNameMap.set(a.name.toLowerCase(), a);
+        playerNameSet.add(a.name);
       });
       
       // Also build a set of player names from playerDetails for extra validation
       const playerDetailsNames = new Set<string>();
       if (playerDetails) {
-        [...(playerDetails.tanks || []), ...(playerDetails.healers || []), ...(playerDetails.dps || [])]
-          .forEach((p: any) => playerDetailsNames.add(p.name));
+        const allDetails = [
+          ...(playerDetails.tanks || []), 
+          ...(playerDetails.healers || []), 
+          ...(playerDetails.dps || [])
+        ];
+        allDetails.forEach((p: any) => {
+          if (p && p.name) {
+            playerDetailsNames.add(p.name);
+          }
+        });
       }
+      
+      // Log for debugging
+      console.log('[WCL] Actors found:', actors.length);
+      console.log('[WCL] Player names from actors:', Array.from(playerNameSet).slice(0, 5));
+      console.log('[WCL] Player names from playerDetails:', Array.from(playerDetailsNames).slice(0, 5));
+      console.log('[WCL] Damage entries count:', damageDone?.entries?.length || 0);
+      console.log('[WCL] Healing entries count:', healingDone?.entries?.length || 0);
       
       // Build rankings map for percentile lookup - process both DPS and HPS rankings
       const rankingMap = new Map<string, { dps: number; hps: number }>();
@@ -364,23 +378,20 @@ export async function GET(request: NextRequest) {
       // Build player stats
       const playerMap = new Map<number, PlayerStats>();
       
-      // Process damage entries - this includes tanks and DPS
-      // CRITICAL: Filter out NPCs - only include entries for actual players
-      const damageEntries = (damageDone?.entries || []).filter((entry: WCLTableEntry) => {
-        const actor = actorMap.get(entry.id);
-        // Entry must either have a matching player actor OR be in playerDetails
-        return actor?.type === 'player' || playerDetailsNames.has(entry.name) || playerNameSet.has(entry.name);
-      });
+      // The WCL damage/healing/damageTaken tables already only contain player data
+      // No need for complex filtering - use entries directly
+      const damageEntries = damageDone?.entries || [];
+      const healingEntries = healingDone?.entries || [];
+      const dtpsEntries = damageTaken?.entries || [];
       
-      const healingEntries = (healingDone?.entries || []).filter((entry: WCLTableEntry) => {
-        const actor = actorMap.get(entry.id);
-        return actor?.type === 'player' || playerDetailsNames.has(entry.name) || playerNameSet.has(entry.name);
-      });
-      
-      const dtpsEntries = (damageTaken?.entries || []).filter((entry: WCLTableEntry) => {
-        const actor = actorMap.get(entry.id);
-        return actor?.type === 'player' || playerDetailsNames.has(entry.name) || playerNameSet.has(entry.name);
-      });
+      console.log('[WCL] === DATA SUMMARY ===');
+      console.log('[WCL] Actors from masterData:', actors.length);
+      console.log('[WCL] Player names from actors:', Array.from(playerNameSet));
+      console.log('[WCL] Player names from playerDetails:', Array.from(playerDetailsNames));
+      console.log('[WCL] Damage entries:', damageEntries.length, damageEntries.slice(0, 3).map(e => e.name));
+      console.log('[WCL] Healing entries:', healingEntries.length, healingEntries.slice(0, 3).map(e => e.name));
+      console.log('[WCL] DTPS entries:', dtpsEntries.length);
+      console.log('[WCL] ======================');
       
       damageEntries.forEach((entry: WCLTableEntry) => {
         const actor = actorMap.get(entry.id);
