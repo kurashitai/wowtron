@@ -181,8 +181,10 @@ export async function GET(request: NextRequest) {
       console.log('[WCL FIGHT] Found fight:', fight.name, 'Duration:', Math.floor((fight.endTime - fight.startTime) / 1000));
       
       const duration = Math.floor((fight.endTime - fight.startTime) / 1000);
-      const fightStartTime = 0;
-      const fightEndTime = fight.endTime - fight.startTime;
+      // When fightIDs is specified, startTime/endTime are relative to fight start (in ms)
+      // Use fight.startTime and fight.endTime as absolute timestamps for events API
+      const fightStartTime = fight.startTime;
+      const fightEndTime = fight.endTime;
       
       // Fetch all data in parallel with error handling for each request
       let damageDone, healingDone, damageTaken, deaths, buffs, casts, playerDetails, dpsGraph, hpsGraph, dpsRankings, hpsRankings;
