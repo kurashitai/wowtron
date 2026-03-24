@@ -202,9 +202,7 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          table(fightIDs: $fightIds, dataType: DamageDone) {
-            data
-          }
+          table(fightIDs: $fightIds, dataType: DamageDone)
         }
       }
     }
@@ -215,9 +213,7 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          table(fightIDs: $fightIds, dataType: Healing) {
-            data
-          }
+          table(fightIDs: $fightIds, dataType: Healing)
         }
       }
     }
@@ -228,9 +224,7 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          table(fightIDs: $fightIds, dataType: DamageTaken) {
-            data
-          }
+          table(fightIDs: $fightIds, dataType: DamageTaken)
         }
       }
     }
@@ -584,13 +578,13 @@ export async function fetchWCLDamageDone(
   fightIds: number[],
   accessToken: string
 ): Promise<WCLTableData> {
-  const data = await wclQuery<{ reportData: { report: { table: { data: WCLTableData } } } }>(
+  const data = await wclQuery<{ reportData: { report: { table: WCLTableData } } }>(
     accessToken,
     QUERIES.damageDone,
     { code, fightIds }
   );
   
-  return data.reportData.report.table.data;
+  return data.reportData.report.table;
 }
 
 export async function fetchWCLHealingDone(
@@ -598,13 +592,13 @@ export async function fetchWCLHealingDone(
   fightIds: number[],
   accessToken: string
 ): Promise<WCLTableData> {
-  const data = await wclQuery<{ reportData: { report: { table: { data: WCLTableData } } } }>(
+  const data = await wclQuery<{ reportData: { report: { table: WCLTableData } } }>(
     accessToken,
     QUERIES.healingDone,
     { code, fightIds }
   );
   
-  return data.reportData.report.table.data;
+  return data.reportData.report.table;
 }
 
 export async function fetchWCLDamageTaken(
@@ -612,13 +606,13 @@ export async function fetchWCLDamageTaken(
   fightIds: number[],
   accessToken: string
 ): Promise<WCLTableData> {
-  const data = await wclQuery<{ reportData: { report: { table: { data: WCLTableData } } } }>(
+  const data = await wclQuery<{ reportData: { report: { table: WCLTableData } } }>(
     accessToken,
     QUERIES.damageTaken,
     { code, fightIds }
   );
   
-  return data.reportData.report.table.data;
+  return data.reportData.report.table;
 }
 
 export async function fetchWCLDeaths(

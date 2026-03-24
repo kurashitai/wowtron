@@ -129,28 +129,50 @@ export async function GET(request: NextRequest) {
     // FIGHT DETAILS - Complete analysis
     // ==========================================
     if (action === 'fight') {
+      console.log('[WCL FIGHT] ========== START FIGHT ANALYSIS ==========');
+      
       const code = searchParams.get('code');
       const fightId = parseInt(searchParams.get('fightId') || '0');
       
-      if (!code || !fightId) return NextResponse.json({ error: 'Missing code or fightId' }, { status: 400 });
+      console.log('[WCL FIGHT] Code:', code, 'FightId:', fightId);
+      
+      if (!code || !fightId) {
+        console.log('[WCL FIGHT] ERROR: Missing code or fightId');
+        return NextResponse.json({ error: 'Missing code or fightId' }, { status: 400 });
+      }
       
       const reportCode = parseReportCode(code);
-      if (!reportCode) return NextResponse.json({ error: 'Invalid report code' }, { status: 400 });
+      console.log('[WCL FIGHT] Parsed report code:', reportCode);
+      
+      if (!reportCode) {
+        console.log('[WCL FIGHT] ERROR: Invalid report code');
+        return NextResponse.json({ error: 'Invalid report code' }, { status: 400 });
+      }
       
       const useMock = !process.env.WCL_CLIENT_ID || searchParams.get('mock') === 'true';
+      console.log('[WCL FIGHT] UseMock:', useMock, 'Has WCL_CLIENT_ID:', !!process.env.WCL_CLIENT_ID);
       
       if (useMock) {
-        // Return mock data for demo
+        console.log('[WCL FIGHT] Returning mock data');
         return NextResponse.json({ fight: generateMockFightData(fightId), mock: true });
       }
       
       // ===== REAL DATA FETCH =====
+      console.log('[WCL FIGHT] Getting token...');
       const token = await getToken();
+      console.log('[WCL FIGHT] Token obtained, length:', token?.length);
       
       // Fetch report first to get fight timing
+      console.log('[WCL FIGHT] Fetching report:', reportCode);
       const wclReport = await fetchWCLReport(reportCode, token);
+      console.log('[WCL FIGHT] Report fetched, fights:', wclReport?.fights?.length);
+      
       const fight = wclReport.fights.find(f => f.id === fightId);
-      if (!fight) return NextResponse.json({ error: 'Fight not found' }, { status: 404 });
+      if (!fight) {
+        console.log('[WCL FIGHT] ERROR: Fight not found. Available IDs:', wclReport?.fights?.map(f => f.id));
+        return NextResponse.json({ error: 'Fight not found' }, { status: 404 });
+      }
+      console.log('[WCL FIGHT] Found fight:', fight.name, 'Duration:', Math.floor((fight.endTime - fight.startTime) / 1000));
       
       const duration = Math.floor((fight.endTime - fight.startTime) / 1000);
       const fightStartTime = 0;
@@ -193,6 +215,29 @@ export async function GET(request: NextRequest) {
             console.error(`[WCL] Request ${i} failed:`, result.reason);
           }
         });
+        
+        // Debug: Check the actual structure of damageDone
+        console.log('[WCL DEBUG] damageDone type:', typeof damageDone);
+        console.log('[WCL DEBUG] damageDone keys:', damageDone ? Object.keys(damageDone) : 'null');
+        console.log('[WCL DEBUG] damageDone.entries:', damageDone?.entries?.length || 'no entries');
+        console.log('[WCL DEBUG] damageDone.data:', damageDone?.data ? 'has data' : 'no data');
+        
+        // If damageDone has a 'data' property, it's the old format
+        if (damageDone && 'data' in damageDone && !('entries' in damageDone)) {
+          console.log('[WCL DEBUG] Found old format, extracting data...');
+          damageDone = damageDone.data;
+        }
+        if (healingDone && 'data' in healingDone && !('entries' in healingDone)) {
+          healingDone = healingDone.data;
+        }
+        if (damageTaken && 'data' in damageTaken && !('entries' in damageTaken)) {
+          damageTaken = damageTaken.data;
+        }
+        
+        // Log successful results for debugging
+        console.log('[WCL] DamageDone entries after fix:', damageDone?.entries?.length || 0);
+        console.log('[WCL] HealingDone entries after fix:', healingDone?.entries?.length || 0);
+        console.log('[WCL] PlayerDetails result:', playerDetails ? 'has data' : 'null');
       } catch (error: any) {
         console.error('[WCL] Error fetching data:', error);
         return NextResponse.json({ error: `Failed to fetch WCL data: ${error.message}` }, { status: 500 });
