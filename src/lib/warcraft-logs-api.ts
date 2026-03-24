@@ -65,14 +65,25 @@ export interface WCLCharacter {
 }
 
 // Damage/Healing/DTPS Table Data
+// WCL API returns table with nested data property
 export interface WCLTableData {
   total: number;
-  dps: number;
-  dpsMax: number;
-  dpsMin: number;
-  hps: number;
-  dtps: number;
+  dps?: number;
+  dpsMax?: number;
+  dpsMin?: number;
+  hps?: number;
+  dtps?: number;
   entries: WCLTableEntry[];
+  totalTime?: number;
+  logVersion?: number;
+  gameVersion?: number;
+}
+
+// Wrapper for WCL table response
+export interface WCLTableResponse {
+  data?: WCLTableData;
+  entries?: WCLTableEntry[];  // Sometimes entries are at top level
+  total?: number;
 }
 
 export interface WCLTableEntry {
@@ -658,13 +669,47 @@ export async function fetchWCLDamageDone(
   fightIds: number[],
   accessToken: string
 ): Promise<WCLTableData> {
-  const data = await wclQuery<{ reportData: { report: { table: WCLTableData } } }>(
+  const data = await wclQuery<{ reportData: { report: { table: WCLTableResponse } } }>(
     accessToken,
     QUERIES.damageDone,
     { code, fightIds }
   );
   
-  return data.reportData.report.table;
+  const table = data.reportData.report.table;
+  console.log('[WCL API] fetchWCLDamageDone - table type:', typeof table);
+  console.log('[WCL API] fetchWCLDamageDone - table keys:', table ? Object.keys(table) : 'null');
+  console.log('[WCL API] fetchWCLDamageDone - table.data type:', typeof table?.data);
+  
+  // WCL returns table.data as a JSON STRING that needs parsing!
+  // Response structure: { data: { reportData: { report: { table: { data: "{\"entries\":[...]}" } } } } }
+  if (table?.data) {
+    // Check if data is a string (JSON that needs parsing)
+    if (typeof table.data === 'string') {
+      try {
+        const parsed = JSON.parse(table.data);
+        console.log('[WCL API] fetchWCLDamageDone - Parsed JSON string, entries:', parsed?.entries?.length || 0);
+        if (parsed?.entries) {
+          return parsed as WCLTableData;
+        }
+      } catch (e) {
+        console.error('[WCL API] fetchWCLDamageDone - Failed to parse table.data as JSON:', e);
+      }
+    }
+    // Check if data is already an object with entries
+    if (typeof table.data === 'object' && table.data.entries) {
+      console.log('[WCL API] fetchWCLDamageDone - data is object with entries:', table.data.entries?.length || 0);
+      return table.data;
+    }
+  }
+  
+  // Fallback if entries are at top level
+  if (table?.entries) {
+    console.log('[WCL API] fetchWCLDamageDone - entries at top level:', table.entries?.length || 0);
+    return table as unknown as WCLTableData;
+  }
+  
+  console.log('[WCL API] fetchWCLDamageDone - No entries found, returning empty');
+  return { total: 0, entries: [] };
 }
 
 export async function fetchWCLHealingDone(
@@ -672,13 +717,42 @@ export async function fetchWCLHealingDone(
   fightIds: number[],
   accessToken: string
 ): Promise<WCLTableData> {
-  const data = await wclQuery<{ reportData: { report: { table: WCLTableData } } }>(
+  const data = await wclQuery<{ reportData: { report: { table: WCLTableResponse } } }>(
     accessToken,
     QUERIES.healingDone,
     { code, fightIds }
   );
   
-  return data.reportData.report.table;
+  const table = data.reportData.report.table;
+  console.log('[WCL API] fetchWCLHealingDone - table type:', typeof table);
+  console.log('[WCL API] fetchWCLHealingDone - table.data type:', typeof table?.data);
+  
+  // WCL returns table.data as a JSON STRING that needs parsing!
+  if (table?.data) {
+    if (typeof table.data === 'string') {
+      try {
+        const parsed = JSON.parse(table.data);
+        console.log('[WCL API] fetchWCLHealingDone - Parsed JSON string, entries:', parsed?.entries?.length || 0);
+        if (parsed?.entries) {
+          return parsed as WCLTableData;
+        }
+      } catch (e) {
+        console.error('[WCL API] fetchWCLHealingDone - Failed to parse table.data as JSON:', e);
+      }
+    }
+    if (typeof table.data === 'object' && table.data.entries) {
+      console.log('[WCL API] fetchWCLHealingDone - data is object with entries:', table.data.entries?.length || 0);
+      return table.data;
+    }
+  }
+  
+  if (table?.entries) {
+    console.log('[WCL API] fetchWCLHealingDone - entries at top level:', table.entries?.length || 0);
+    return table as unknown as WCLTableData;
+  }
+  
+  console.log('[WCL API] fetchWCLHealingDone - No entries found, returning empty');
+  return { total: 0, entries: [] };
 }
 
 export async function fetchWCLDamageTaken(
@@ -686,13 +760,42 @@ export async function fetchWCLDamageTaken(
   fightIds: number[],
   accessToken: string
 ): Promise<WCLTableData> {
-  const data = await wclQuery<{ reportData: { report: { table: WCLTableData } } }>(
+  const data = await wclQuery<{ reportData: { report: { table: WCLTableResponse } } }>(
     accessToken,
     QUERIES.damageTaken,
     { code, fightIds }
   );
   
-  return data.reportData.report.table;
+  const table = data.reportData.report.table;
+  console.log('[WCL API] fetchWCLDamageTaken - table type:', typeof table);
+  console.log('[WCL API] fetchWCLDamageTaken - table.data type:', typeof table?.data);
+  
+  // WCL returns table.data as a JSON STRING that needs parsing!
+  if (table?.data) {
+    if (typeof table.data === 'string') {
+      try {
+        const parsed = JSON.parse(table.data);
+        console.log('[WCL API] fetchWCLDamageTaken - Parsed JSON string, entries:', parsed?.entries?.length || 0);
+        if (parsed?.entries) {
+          return parsed as WCLTableData;
+        }
+      } catch (e) {
+        console.error('[WCL API] fetchWCLDamageTaken - Failed to parse table.data as JSON:', e);
+      }
+    }
+    if (typeof table.data === 'object' && table.data.entries) {
+      console.log('[WCL API] fetchWCLDamageTaken - data is object with entries:', table.data.entries?.length || 0);
+      return table.data;
+    }
+  }
+  
+  if (table?.entries) {
+    console.log('[WCL API] fetchWCLDamageTaken - entries at top level:', table.entries?.length || 0);
+    return table as unknown as WCLTableData;
+  }
+  
+  console.log('[WCL API] fetchWCLDamageTaken - No entries found, returning empty');
+  return { total: 0, entries: [] };
 }
 
 export async function fetchWCLDeaths(
@@ -769,7 +872,17 @@ export async function fetchWCLSummary(
     { code, fightIds }
   );
   
-  return data.reportData.report.table.data;
+  const tableData = data.reportData.report.table?.data;
+  // WCL may return data as a JSON string
+  if (typeof tableData === 'string') {
+    try {
+      return JSON.parse(tableData);
+    } catch (e) {
+      console.error('[WCL API] fetchWCLSummary - Failed to parse data as JSON:', e);
+      return null;
+    }
+  }
+  return tableData;
 }
 
 export async function fetchWCLPlayerDetails(
@@ -784,8 +897,37 @@ export async function fetchWCLPlayerDetails(
       { code, fightIds }
     );
     
+    console.log('[WCL API] fetchWCLPlayerDetails - playerDetails type:', typeof data.reportData.report.playerDetails);
+    
+    // playerDetails might be a JSON string or an object
+    let playerDetails = data.reportData.report.playerDetails;
+    
+    if (typeof playerDetails === 'string') {
+      try {
+        playerDetails = JSON.parse(playerDetails);
+        console.log('[WCL API] fetchWCLPlayerDetails - Parsed JSON string');
+      } catch (e) {
+        console.error('[WCL API] fetchWCLPlayerDetails - Failed to parse as JSON:', e);
+        return null;
+      }
+    }
+    
     // playerDetails returns { data: { tanks: [...], healers: [...], dps: [...] } }
-    return data.reportData.report.playerDetails?.data || null;
+    // Or sometimes directly { tanks: [...], healers: [...], dps: [...] }
+    if (playerDetails?.data) {
+      // Handle case where data is also a string
+      if (typeof playerDetails.data === 'string') {
+        try {
+          return JSON.parse(playerDetails.data);
+        } catch (e) {
+          console.error('[WCL API] fetchWCLPlayerDetails - Failed to parse data as JSON:', e);
+          return null;
+        }
+      }
+      return playerDetails.data;
+    }
+    
+    return playerDetails || null;
   } catch (error) {
     console.error('Failed to fetch player details:', error);
     return null;
@@ -892,13 +1034,33 @@ export async function fetchWCLDpsRankings(
   accessToken: string
 ): Promise<WCLRankingsData[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { rankings: { data: WCLRankingsData[] } } } }>(
+    const data = await wclQuery<{ reportData: { report: { rankings: { data: WCLRankingsData[] | string } | null } } }>(
       accessToken,
       QUERIES.rankings,
       { code, fightIds }
     );
     
-    return data.reportData.report.rankings?.data || [];
+    const rankings = data.reportData.report.rankings;
+    if (!rankings) {
+      console.log('[WCL API] fetchWCLDpsRankings - No rankings found');
+      return [];
+    }
+    
+    let rankingsData = rankings.data;
+    
+    // WCL may return rankings.data as a JSON string
+    if (typeof rankingsData === 'string') {
+      try {
+        rankingsData = JSON.parse(rankingsData);
+        console.log('[WCL API] fetchWCLDpsRankings - Parsed JSON string');
+      } catch (e) {
+        console.error('[WCL API] fetchWCLDpsRankings - Failed to parse as JSON:', e);
+        return [];
+      }
+    }
+    
+    console.log('[WCL API] fetchWCLDpsRankings - rankings count:', Array.isArray(rankingsData) ? rankingsData.length : 0);
+    return Array.isArray(rankingsData) ? rankingsData : [];
   } catch (error) {
     console.error('Failed to fetch DPS rankings:', error);
     return [];
@@ -911,13 +1073,33 @@ export async function fetchWCLHpsRankings(
   accessToken: string
 ): Promise<WCLRankingsData[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { rankings: { data: WCLRankingsData[] } } } }>(
+    const data = await wclQuery<{ reportData: { report: { rankings: { data: WCLRankingsData[] | string } | null } } }>(
       accessToken,
       QUERIES.healerRankings,
       { code, fightIds }
     );
     
-    return data.reportData.report.rankings?.data || [];
+    const rankings = data.reportData.report.rankings;
+    if (!rankings) {
+      console.log('[WCL API] fetchWCLHpsRankings - No rankings found');
+      return [];
+    }
+    
+    let rankingsData = rankings.data;
+    
+    // WCL may return rankings.data as a JSON string
+    if (typeof rankingsData === 'string') {
+      try {
+        rankingsData = JSON.parse(rankingsData);
+        console.log('[WCL API] fetchWCLHpsRankings - Parsed JSON string');
+      } catch (e) {
+        console.error('[WCL API] fetchWCLHpsRankings - Failed to parse as JSON:', e);
+        return [];
+      }
+    }
+    
+    console.log('[WCL API] fetchWCLHpsRankings - rankings count:', Array.isArray(rankingsData) ? rankingsData.length : 0);
+    return Array.isArray(rankingsData) ? rankingsData : [];
   } catch (error) {
     console.error('Failed to fetch HPS rankings:', error);
     return [];

@@ -1245,6 +1245,7 @@ export interface PlayerScorecard {
   class: string;
   spec: string;
   role: string;
+  hasValidData: boolean;
   grades: {
     dps: { grade: string; score: number; percentile: number };
     mechanics: { grade: string; score: number; interrupts: number; soaks: number };
@@ -1271,6 +1272,38 @@ export function calculatePlayerScorecard(
   player: any,
   fight: any
 ): PlayerScorecard {
+  // ============================================
+  // DATA VALIDATION - Check if player has valid activity data
+  // ============================================
+  const hasValidData = (
+    (player.dps > 0) || 
+    (player.hps > 0) || 
+    (player.totalDamage > 0) || 
+    (player.totalHealing > 0)
+  );
+  
+  // If no valid data, return N/A grades
+  if (!hasValidData) {
+    return {
+      name: player.name,
+      class: player.class || 'Unknown',
+      spec: player.spec || 'Unknown',
+      role: player.role || 'dps',
+      hasValidData: false,
+      grades: {
+        dps: { grade: '-', score: 0, percentile: 0 },
+        mechanics: { grade: '-', score: 0, interrupts: 0, soaks: 0 },
+        survival: { grade: '-', score: 0, deaths: 0, avoidableDamage: 0, defensivesUsed: 0 },
+        utility: { grade: '-', score: 0, dispels: 0, brez: 0, raidUtility: 0 },
+        activity: { grade: '-', score: 0, downtime: 100 }
+      },
+      overallGrade: '-',
+      overallScore: 0,
+      issues: ['Sem dados válidos para análise'],
+      positives: []
+    };
+  }
+  
   const issues: string[] = [];
   const positives: string[] = [];
   
@@ -1369,6 +1402,7 @@ export function calculatePlayerScorecard(
     class: player.class,
     spec: player.spec,
     role: player.role,
+    hasValidData: true,
     grades: {
       dps: { grade: dpsGrade, score: Math.floor(dpsScore), percentile },
       mechanics: { grade: mechanicsGrade, score: Math.floor(mechanicsScore), interrupts, soaks: 0 },

@@ -338,6 +338,16 @@ export default function LogAnalysis() {
     const players = fight.players || [];
     const deaths = fight.timeline?.filter((e: any) => e.type === 'death') || [];
     
+    // Check if we have any valid player data
+    const hasValidPlayerData = players.some((p: any) => 
+      (p.dps > 0) || (p.hps > 0) || (p.totalDamage > 0) || (p.totalHealing > 0)
+    );
+    
+    // If no valid data, return early with appropriate indicators
+    if (!hasValidPlayerData && players.length > 0) {
+      console.warn('[ANALYSIS] No valid player data found - returning N/A state');
+    }
+    
     const playerStats: PlayerStats[] = players.map((player: any) => ({
       name: player.name,
       class: player.class,
@@ -1217,8 +1227,11 @@ function StatCard({ icon, label, value, valueClass = '' }: { icon: React.ReactNo
 
 // Player Card Component
 function PlayerCard({ player }: { player: PlayerStats }) {
+  // Check if player has no valid data
+  const hasNoData = player.dps === 0 && player.hps === 0;
+  
   return (
-    <div className={`p-3 rounded-lg border ${getRankBg(player.rankPercent)} flex items-center gap-3`}>
+    <div className={`p-3 rounded-lg border ${hasNoData ? 'bg-dark-700/30 border-dark-600' : getRankBg(player.rankPercent)} flex items-center gap-3`}>
       <div className="flex-1 min-w-0">
         <p className="font-medium text-sm truncate" style={{ color: getClassColor(player.class) }}>
           {player.name}
@@ -1226,11 +1239,20 @@ function PlayerCard({ player }: { player: PlayerStats }) {
         <p className="text-xs text-tron-silver-500 truncate">{player.spec}</p>
       </div>
       <div className="text-right shrink-0">
-        <div className={`flex items-center gap-1 ${getRankColor(player.rankPercent)}`}>
-          <Star className="h-3.5 w-3.5" />
-          <span className="text-sm font-bold">{player.rankPercent}%</span>
-        </div>
-        <p className="text-xs text-tron-silver-500">{formatNumber(player.dps)} DPS</p>
+        {hasNoData ? (
+          <div className="flex items-center gap-1 text-tron-silver-500">
+            <AlertCircle className="h-3.5 w-3.5" />
+            <span className="text-sm font-medium">No Data</span>
+          </div>
+        ) : (
+          <>
+            <div className={`flex items-center gap-1 ${getRankColor(player.rankPercent)}`}>
+              <Star className="h-3.5 w-3.5" />
+              <span className="text-sm font-bold">{player.rankPercent}%</span>
+            </div>
+            <p className="text-xs text-tron-silver-500">{formatNumber(player.dps)} DPS</p>
+          </>
+        )}
       </div>
     </div>
   );

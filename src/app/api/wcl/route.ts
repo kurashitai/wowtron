@@ -228,16 +228,45 @@ export async function GET(request: NextRequest) {
         console.log('[WCL DEBUG] damageDone.entries:', damageDone?.entries?.length || 'no entries');
         console.log('[WCL DEBUG] damageDone.data:', damageDone?.data ? 'has data' : 'no data');
         
-        // If damageDone has a 'data' property, it's the old format
-        if (damageDone && 'data' in damageDone && !('entries' in damageDone)) {
-          console.log('[WCL DEBUG] Found old format, extracting data...');
-          damageDone = damageDone.data;
+        // Log first 3 damage entries if available
+        if (damageDone?.entries && damageDone.entries.length > 0) {
+          console.log('[WCL DEBUG] First 3 damage entries:');
+          damageDone.entries.slice(0, 3).forEach((entry: any, i: number) => {
+            console.log(`[WCL DEBUG]   Entry ${i}: name=${entry.name}, total=${entry.total}, dps=${entry.dps}, id=${entry.id}`);
+          });
+        } else {
+          console.log('[WCL DEBUG] WARNING: No damage entries found!');
         }
-        if (healingDone && 'data' in healingDone && !('entries' in healingDone)) {
-          healingDone = healingDone.data;
+        
+        // Log first 3 healing entries if available
+        if (healingDone?.entries && healingDone.entries.length > 0) {
+          console.log('[WCL DEBUG] First 3 healing entries:');
+          healingDone.entries.slice(0, 3).forEach((entry: any, i: number) => {
+            console.log(`[WCL DEBUG]   Entry ${i}: name=${entry.name}, total=${entry.total}, hps=${entry.hps || 'N/A'}, id=${entry.id}`);
+          });
+        } else {
+          console.log('[WCL DEBUG] WARNING: No healing entries found!');
         }
-        if (damageTaken && 'data' in damageTaken && !('entries' in damageTaken)) {
-          damageTaken = damageTaken.data;
+        
+        // WCL table API returns { data: { entries: [...], totalTime: ... } }
+        // Extract the data.entries to the top level
+        if (damageDone && 'data' in damageDone && damageDone.data && typeof damageDone.data === 'object') {
+          console.log('[WCL DEBUG] Extracting damage entries from data property');
+          if ('entries' in damageDone.data) {
+            damageDone = damageDone.data;
+          }
+        }
+        if (healingDone && 'data' in healingDone && healingDone.data && typeof healingDone.data === 'object') {
+          console.log('[WCL DEBUG] Extracting healing entries from data property');
+          if ('entries' in healingDone.data) {
+            healingDone = healingDone.data;
+          }
+        }
+        if (damageTaken && 'data' in damageTaken && damageTaken.data && typeof damageTaken.data === 'object') {
+          console.log('[WCL DEBUG] Extracting damageTaken entries from data property');
+          if ('entries' in damageTaken.data) {
+            damageTaken = damageTaken.data;
+          }
         }
         
         // Log successful results for debugging
@@ -390,7 +419,7 @@ export async function GET(request: NextRequest) {
       ];
       
       // Track actual interrupts - when the interrupt ability results in the target's cast being stopped
-      // WCL events have type 'interrupt' when successful
+      // WCL events have type 'interrupt' when successful, or 'cast' with targetIsFriendly === false for attempts
       const interruptCount = new Map<string, number>();
       
       // Look for actual interrupt events (type = 'interrupt' or 'cast' that interrupts)
@@ -401,9 +430,14 @@ export async function GET(request: NextRequest) {
         const abilityName = cast.ability.name.toLowerCase();
         const isInterruptAbility = interruptAbilities.some(ia => abilityName.includes(ia.toLowerCase()));
         
-        // Only count if this is an interrupt ability AND the target is an enemy (boss)
-        // The target should be an enemy (not friendly) to count as a boss interrupt
-        if (isInterruptAbility && cast.targetIsFriendly === false && cast.source?.name) {
+        // Only count if:
+        // 1. This is an interrupt ability
+        // 2. The target is an enemy (boss) - targetIsFriendly === false OR type === 'interrupt'
+        // 3. The source is a player
+        const isSuccessfulInterrupt = cast.type === 'interrupt' || 
+          (isInterruptAbility && cast.targetIsFriendly === false);
+        
+        if (isSuccessfulInterrupt && cast.source?.name) {
           const sourceName = cast.source.name;
           // Verify this is a player using the interrupt
           if (playerNameSet.has(sourceName) || playerDetailsNames.has(sourceName)) {
@@ -760,18 +794,21 @@ export async function GET(request: NextRequest) {
         });
       }
       
-      // Add bloodlust (find from casts or assume)
+      // Add bloodlust ONLY if actually detected in casts - do NOT assume/fabricate
       const bloodlustCast = castsArray.find((c: WCLEvent) => 
         c?.ability?.name && ['Bloodlust', 'Heroism', 'Time Warp', 'Ancient Hysteria', 'Netherwinds']
           .some(bl => c.ability!.name.includes(bl))
       );
       
-      timeline.push({
-        time: bloodlustCast ? Math.floor((bloodlustCast.timestamp - fight.startTime) / 1000) : 8,
-        type: 'bloodlust',
-        description: bloodlustCast?.ability?.name || 'Bloodlust',
-        source: bloodlustCast?.source?.name || playersArray.find(p => p.class === 'Shaman')?.name || 'Shaman'
-      });
+      // Only add bloodlust to timeline if actually detected
+      if (bloodlustCast) {
+        timeline.push({
+          time: Math.floor((bloodlustCast.timestamp - fight.startTime) / 1000),
+          type: 'bloodlust',
+          description: bloodlustCast.ability.name,
+          source: bloodlustCast.source?.name || playersArray.find(p => p.class === 'Shaman')?.name || 'Unknown'
+        });
+      }
       
       // Add deaths to timeline
       playersArray.filter(p => p.deaths > 0).forEach(p => {
@@ -847,7 +884,7 @@ export async function GET(request: NextRequest) {
           raidDTPS: Math.floor(playersArray.reduce((s, p) => s + p.dtps, 0)),
           deaths: playersArray.reduce((s, p) => s + p.deaths, 0),
           combatResurrections: 0,
-          bloodlusts: 1,
+          bloodlusts: bloodlustCast ? 1 : 0,
           dispels: playersArray.reduce((s, p) => s + p.dispels, 0),
           interrupts: playersArray.reduce((s, p) => s + p.interruptions, 0)
         },

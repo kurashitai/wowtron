@@ -99,15 +99,8 @@ export function RaidTimeline({ fight, bossData, duration }: TimelineProps) {
         description: bloodlustEvent.description || 'Bloodlust',
         source: bloodlustEvent.source
       });
-    } else {
-      // Assume bloodlust at pull if not detected
-      timelineEvents.push({
-        time: 8,
-        type: 'bloodlust',
-        description: 'Bloodlust (assumed)',
-        source: 'Raid'
-      });
     }
+    // Note: Don't assume bloodlust if not detected - only add if actually found
     
     // Add death events
     (fight.timeline || [])
