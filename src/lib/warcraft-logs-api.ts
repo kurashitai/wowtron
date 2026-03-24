@@ -382,6 +382,86 @@ const QUERIES = {
       }
     }
   `,
+
+  // Detailed death events with killing blow info
+  detailedDeaths: `
+    query($code: String!, $fightIds: [Int]!, $startTime: Float!, $endTime: Float!) {
+      reportData {
+        report(code: $code) {
+          events(
+            fightIDs: $fightIds
+            startTime: $startTime
+            endTime: $endTime
+            dataType: Deaths
+            limit: 100
+            includeResources: true
+          ) {
+            data
+          }
+        }
+      }
+    }
+  `,
+
+  // Buff events for defensive tracking
+  buffEvents: `
+    query($code: String!, $fightIds: [Int]!, $startTime: Float!, $endTime: Float!, $abilityId: Float) {
+      reportData {
+        report(code: $code) {
+          events(
+            fightIDs: $fightIds
+            startTime: $startTime
+            endTime: $endTime
+            dataType: Buffs
+            abilityID: $abilityId
+            limit: 1000
+          ) {
+            data
+            nextPageTimestamp
+          }
+        }
+      }
+    }
+  `,
+
+  // Events before a specific timestamp (for death recap)
+  eventsBefore: `
+    query($code: String!, $fightId: Int!, $timestamp: Float!, $durationMs: Float!) {
+      reportData {
+        report(code: $code) {
+          events(
+            fightIDs: [$fightId]
+            startTime: $timestamp
+            endTime: $timestamp + $durationMs
+            dataType: All
+            limit: 500
+          ) {
+            data
+          }
+        }
+      }
+    }
+  `,
+
+  // Damage events for specific player
+  damageEventsForPlayer: `
+    query($code: String!, $fightIds: [Int]!, $startTime: Float!, $endTime: Float!, $sourceID: Int) {
+      reportData {
+        report(code: $code) {
+          events(
+            fightIDs: $fightIds
+            startTime: $startTime
+            endTime: $endTime
+            dataType: DamageDone
+            sourceID: $sourceID
+            limit: 1000
+          ) {
+            data
+          }
+        }
+      }
+    }
+  `,
 };
 
 // ============================================
@@ -874,3 +954,199 @@ export function getClassFromId(classId: number): string {
 export function getSpecFromId(specId: number): { spec: string; role: 'tank' | 'healer' | 'dps' } | undefined {
   return WCL_SPEC_MAP[specId];
 }
+
+// ============================================
+// NEW API FUNCTIONS FOR ADVANCED ANALYSIS
+// ============================================
+
+// Get death events with more detail (includes killing blow, HP, etc.)
+export async function fetchWCLDeathEvents(
+  code: string,
+  fightIds: number[],
+  startTime: number,
+  endTime: number,
+  accessToken: string
+): Promise<WCLEvent[]> {
+  try {
+    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] } } } }>(
+      accessToken,
+      QUERIES.detailedDeaths,
+      { code, fightIds, startTime, endTime }
+    );
+    
+    return data.reportData.report.events.data || [];
+  } catch (error) {
+    console.error('Failed to fetch detailed death events:', error);
+    return [];
+  }
+}
+
+// Get buff events for specific abilities (for defensive tracking)
+export async function fetchWCLBuffEvents(
+  code: string,
+  fightIds: number[],
+  startTime: number,
+  endTime: number,
+  accessToken: string,
+  abilityId?: number
+): Promise<WCLEvent[]> {
+  try {
+    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] } } } }>(
+      accessToken,
+      QUERIES.buffEvents,
+      { code, fightIds, startTime, endTime, abilityId: abilityId || 0 }
+    );
+    
+    return data.reportData.report.events.data || [];
+  } catch (error) {
+    console.error('Failed to fetch buff events:', error);
+    return [];
+  }
+}
+
+// Get events before a specific timestamp (for death recap)
+export async function fetchWCLEventsBefore(
+  code: string,
+  fightId: number,
+  timestamp: number,
+  windowMs: number,
+  accessToken: string
+): Promise<WCLEvent[]> {
+  try {
+    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] } } } }>(
+      accessToken,
+      QUERIES.eventsBefore,
+      { code, fightId, timestamp, durationMs: windowMs }
+    );
+    
+    return data.reportData.report.events.data || [];
+  } catch (error) {
+    console.error('Failed to fetch events before timestamp:', error);
+    return [];
+  }
+}
+
+// ============================================
+// DEFENSIVE ABILITIES BY CLASS
+// ============================================
+
+export const DEFENSIVE_ABILITIES: Record<string, Array<{ name: string; cooldown: number; duration: number }>> = {
+  'Warrior': [
+    { name: 'Shield Wall', cooldown: 240, duration: 8 },
+    { name: 'Die by the Sword', cooldown: 120, duration: 8 },
+    { name: 'Spell Reflection', cooldown: 25, duration: 3 },
+    { name: 'Rallying Cry', cooldown: 180, duration: 10 },
+    { name: 'Intimidating Shout', cooldown: 90, duration: 8 }
+  ],
+  'Paladin': [
+    { name: 'Divine Shield', cooldown: 300, duration: 8 },
+    { name: 'Divine Protection', cooldown: 60, duration: 8 },
+    { name: 'Ardent Defender', cooldown: 120, duration: 8 },
+    { name: 'Guardian of Ancient Kings', cooldown: 300, duration: 8 },
+    { name: 'Lay on Hands', cooldown: 600, duration: 0 }
+  ],
+  'Hunter': [
+    { name: 'Survival Instincts', cooldown: 180, duration: 6 },
+    { name: 'Aspect of the Turtle', cooldown: 180, duration: 8 },
+    { name: 'Exhilaration', cooldown: 120, duration: 0 },
+    { name: 'Feign Death', cooldown: 30, duration: 6 }
+  ],
+  'Rogue': [
+    { name: 'Evasion', cooldown: 120, duration: 10 },
+    { name: 'Cloak of Shadows', cooldown: 120, duration: 5 },
+    { name: 'Feint', cooldown: 15, duration: 6 },
+    { name: 'Cheat Death', cooldown: 180, duration: 3 }
+  ],
+  'Priest': [
+    { name: 'Dispersion', cooldown: 120, duration: 6 },
+    { name: 'Desperate Prayer', cooldown: 90, duration: 10 },
+    { name: 'Fade', cooldown: 30, duration: 10 },
+    { name: 'Power Word: Barrier', cooldown: 180, duration: 10 }
+  ],
+  'Death Knight': [
+    { name: 'Icebound Fortitude', cooldown: 120, duration: 8 },
+    { name: 'Anti-Magic Shell', cooldown: 60, duration: 5 },
+    { name: 'Vampiric Blood', cooldown: 90, duration: 10 },
+    { name: 'Dancing Rune Weapon', cooldown: 120, duration: 8 },
+    { name: 'Lichborne', cooldown: 120, duration: 10 }
+  ],
+  'Shaman': [
+    { name: 'Spirit Link Totem', cooldown: 180, duration: 6 },
+    { name: 'Astral Shift', cooldown: 90, duration: 8 },
+    { name: 'Shamanistic Rage', cooldown: 60, duration: 15 },
+    { name: 'Earth Elemental', cooldown: 300, duration: 60 }
+  ],
+  'Mage': [
+    { name: 'Ice Block', cooldown: 240, duration: 10 },
+    { name: 'Blink', cooldown: 15, duration: 0 },
+    { name: 'Barrier', cooldown: 25, duration: 60 },
+    { name: 'Temporal Shield', cooldown: 45, duration: 4 },
+    { name: 'Mirror Image', cooldown: 120, duration: 40 }
+  ],
+  'Warlock': [
+    { name: 'Unending Resolve', cooldown: 180, duration: 8 },
+    { name: 'Dark Pact', cooldown: 60, duration: 20 },
+    { name: 'Soulstone', cooldown: 600, duration: 0 },
+    { name: 'Demonic Circle', cooldown: 30, duration: 0 }
+  ],
+  'Monk': [
+    { name: 'Fortifying Brew', cooldown: 180, duration: 15 },
+    { name: 'Diffuse Magic', cooldown: 90, duration: 6 },
+    { name: 'Dampen Harm', cooldown: 90, duration: 10 },
+    { name: 'Zen Meditation', cooldown: 300, duration: 8 }
+  ],
+  'Druid': [
+    { name: 'Barkskin', cooldown: 60, duration: 12 },
+    { name: 'Survival Instincts', cooldown: 180, duration: 6 },
+    { name: 'Ironfur', cooldown: 6, duration: 6 },
+    { name: 'Bear Form', cooldown: 0, duration: 0 },
+    { name: 'Frenzied Regeneration', cooldown: 36, duration: 3 }
+  ],
+  'Demon Hunter': [
+    { name: 'Metamorphosis', cooldown: 180, duration: 15 },
+    { name: 'Blur', cooldown: 60, duration: 10 },
+    { name: 'Netherwalk', cooldown: 180, duration: 5 },
+    { name: 'Darkness', cooldown: 180, duration: 8 }
+  ],
+  'Evoker': [
+    { name: 'Obsidian Scales', cooldown: 90, duration: 8 },
+    { name: 'Renewing Blaze', cooldown: 120, duration: 8 },
+    { name: 'Time Dilation', cooldown: 180, duration: 8 },
+    { name: 'Emerald Communion', cooldown: 180, duration: 3 }
+  ]
+};
+
+// All defensive ability names for quick lookup
+export const ALL_DEFENSIVE_NAMES = new Set<string>(
+  Object.values(DEFENSIVE_ABILITIES)
+    .flat()
+    .map(d => d.name.toLowerCase())
+);
+
+// Raid cooldowns (external defensives and raid-wide)
+export const RAID_COOLDOWNS = [
+  { name: 'Bloodlust', cooldown: 600, duration: 40, class: ['Shaman'] },
+  { name: 'Heroism', cooldown: 600, duration: 40, class: ['Shaman'] },
+  { name: 'Time Warp', cooldown: 600, duration: 40, class: ['Mage'] },
+  { name: 'Ancient Hysteria', cooldown: 600, duration: 40, class: ['Hunter'] },
+  { name: 'Netherwinds', cooldown: 600, duration: 40, class: ['Evoker'] },
+  { name: 'Power Word: Barrier', cooldown: 180, duration: 10, class: ['Priest'] },
+  { name: 'Spirit Link Totem', cooldown: 180, duration: 6, class: ['Shaman'] },
+  { name: 'Divine Hymn', cooldown: 180, duration: 8, class: ['Priest'] },
+  { name: 'Tranquility', cooldown: 180, duration: 8, class: ['Druid'] },
+  { name: 'Revival', cooldown: 180, duration: 0, class: ['Monk'] },
+  { name: 'Healing Tide Totem', cooldown: 180, duration: 12, class: ['Shaman'] },
+  { name: 'Darkness', cooldown: 180, duration: 8, class: ['Demon Hunter'] },
+  { name: 'Rallying Cry', cooldown: 180, duration: 10, class: ['Warrior'] },
+  { name: 'Aura Mastery', cooldown: 180, duration: 8, class: ['Paladin'] },
+  { name: 'Devotion Aura', cooldown: 0, duration: 0, class: ['Paladin'] }
+];
+
+// Combat resurrection abilities
+export const COMBAT_RESURRECTIONS = [
+  { name: 'Rebirth', cooldown: 600, class: ['Druid'] },
+  { name: 'Raise Ally', cooldown: 600, class: ['Death Knight'] },
+  { name: 'Soulstone', cooldown: 600, class: ['Warlock'] },
+  { name: 'Intercession', cooldown: 600, class: ['Paladin'] },
+  { name: 'Reawaken', cooldown: 600, class: ['Evoker'] }
+];

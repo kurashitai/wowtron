@@ -33,6 +33,12 @@ import {
   type TimelineEvent,
   BOSSES
 } from '@/lib/combat-logs';
+import { 
+  analyzeDeathDetails,
+  analyzeDefensiveUsage,
+  calculateAllScorecards
+} from '@/lib/analysis/phase2-analysis';
+import { getBossByNickname, type BossData } from '@/lib/boss-data-midnight';
 
 // Token cache
 let cachedToken: { token: string; expiresAt: number } | null = null;
@@ -864,7 +870,19 @@ export async function GET(request: NextRequest) {
         } : undefined
       };
       
-      return NextResponse.json({ fight: fightData, mock: false });
+      // Run advanced analysis
+      const bossMechanicsData = getBossByNickname(bossKey);
+      const deathAnalysis = analyzeDeathDetails(fightData, bossMechanicsData);
+      const defensiveAnalysis = analyzeDefensiveUsage(fightData);
+      const playerScorecards = calculateAllScorecards(fightData);
+      
+      return NextResponse.json({ 
+        fight: fightData, 
+        deathAnalysis,
+        defensiveAnalysis,
+        playerScorecards,
+        mock: false 
+      });
     }
     
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });

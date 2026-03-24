@@ -143,3 +143,92 @@ Fix 14 bugs reported in WoWtron related to WCL API integration, data display, an
 3. **Percentile Display**: Works for both kills and wipes using WCL rankings API
 4. **Grade Calculation**: Meaningful grades that reflect actual raid performance
 5. **Recommendations**: Actionable insights instead of generic messages
+
+---
+## Task ID: raid-analysis-features - raid-analysis-features
+### Work Task
+Implement critical raid analysis features for WoWtron, including Death Analysis Detalhada, Defensive Usage Analysis, Timeline Visual, Raid CD Timeline, Interrupt Tracking Avançado, and Player Scorecard.
+
+### Work Summary
+
+#### Features Implemented:
+
+1. **Death Analysis Detalhada** (CRITICAL)
+   - Created `analyzeDeathDetails()` function in `/src/lib/analysis/phase2-analysis.ts`
+   - Returns detailed death information including:
+     - Player name, role, class, time
+     - Killing blow (ability, damage, source)
+     - Events 5-10s before death
+     - Death classification (avoidable/partially_avoidable/unavoidable/unknown)
+     - Defensive availability check and usage
+     - Boss-specific tips
+   - Uses boss mechanics data from `boss-data-midnight.ts` for classification and tips
+
+2. **Defensive Usage Analysis** (HIGH PRIORITY)
+   - Created `analyzeDefensiveUsage()` function in `/src/lib/analysis/phase2-analysis.ts`
+   - Tracks defensive ability usage per class
+   - Returns:
+     - Player defensives with grade
+     - Wasted defensives (used with no incoming damage)
+     - Missing defensives (death without defensive usage)
+   - Defines defensive abilities by class with cooldown and duration
+
+3. **Player Scorecard** (HIGH PRIORITY)
+   - Created `calculatePlayerScorecard()` and `calculateAllScorecards()` functions
+   - Comprehensive player evaluation with grades for:
+     - DPS (percentile-based)
+     - Mechanics (interrupts, dispels)
+     - Survival (deaths, avoidable damage, defensives used)
+     - Utility (dispels, brez, raid utility)
+     - Activity (active time percentage)
+   - Weighted overall score calculation
+   - Issues and positives lists per player
+
+4. **Raid Timeline Component** (CRITICAL)
+   - Created `/src/components/raid-timeline.tsx`
+   - Horizontal timeline showing:
+     - Boss HP curve over time
+     - Phase markers
+     - Death events (player name, ability)
+     - Raid cooldowns used
+     - Bloodlust/Heroism timing
+     - Boss ability casts (from boss-data)
+   - Hover cards for event details
+
+5. **WCL API Updates** (in `/src/lib/warcraft-logs-api.ts`)
+   - Added new GraphQL queries:
+     - `detailedDeaths` - death events with resource info
+     - `buffEvents` - buff tracking for defensives
+     - `eventsBefore` - events before timestamp for death recap
+     - `damageEventsForPlayer` - specific player damage
+   - Added defensive ability mappings by class
+   - Added raid cooldown and combat resurrection definitions
+
+6. **API Route Updates** (in `/src/app/api/wcl/route.ts`)
+   - Added imports for new analysis functions
+   - Modified fight endpoint to return:
+     - `deathAnalysis` from `analyzeDeathDetails()`
+     - `defensiveAnalysis` from `analyzeDefensiveUsage()`
+     - `playerScorecards` from `calculateAllScorecards()`
+
+7. **UI Component Updates** (in `/src/components/phase2-analysis.tsx`)
+   - Added new props for external analysis data
+   - Added new collapsible sections for:
+     - Death Analysis with summary and details
+     - Defensive Analysis with grades and issues
+     - Interrupt Tracking with top interrupters
+     - Player Scorecards with mini-grade breakdown
+   - Integrated RaidTimeline component
+   - Fixed React Compiler memoization issue
+
+#### Files Modified/Created:
+- `/src/lib/warcraft-logs-api.ts` - New queries and defensive mappings
+- `/src/lib/analysis/phase2-analysis.ts` - New analysis functions
+- `/src/components/raid-timeline.tsx` - New timeline component
+- `/src/app/api/wcl/route.ts` - Updated fight endpoint
+- `/src/components/phase2-analysis.tsx` - New UI sections
+
+#### Technical Notes:
+- All analysis uses real WCL data,- Death classification uses both keyword detection and boss mechanic data
+- Defensive tracking checks if damage was taken during defensive duration
+- Grade scale: S (95-100), A (85-94), B (70-84), C (50-69), D (25-49), F (0-24)
