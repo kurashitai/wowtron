@@ -202,7 +202,9 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          table(fightIDs: $fightIds, dataType: DamageDone)
+          table(fightIDs: $fightIds, dataType: DamageDone) {
+            data
+          }
         }
       }
     }
@@ -213,7 +215,9 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          table(fightIDs: $fightIds, dataType: Healing)
+          table(fightIDs: $fightIds, dataType: Healing) {
+            data
+          }
         }
       }
     }
@@ -224,7 +228,9 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          table(fightIDs: $fightIds, dataType: DamageTaken)
+          table(fightIDs: $fightIds, dataType: DamageTaken) {
+            data
+          }
         }
       }
     }
