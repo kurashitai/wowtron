@@ -1,0 +1,269 @@
+// WoWtron - World of Warcraft Guild Management SaaS
+// Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Model - Platform users
+model User {
+  id            String      @id @default(cuid())
+  email         String      @unique
+  name          String?
+  image         String?
+  battleNetId   String?     @unique
+  battleNetTag  String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relations
+  characters    Character[]
+  guilds        GuildMember[]
+  signups       Signup[]
+  logAnalyses   LogAnalysis[]
+  playerCards   PlayerCard[]
+  notifications Notification[]
+  settings      UserSettings?
+  
+  @@map("users")
+}
+
+// User Settings
+model UserSettings {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme           String   @default("dark")
+  notifications   Boolean  @default(true)
+  emailAlerts     Boolean  @default(false)
+  discordLinked   Boolean  @default(false)
+  discordId       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("user_settings")
+}
+
+// Guild Model
+model Guild {
+  id              String        @id @default(cuid())
+  name            String
+  realm           String
+  faction         String        @default("Horde")
+  region          String        @default("us")
+  description     String?
+  logo            String?
+  website         String?
+  discordUrl      String?
+  progress        String?       // e.g., "7/9 Mythic"
+  recruiting      Boolean       @default(false)
+  recruitmentPost String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relations
+  members         GuildMember[]
+  raids           Raid[]
+  characters      Character[]
+  announcements   Announcement[]
+  
+  @@unique([name, realm])
+  @@map("guilds")
+}
+
+// Guild Member (User-Guild relationship with roles)
+model GuildMember {
+  id          String    @id @default(cuid())
+  userId      String
+  guildId     String
+  role        String    @default("member") // leader, officer, raider, trial, member
+  joinedAt    DateTime  @default(now())
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  guild       Guild     @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, guildId])
+  @@map("guild_members")
+}
+
+// Character Model - WoW Characters
+model Character {
+  id              String      @id @default(cuid())
+  userId          String?
+  guildId         String?
+  name            String
+  realm           String
+  region          String      @default("us")
+  characterClass  String      // warrior, mage, etc.
+  spec            String?     // fury, fire, etc.
+  role            String?     // tank, healer, dps
+  level           Int         @default(80)
+  itemLevel       Int         @default(0)
+  achievementPts  Int         @default(0)
+  avatar          String?
+  lastSynced      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  guild           Guild?      @relation(fields: [guildId], references: [id], onDelete: SetNull)
+  mPlusScores     MPlusScore[]
+  signups         Signup[]
+  playerCard      PlayerCard?
+  
+  @@unique([name, realm])
+  @@map("characters")
+}
+
+// M+ Score Model
+model MPlusScore {
+  id              String    @id @default(cuid())
+  characterId     String
+  season          String
+  score           Float     @default(0)
+  runs            Int       @default(0)
+  bestRun         String?   // e.g., "Stonevault +24"
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  character       Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  
+  @@unique([characterId, season])
+  @@map("mplus_scores")
+}
+
+// Raid Model
+model Raid {
+  id              String      @id @default(cuid())
+  guildId         String
+  name            String
+  description     String?
+  raidType        String      @default("progression") // progression, farm, alt
+  difficulty      String      @default("heroic") // normal, heroic, mythic
+  scheduledFor    DateTime
+  duration        Int         @default(180) // minutes
+  maxPlayers      Int         @default(30)
+  status          String      @default("scheduled") // scheduled, in_progress, completed, cancelled
+  notes           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  guild           Guild       @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  signups         Signup[]
+  
+  @@map("raids")
+}
+
+// Signup Model
+model Signup {
+  id              String    @id @default(cuid())
+  raidId          String
+  userId          String
+  characterId     String
+  status          String    @default("tentative") // confirmed, tentative, declined, bench
+  role            String?   // tank, healer, dps
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  raid            Raid      @relation(fields: [raidId], references: [id], onDelete: Cascade)
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  character       Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  
+  @@unique([raidId, userId])
+  @@map("signups")
+}
+
+// Log Analysis Model
+model LogAnalysis {
+  id              String    @id @default(cuid())
+  userId          String
+  logUrl          String
+  reportId        String?   // Warcraft Logs report ID
+  fightId         Int?
+  analysisType    String    @default("raid") // raid, dungeon, pvp
+  status          String    @default("pending") // pending, processing, completed, failed
+  results         String?   // JSON results
+  recommendations String?   // JSON recommendations
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("log_analyses")
+}
+
+// Player Card Model - Recruitment/Performance metrics
+model PlayerCard {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  characterId         String    @unique
+  headline            String?
+  parseAvg            Float?    @default(0)
+  deathRate           Float?    @default(0)
+  avoidableDamage     Float?    @default(0)
+  buffUptime          Float?    @default(0)
+  mechanicErrors      Int       @default(0)
+  raidsAttended       Int       @default(0)
+  reliability         Float?    @default(0)
+  strengths           String?   // JSON array
+  improvements        String?   // JSON array
+  autoMemo            String?   // AI-generated summary
+  lookingForGuild     Boolean   @default(false)
+  preferredRole       String?
+  availability        String?   // JSON
+  timezone            String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  // Relations
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  character           Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  
+  @@map("player_cards")
+}
+
+// Announcement Model
+model Announcement {
+  id              String    @id @default(cuid())
+  guildId         String
+  title           String
+  content         String
+  pinned          Boolean   @default(false)
+  authorId        String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  guild           Guild     @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  
+  @@map("announcements")
+}
+
+// Notification Model
+model Notification {
+  id              String    @id @default(cuid())
+  userId          String
+  type            String    // raid_reminder, signup_update, log_analysis, etc.
+  title           String
+  message         String
+  read            Boolean   @default(false)
+  link            String?
+  createdAt       DateTime  @default(now())
+  
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("notifications")
+}

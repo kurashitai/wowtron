@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://www.reddit.com/r/wow/comments/102x6tp/can_someone_explain_warcraft_logs_percentile_to",
+    "name": "can someone explain warcraft logs percentile to me like I",
+    "snippet": "100% - You did the best dps out of any recorded player for your spec on that fight and difficulty. 0% - You did the worst. 50% - You did average.\nPercentiles work like this more or less (not 100% accurate, but close enough for what you want): 100% - You did the best dps out of any recorded player for your spec on that fight and difficulty. 0% - You did the worst. 50% - You did average. It's always compared to your spec.",
+    "host_name": "www.reddit.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://forums.combatlogforums.com/t/api-getting-historical-percentiles/7145",
+    "name": "API: Getting historical percentiles - Warcraft Logs",
+    "snippet": "Sep 27, 2018 — Greetings, Some time ago, the /parses endpoint was returning the best_historical_percent key. That is no longer the case.",
+    "host_name": "forums.combatlogforums.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/rebeccaebarnes/wow-analysis/blob/master/warcraft_logs_fn.py",
+    "name": "wow-analysis/warcraft_logs_fn.py at master",
+    "snippet": "Queries Warcraft Logs api for players' rankings for hps, dps and tankhps. Saves json file of query data. args:.",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.warcraftlogs.com/help/ranks",
+    "name": "The Complete Guide To Rankings And Parses",
+    "snippet": "Whenever you see a ranking or parse percentile , it is colored according to the percentile range it falls into. 100% is tan, 99+ is pink, 95+ is orange, etc. You ...",
+    "host_name": "www.warcraftlogs.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.curseforge.com/wow/addons/wcltooltiptbcanniversary",
+    "name": "WCLToolTipTBCAnniversary - World of Warcraft Addons",
+    "snippet": "Feb 25, 2026 — View a snapshot of Warcraft Logs rankings, dps, and percentile per boss fight for a given class/spec within a tooltip in TBC Anniversary.",
+    "host_name": "www.curseforge.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

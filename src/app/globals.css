@@ -1,0 +1,395 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-cinzel);
+  --font-mono: var(--font-jetbrains);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* WoWtron Dark Theme - Default */
+:root {
+  --radius: 0.75rem;
+  
+  /* Backgrounds - Dark mystical theme */
+  --background: #020617;
+  --foreground: #E2E8F0;
+  --card: #0F172A;
+  --card-foreground: #E2E8F0;
+  --popover: #0F172A;
+  --popover-foreground: #E2E8F0;
+  
+  /* Primary - WoW Gold */
+  --primary: #FFD700;
+  --primary-foreground: #0F172A;
+  
+  /* Secondary - TRON Silver */
+  --secondary: #1E293B;
+  --secondary-foreground: #C0C0C0;
+  
+  /* Muted */
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  
+  /* Accent - Shadow Purple */
+  --accent: #8B5CF6;
+  --accent-foreground: #FFFFFF;
+  
+  /* Destructive */
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  
+  /* Borders & Inputs */
+  --border: #334155;
+  --input: #1E293B;
+  --ring: #FFD700;
+  
+  /* Charts */
+  --chart-1: #FFD700;
+  --chart-2: #8B5CF6;
+  --chart-3: #1E90FF;
+  --chart-4: #10B981;
+  --chart-5: #F59E0B;
+  
+  /* Sidebar */
+  --sidebar: #0F172A;
+  --sidebar-foreground: #E2E8F0;
+  --sidebar-primary: #FFD700;
+  --sidebar-primary-foreground: #0F172A;
+  --sidebar-accent: #8B5CF6;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #334155;
+  --sidebar-ring: #FFD700;
+  
+  /* WoW Custom Colors */
+  --wow-gold: #FFD700;
+  --wow-gold-light: #FFE01C;
+  --wow-gold-dark: #CCAC00;
+  --tron-silver: #C0C0C0;
+  --sapphire-blue: #1E90FF;
+  --shadow-purple: #8B5CF6;
+  --void-purple: #2D1B4E;
+  --void-purple-dark: #1A0F2E;
+}
+
+/* Force Dark Mode */
+.dark {
+  --background: #020617;
+  --foreground: #E2E8F0;
+  --card: #0F172A;
+  --card-foreground: #E2E8F0;
+  --popover: #0F172A;
+  --popover-foreground: #E2E8F0;
+  --primary: #FFD700;
+  --primary-foreground: #0F172A;
+  --secondary: #1E293B;
+  --secondary-foreground: #C0C0C0;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #8B5CF6;
+  --accent-foreground: #FFFFFF;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #334155;
+  --input: #1E293B;
+  --ring: #FFD700;
+  --chart-1: #FFD700;
+  --chart-2: #8B5CF6;
+  --chart-3: #1E90FF;
+  --chart-4: #10B981;
+  --chart-5: #F59E0B;
+  --sidebar: #0F172A;
+  --sidebar-foreground: #E2E8F0;
+  --sidebar-primary: #FFD700;
+  --sidebar-primary-foreground: #0F172A;
+  --sidebar-accent: #8B5CF6;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #334155;
+  --sidebar-ring: #FFD700;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(180deg, #020617 0%, #0F172A 50%, #1E293B 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #0F172A;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #FFD700 0%, #CCAC00 100%);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #FFE01C 0%, #FFD700 100%);
+  }
+}
+
+/* WoW Text Styles */
+.text-wow-gold {
+  color: var(--wow-gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.text-wow-silver {
+  color: var(--tron-silver);
+}
+
+.text-wow-blue {
+  color: var(--sapphire-blue);
+}
+
+.text-wow-purple {
+  color: var(--shadow-purple);
+}
+
+/* WoW Gradient Text */
+.gradient-text-gold {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 50%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* WoW Card Styles */
+.card-wow {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 1px solid #334155;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.card-wow:hover {
+  border-color: #475569;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.card-wow-gold {
+  border-left: 3px solid #FFD700;
+}
+
+.card-wow-gold:hover {
+  border-color: #FFD700;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.card-wow-purple {
+  border-left: 3px solid #8B5CF6;
+}
+
+.card-wow-purple:hover {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+.card-wow-blue {
+  border-top: 2px solid #1E90FF;
+}
+
+.card-wow-blue:hover {
+  border-color: #1E90FF;
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.2);
+}
+
+/* WoW Button Styles */
+.btn-wow-primary {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #0F172A;
+  border: 1px solid #FFD700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-wow-primary:hover {
+  background: linear-gradient(135deg, #FFE01C 0%, #FFB300 100%);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-wow-secondary {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  color: #C0C0C0;
+  border: 1px solid #334155;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-wow-secondary:hover {
+  background: linear-gradient(135deg, #334155 0%, #1E293B 100%);
+  border-color: #FFD700;
+  color: #FFD700;
+}
+
+.btn-wow-mystic {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  color: white;
+  border: 1px solid #A78BFA;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-wow-mystic:hover {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+/* WoW Badge Styles */
+.badge-leader {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 165, 0, 0.1) 100%);
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.badge-officer {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(109, 40, 217, 0.1) 100%);
+  color: #A78BFA;
+  border: 1px solid #8B5CF6;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+}
+
+.badge-raider {
+  background: linear-gradient(135deg, rgba(30, 144, 255, 0.2) 0%, rgba(0, 120, 212, 0.1) 100%);
+  color: #5DAFFF;
+  border: 1px solid #1E90FF;
+  box-shadow: 0 0 10px rgba(30, 144, 255, 0.2);
+}
+
+.badge-trial {
+  background: rgba(192, 192, 192, 0.15);
+  color: #ADB5BD;
+  border: 1px solid #6B7280;
+}
+
+.badge-online {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border: 1px solid #10B981;
+}
+
+.badge-offline {
+  background: rgba(107, 114, 128, 0.2);
+  color: #6B7280;
+  border: 1px solid #6B7280;
+}
+
+/* Glow Effects */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.3);
+}
+
+/* WoW Class Colors */
+.class-warrior { color: #C79C6E; }
+.class-paladin { color: #F58CBA; }
+.class-hunter { color: #ABD473; }
+.class-rogue { color: #FFF569; }
+.class-priest { color: #FFFFFF; }
+.class-shaman { color: #0070DE; }
+.class-mage { color: #69CCF0; }
+.class-warlock { color: #9482C9; }
+.class-monk { color: #00FF96; }
+.class-druid { color: #FF7D0A; }
+.class-demon-hunter { color: #A330C9; }
+.class-death-knight { color: #C41F3B; }
+.class-evoker { color: #33937F; }
+
+/* Role Colors */
+.role-tank { color: #3B82F6; }
+.role-healer { color: #10B981; }
+.role-dps { color: #EF4444; }
+
+/* Background Patterns */
+.bg-pattern-dots {
+  background-image: radial-gradient(circle, #334155 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-grid {
+  background-image: linear-gradient(rgba(51, 65, 85, 0.3) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(51, 65, 85, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Animated Background */
+@keyframes background-pan {
+  from { background-position: 0% center; }
+  to { background-position: -200% center; }
+}
+
+.animate-background-pan {
+  animation: background-pan 20s linear infinite;
+}
+
+/* Hero Gradient */
+.hero-gradient {
+  background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+              linear-gradient(180deg, #020617 0%, #0F172A 100%);
+}
