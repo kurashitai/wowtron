@@ -373,6 +373,7 @@ const QUERIES = {
   `,
   
   // Rankings with percentiles for each player
+  // Note: rankings returns JSON directly, no subselection needed
   rankings: `
     query($code: String!, $fightIds: [Int]!) {
       reportData {
@@ -806,13 +807,32 @@ export async function fetchWCLDeaths(
   accessToken: string
 ): Promise<WCLEvent[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] } } } }>(
+    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] | string } } } }>(
       accessToken,
       QUERIES.deaths,
       { code, fightIds, startTime, endTime }
     );
     
-    return data.reportData.report.events.data || [];
+    const eventsData = data.reportData.report.events?.data;
+    if (!eventsData) {
+      console.log('[WCL API] fetchWCLDeaths - No events data found');
+      return [];
+    }
+    
+    // WCL may return data as JSON string
+    if (typeof eventsData === 'string') {
+      try {
+        const parsed = JSON.parse(eventsData);
+        console.log('[WCL API] fetchWCLDeaths - Parsed JSON string, events:', parsed?.length || 0);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.error('[WCL API] fetchWCLDeaths - Failed to parse as JSON:', e);
+        return [];
+      }
+    }
+    
+    console.log('[WCL API] fetchWCLDeaths - Events count:', Array.isArray(eventsData) ? eventsData.length : 0);
+    return Array.isArray(eventsData) ? eventsData : [];
   } catch (error) {
     console.error('Failed to fetch deaths:', error);
     return [];
@@ -827,13 +847,32 @@ export async function fetchWCLBuffs(
   accessToken: string
 ): Promise<WCLEvent[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] } } } }>(
+    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] | string } } } }>(
       accessToken,
       QUERIES.buffs,
       { code, fightIds, startTime, endTime }
     );
     
-    return data.reportData.report.events.data || [];
+    const eventsData = data.reportData.report.events?.data;
+    if (!eventsData) {
+      console.log('[WCL API] fetchWCLBuffs - No events data found');
+      return [];
+    }
+    
+    // WCL may return data as JSON string
+    if (typeof eventsData === 'string') {
+      try {
+        const parsed = JSON.parse(eventsData);
+        console.log('[WCL API] fetchWCLBuffs - Parsed JSON string, events:', parsed?.length || 0);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.error('[WCL API] fetchWCLBuffs - Failed to parse as JSON:', e);
+        return [];
+      }
+    }
+    
+    console.log('[WCL API] fetchWCLBuffs - Events count:', Array.isArray(eventsData) ? eventsData.length : 0);
+    return Array.isArray(eventsData) ? eventsData : [];
   } catch (error) {
     console.error('Failed to fetch buffs:', error);
     return [];
@@ -848,13 +887,32 @@ export async function fetchWCLCasts(
   accessToken: string
 ): Promise<WCLEvent[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] } } } }>(
+    const data = await wclQuery<{ reportData: { report: { events: { data: WCLEvent[] | string } } } }>(
       accessToken,
       QUERIES.casts,
       { code, fightIds, startTime, endTime }
     );
     
-    return data.reportData.report.events.data || [];
+    const eventsData = data.reportData.report.events?.data;
+    if (!eventsData) {
+      console.log('[WCL API] fetchWCLCasts - No events data found');
+      return [];
+    }
+    
+    // WCL may return data as JSON string
+    if (typeof eventsData === 'string') {
+      try {
+        const parsed = JSON.parse(eventsData);
+        console.log('[WCL API] fetchWCLCasts - Parsed JSON string, events:', parsed?.length || 0);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.error('[WCL API] fetchWCLCasts - Failed to parse as JSON:', e);
+        return [];
+      }
+    }
+    
+    console.log('[WCL API] fetchWCLCasts - Events count:', Array.isArray(eventsData) ? eventsData.length : 0);
+    return Array.isArray(eventsData) ? eventsData : [];
   } catch (error) {
     console.error('Failed to fetch casts:', error);
     return [];
@@ -897,39 +955,57 @@ export async function fetchWCLPlayerDetails(
       { code, fightIds }
     );
     
-    console.log('[WCL API] fetchWCLPlayerDetails - playerDetails type:', typeof data.reportData.report.playerDetails);
+    console.log('[WCL API] fetchWCLPlayerDetails - Raw response type:', typeof data?.reportData?.report?.playerDetails);
+    console.log('[WCL API] fetchWCLPlayerDetails - Raw response keys:', data?.reportData?.report?.playerDetails ? Object.keys(data.reportData.report.playerDetails) : 'null');
     
     // playerDetails might be a JSON string or an object
     let playerDetails = data.reportData.report.playerDetails;
     
+    // Case 1: playerDetails is null/undefined
+    if (!playerDetails) {
+      console.log('[WCL API] fetchWCLPlayerDetails - playerDetails is null/undefined');
+      return null;
+    }
+    
+    // Case 2: playerDetails is a string (JSON that needs parsing)
     if (typeof playerDetails === 'string') {
       try {
         playerDetails = JSON.parse(playerDetails);
-        console.log('[WCL API] fetchWCLPlayerDetails - Parsed JSON string');
+        console.log('[WCL API] fetchWCLPlayerDetails - Parsed JSON string, keys:', Object.keys(playerDetails || {}));
       } catch (e) {
         console.error('[WCL API] fetchWCLPlayerDetails - Failed to parse as JSON:', e);
         return null;
       }
     }
     
-    // playerDetails returns { data: { tanks: [...], healers: [...], dps: [...] } }
-    // Or sometimes directly { tanks: [...], healers: [...], dps: [...] }
+    // Case 3: playerDetails has nested 'data' property
     if (playerDetails?.data) {
-      // Handle case where data is also a string
+      // data might also be a string
       if (typeof playerDetails.data === 'string') {
         try {
-          return JSON.parse(playerDetails.data);
+          const parsed = JSON.parse(playerDetails.data);
+          console.log('[WCL API] fetchWCLPlayerDetails - Parsed nested data string, tanks:', parsed?.tanks?.length || 0, 'healers:', parsed?.healers?.length || 0, 'dps:', parsed?.dps?.length || 0);
+          return parsed;
         } catch (e) {
           console.error('[WCL API] fetchWCLPlayerDetails - Failed to parse data as JSON:', e);
-          return null;
         }
       }
+      // data is already an object
+      console.log('[WCL API] fetchWCLPlayerDetails - Using nested data object, tanks:', playerDetails.data?.tanks?.length || 0, 'healers:', playerDetails.data?.healers?.length || 0, 'dps:', playerDetails.data?.dps?.length || 0);
       return playerDetails.data;
     }
     
+    // Case 4: playerDetails directly contains tanks/healers/dps arrays
+    if (playerDetails?.tanks || playerDetails?.healers || playerDetails?.dps) {
+      console.log('[WCL API] fetchWCLPlayerDetails - Direct arrays, tanks:', playerDetails?.tanks?.length || 0, 'healers:', playerDetails?.healers?.length || 0, 'dps:', playerDetails?.dps?.length || 0);
+      return playerDetails;
+    }
+    
+    // Case 5: playerDetails is a different structure - log it for debugging
+    console.log('[WCL API] fetchWCLPlayerDetails - Unknown structure, full object:', JSON.stringify(playerDetails).substring(0, 500));
     return playerDetails || null;
   } catch (error) {
-    console.error('Failed to fetch player details:', error);
+    console.error('[WCL API] fetchWCLPlayerDetails - Error:', error);
     return null;
   }
 }
@@ -1034,28 +1110,40 @@ export async function fetchWCLDpsRankings(
   accessToken: string
 ): Promise<WCLRankingsData[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { rankings: { data: WCLRankingsData[] | string } | null } } }>(
+    const data = await wclQuery<{ reportData: { report: { rankings: WCLRankingsData[] | string | null } } }>(
       accessToken,
       QUERIES.rankings,
       { code, fightIds }
     );
     
-    const rankings = data.reportData.report.rankings;
+    let rankings = data.reportData.report.rankings;
     if (!rankings) {
       console.log('[WCL API] fetchWCLDpsRankings - No rankings found');
       return [];
     }
     
-    let rankingsData = rankings.data;
-    
-    // WCL may return rankings.data as a JSON string
-    if (typeof rankingsData === 'string') {
+    // WCL may return rankings as a JSON string
+    if (typeof rankings === 'string') {
       try {
-        rankingsData = JSON.parse(rankingsData);
+        rankings = JSON.parse(rankings);
         console.log('[WCL API] fetchWCLDpsRankings - Parsed JSON string');
       } catch (e) {
         console.error('[WCL API] fetchWCLDpsRankings - Failed to parse as JSON:', e);
         return [];
+      }
+    }
+    
+    // Handle case where rankings might be wrapped in data property
+    let rankingsData = rankings;
+    if (rankings && typeof rankings === 'object' && 'data' in rankings) {
+      rankingsData = (rankings as any).data;
+      if (typeof rankingsData === 'string') {
+        try {
+          rankingsData = JSON.parse(rankingsData);
+        } catch (e) {
+          console.error('[WCL API] fetchWCLDpsRankings - Failed to parse nested data:', e);
+          return [];
+        }
       }
     }
     
@@ -1073,28 +1161,40 @@ export async function fetchWCLHpsRankings(
   accessToken: string
 ): Promise<WCLRankingsData[]> {
   try {
-    const data = await wclQuery<{ reportData: { report: { rankings: { data: WCLRankingsData[] | string } | null } } }>(
+    const data = await wclQuery<{ reportData: { report: { rankings: WCLRankingsData[] | string | null } } }>(
       accessToken,
       QUERIES.healerRankings,
       { code, fightIds }
     );
     
-    const rankings = data.reportData.report.rankings;
+    let rankings = data.reportData.report.rankings;
     if (!rankings) {
       console.log('[WCL API] fetchWCLHpsRankings - No rankings found');
       return [];
     }
     
-    let rankingsData = rankings.data;
-    
-    // WCL may return rankings.data as a JSON string
-    if (typeof rankingsData === 'string') {
+    // WCL may return rankings as a JSON string
+    if (typeof rankings === 'string') {
       try {
-        rankingsData = JSON.parse(rankingsData);
+        rankings = JSON.parse(rankings);
         console.log('[WCL API] fetchWCLHpsRankings - Parsed JSON string');
       } catch (e) {
         console.error('[WCL API] fetchWCLHpsRankings - Failed to parse as JSON:', e);
         return [];
+      }
+    }
+    
+    // Handle case where rankings might be wrapped in data property
+    let rankingsData = rankings;
+    if (rankings && typeof rankings === 'object' && 'data' in rankings) {
+      rankingsData = (rankings as any).data;
+      if (typeof rankingsData === 'string') {
+        try {
+          rankingsData = JSON.parse(rankingsData);
+        } catch (e) {
+          console.error('[WCL API] fetchWCLHpsRankings - Failed to parse nested data:', e);
+          return [];
+        }
       }
     }
     

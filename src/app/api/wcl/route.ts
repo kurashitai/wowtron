@@ -222,6 +222,22 @@ export async function GET(request: NextRequest) {
           }
         });
         
+        // Debug: Log the status of important requests
+        const requestNames = ['damageDone', 'healingDone', 'damageTaken', 'deaths', 'buffs', 'casts', 'playerDetails', 'dpsGraph', 'hpsGraph', 'dpsRankings', 'hpsRankings'];
+        console.log('[WCL] Request status summary:');
+        results.forEach((result, i) => {
+          const name = requestNames[i] || `request${i}`;
+          if (result.status === 'fulfilled') {
+            const value = result.value;
+            const length = Array.isArray(value) ? value.length : 
+              (value && typeof value === 'object' && 'entries' in value ? value.entries?.length : 
+              (value && typeof value === 'object' ? 'object' : 'unknown'));
+            console.log(`[WCL]   ${name}: fulfilled (${length})`);
+          } else {
+            console.log(`[WCL]   ${name}: REJECTED - ${result.reason}`);
+          }
+        });
+        
         // Debug: Check the actual structure of damageDone
         console.log('[WCL DEBUG] damageDone type:', typeof damageDone);
         console.log('[WCL DEBUG] damageDone keys:', damageDone ? Object.keys(damageDone) : 'null');
@@ -344,6 +360,32 @@ export async function GET(request: NextRequest) {
       processRankings(dpsRankings, 'dps');
       processRankings(hpsRankings, 'hps');
       
+      // Debug: Log rankings data
+      console.log('[WCL] Rankings processed - count:', rankingMap.size);
+      if (rankingMap.size > 0) {
+        const sampleEntries = Array.from(rankingMap.entries()).slice(0, 3);
+        sampleEntries.forEach(([name, data]) => {
+          console.log(`[WCL] Ranking sample: ${name} - DPS: ${data.dps}, HPS: ${data.hps}`);
+        });
+      }
+      
+      // Debug: Log playerDetails structure
+      if (playerDetails) {
+        console.log('[WCL] playerDetails structure:', Object.keys(playerDetails));
+        console.log('[WCL] playerDetails.tanks:', playerDetails.tanks?.length || 0, 
+          playerDetails.tanks?.slice(0, 2).map((t: any) => typeof t === 'object' ? Object.keys(t) : typeof t));
+        console.log('[WCL] playerDetails.healers:', playerDetails.healers?.length || 0,
+          playerDetails.healers?.slice(0, 2).map((h: any) => typeof h === 'object' ? Object.keys(h) : typeof h));
+        console.log('[WCL] playerDetails.dps:', playerDetails.dps?.length || 0,
+          playerDetails.dps?.slice(0, 2).map((d: any) => typeof d === 'object' ? Object.keys(d) : typeof d));
+        // Log first entry from each if available
+        if (playerDetails.tanks?.[0]) console.log('[WCL] Sample tank:', JSON.stringify(playerDetails.tanks[0]).substring(0, 200));
+        if (playerDetails.healers?.[0]) console.log('[WCL] Sample healer:', JSON.stringify(playerDetails.healers[0]).substring(0, 200));
+        if (playerDetails.dps?.[0]) console.log('[WCL] Sample dps:', JSON.stringify(playerDetails.dps[0]).substring(0, 200));
+      } else {
+        console.log('[WCL] playerDetails is null - will use actor.icon for role detection');
+      }
+      
       // Determine role from multiple sources - prioritize playerDetails from WCL
       const getPlayerRole = (playerName: string, actor: WCLActor | undefined): 'tank' | 'healer' | 'dps' => {
         // First check playerDetails from WCL - this is the most reliable source
@@ -352,22 +394,25 @@ export async function GET(request: NextRequest) {
           const healers = playerDetails.healers || [];
           const dps = playerDetails.dps || [];
           
-          // Check exact match first
-          if (tanks.some((t: any) => t.name === playerName)) return 'tank';
-          if (healers.some((h: any) => h.name === playerName)) return 'healer';
-          if (dps.some((d: any) => d.name === playerName)) return 'dps';
+          // Check exact match first, handle both {name: string} and string formats
+          const findByName = (arr: any[], name: string) => arr.some((item: any) => {
+            if (typeof item === 'string') return item === name;
+            if (typeof item === 'object' && item !== null) return item.name === name;
+            return false;
+          });
+          
+          if (findByName(tanks, playerName)) return 'tank';
+          if (findByName(healers, playerName)) return 'healer';
+          if (findByName(dps, playerName)) return 'dps';
         }
         
-        // Then check actor icon for spec
+        // Then check actor icon for spec - this is reliable as it comes from WCL masterData
         if (actor?.icon) {
-          return getRoleFromIcon(actor.icon);
+          const role = getRoleFromIcon(actor.icon);
+          return role;
         }
         
-        // Check entry type field as last resort
-        if (actor?.subType === 'Player') {
-          return 'dps'; // Default to dps for players we can't determine
-        }
-        
+        // Default to dps for players we can't determine
         return 'dps';
       };
       
@@ -424,6 +469,20 @@ export async function GET(request: NextRequest) {
       
       // Look for actual interrupt events (type = 'interrupt' or 'cast' that interrupts)
       const castsArray = Array.isArray(casts) ? casts : [];
+      console.log('[WCL] Casts array length:', castsArray.length);
+      
+      // Debug: Log interrupt-related casts
+      const interruptCasts = castsArray.filter((c: WCLEvent) => 
+        c.type === 'interrupt' || 
+        (c.ability?.name && interruptAbilities.some(ia => c.ability!.name.toLowerCase().includes(ia.toLowerCase())))
+      );
+      console.log('[WCL] Interrupt-related casts found:', interruptCasts.length);
+      if (interruptCasts.length > 0) {
+        console.log('[WCL] Sample interrupt casts:', interruptCasts.slice(0, 5).map((c: WCLEvent) => 
+          `type=${c.type}, ability=${c.ability?.name}, source=${c.source?.name}, target=${c.target?.name}`
+        ));
+      }
+      
       castsArray.forEach((cast: WCLEvent) => {
         if (!cast?.ability?.name) return;
         
@@ -431,20 +490,31 @@ export async function GET(request: NextRequest) {
         const isInterruptAbility = interruptAbilities.some(ia => abilityName.includes(ia.toLowerCase()));
         
         // Only count if:
-        // 1. This is an interrupt ability
+        // 1. This is an interrupt ability OR type is 'interrupt'
         // 2. The target is an enemy (boss) - targetIsFriendly === false OR type === 'interrupt'
         // 3. The source is a player
         const isSuccessfulInterrupt = cast.type === 'interrupt' || 
           (isInterruptAbility && cast.targetIsFriendly === false);
         
-        if (isSuccessfulInterrupt && cast.source?.name) {
-          const sourceName = cast.source.name;
-          // Verify this is a player using the interrupt
-          if (playerNameSet.has(sourceName) || playerDetailsNames.has(sourceName)) {
-            interruptCount.set(sourceName, (interruptCount.get(sourceName) || 0) + 1);
+        if (isSuccessfulInterrupt) {
+          // Try multiple ways to get the source name
+          const sourceName = cast.source?.name || 
+            (cast.sourceID ? actorMap.get(cast.sourceID)?.name : null);
+          
+          if (sourceName) {
+            // Verify this is a player using the interrupt (check actorMap by name too)
+            const isPlayer = playerNameSet.has(sourceName) || 
+              playerDetailsNames.has(sourceName) ||
+              actorNameMap.has(sourceName.toLowerCase());
+            
+            if (isPlayer) {
+              interruptCount.set(sourceName, (interruptCount.get(sourceName) || 0) + 1);
+            }
           }
         }
       });
+      
+      console.log('[WCL] Total interrupts counted:', Array.from(interruptCount.entries()));
       
       // Count dispels from casts - only count dispels by actual players
       const dispelAbilities = ['Purify', 'Cleanse', 'Dispel Magic', 'Remove Curse', 'Purify Spirit', 'Detox', "Nature's Cure", 'Purify Disease'];
@@ -491,19 +561,37 @@ export async function GET(request: NextRequest) {
       // Build player stats
       const playerMap = new Map<number, PlayerStats>();
       
-      // The WCL damage/healing/damageTaken tables already only contain player data
-      // No need for complex filtering - use entries directly
-      const damageEntries = damageDone?.entries || [];
-      const healingEntries = healingDone?.entries || [];
-      const dtpsEntries = damageTaken?.entries || [];
+      // CRITICAL: Filter entries to only include ACTUAL PLAYERS
+      // WCL tables can include pets, NPCs, etc. that we need to exclude
+      const isActualPlayer = (entry: WCLTableEntry): boolean => {
+        // Check if entry ID exists in actorMap (actors are filtered by type='player' in GraphQL)
+        if (actorMap.has(entry.id)) return true;
+        // Check if entry name exists in playerNameSet
+        if (playerNameSet.has(entry.name)) return true;
+        // Check if entry name exists in playerDetailsNames
+        if (playerDetailsNames.has(entry.name)) return true;
+        // Check entry type field - 'Player' indicates a real player
+        if (entry.type === 'Player') return true;
+        // Exclude entries that look like pets (usually have parentheses in name like "Pet (Owner)")
+        if (entry.name.includes('(') || entry.name.includes(')')) return false;
+        return false;
+      };
       
-      console.log('[WCL] === DATA SUMMARY ===');
+      // Filter entries to only include actual players
+      const damageEntries = (damageDone?.entries || []).filter(isActualPlayer);
+      const healingEntries = (healingDone?.entries || []).filter(isActualPlayer);
+      const dtpsEntries = (damageTaken?.entries || []).filter(isActualPlayer);
+      
+      console.log('[WCL] === DATA SUMMARY (After Player Filtering) ===');
       console.log('[WCL] Actors from masterData:', actors.length);
-      console.log('[WCL] Player names from actors:', Array.from(playerNameSet));
-      console.log('[WCL] Player names from playerDetails:', Array.from(playerDetailsNames));
-      console.log('[WCL] Damage entries:', damageEntries.length, damageEntries.slice(0, 3).map(e => e.name));
-      console.log('[WCL] Healing entries:', healingEntries.length, healingEntries.slice(0, 3).map(e => e.name));
-      console.log('[WCL] DTPS entries:', dtpsEntries.length);
+      console.log('[WCL] Player names from actors:', Array.from(playerNameSet).slice(0, 10));
+      console.log('[WCL] Player names from playerDetails:', Array.from(playerDetailsNames).slice(0, 10));
+      console.log('[WCL] Damage entries (filtered):', damageEntries.length, 'of', damageDone?.entries?.length || 0);
+      console.log('[WCL] Healing entries (filtered):', healingEntries.length, 'of', healingDone?.entries?.length || 0);
+      console.log('[WCL] DTPS entries (filtered):', dtpsEntries.length, 'of', damageTaken?.entries?.length || 0);
+      if (damageEntries.length > 0) {
+        console.log('[WCL] Sample damage entries:', damageEntries.slice(0, 3).map(e => `${e.name} (${e.id}, ${e.type})`));
+      }
       console.log('[WCL] ======================');
       
       damageEntries.forEach((entry: WCLTableEntry) => {
@@ -725,8 +813,18 @@ export async function GET(request: NextRequest) {
       
       // Process death events safely
       const deathsArray = Array.isArray(deaths) ? deaths : [];
+      console.log('[WCL] Deaths array length:', deathsArray.length);
+      if (deathsArray.length > 0) {
+        console.log('[WCL] Sample death events:', deathsArray.slice(0, 3).map((d: WCLEvent) => 
+          `target=${d.target?.name}(${d.target?.id}), ability=${d.ability?.name}, timestamp=${d.timestamp}`
+        ));
+      }
+      
       deathsArray.forEach((death: WCLEvent) => {
-        if (!death?.target) return;
+        if (!death?.target) {
+          console.log('[WCL] Death event has no target:', JSON.stringify(death).substring(0, 200));
+          return;
+        }
         
         const targetId = death.target.id;
         const targetName = death.target.name;
@@ -734,18 +832,25 @@ export async function GET(request: NextRequest) {
         // Find player by ID or name
         let player: PlayerStats | undefined = playerMap.get(targetId || 0);
         if (!player && targetName) {
-          player = Array.from(playerMap.values()).find(p => p.name === targetName);
+          // Try case-insensitive name match
+          player = Array.from(playerMap.values()).find(p => 
+            p.name.toLowerCase() === targetName.toLowerCase()
+          );
         }
+        
+        console.log('[WCL] Processing death:', targetName, '(', targetId, ') - found player:', !!player);
         
         if (player) {
           player.deaths++;
+          const deathTime = Math.floor((death.timestamp - fight.startTime) / 1000);
           player.deathEvents.push({
-            time: Math.floor((death.timestamp - fight.startTime) / 1000),
+            time: deathTime,
             killer: death.source?.name || fight.name,
             ability: death.ability?.name || 'Unknown',
             damage: death.amount || 0,
             hpRemaining: 0
           });
+          console.log('[WCL] Added death to player:', player.name, 'at', deathTime, 's');
         }
       });
       
