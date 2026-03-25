@@ -349,6 +349,7 @@ export default function LogAnalysis() {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [fightData, setFightData] = useState<FightData | null>(null);
   const [currentFight, setCurrentFight] = useState<any>(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     deathCascade: true,
@@ -1462,6 +1463,14 @@ export default function LogAnalysis() {
                   <Button variant="outline" size="sm" onClick={() => { setSelectedFight(null); setAnalysis(null); }} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
                     <RefreshCw className="h-3.5 w-3.5 mr-1.5" /> New
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowAdvanced((v) => !v)}
+                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                  >
+                    <BarChart3 className="h-3.5 w-3.5 mr-1.5" /> {showAdvanced ? 'Modo simples' : 'Modo avançado'}
+                  </Button>
                 </div>
               </div>
             </div>
@@ -1617,7 +1626,7 @@ export default function LogAnalysis() {
             </div>
           )}
 
-          {(analysis.mechanicScores && analysis.mechanicScores.length > 0) || (analysis.regressionAlerts && analysis.regressionAlerts.length > 0) ? (
+          {showAdvanced && ((analysis.mechanicScores && analysis.mechanicScores.length > 0) || (analysis.regressionAlerts && analysis.regressionAlerts.length > 0)) ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {analysis.mechanicScores && analysis.mechanicScores.length > 0 && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
@@ -1660,7 +1669,7 @@ export default function LogAnalysis() {
             </div>
           ) : null}
 
-          {analysis.bestPullChanges && analysis.bestPullChanges.length > 0 && (
+          {showAdvanced && analysis.bestPullChanges && analysis.bestPullChanges.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
                 <GitBranch className="h-5 w-5 text-sky-400" /> What changed from best pull
@@ -1675,7 +1684,7 @@ export default function LogAnalysis() {
             </div>
           )}
 
-          {(analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0) || (analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0) || typeof analysis.killProbability === 'number' || analysis.internalBenchmark ? (
+          {showAdvanced && ((analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0) || (analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0) || typeof analysis.killProbability === 'number' || analysis.internalBenchmark) ? (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               {typeof analysis.killProbability === 'number' && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
@@ -1735,7 +1744,7 @@ export default function LogAnalysis() {
             </div>
           ) : null}
 
-          {analysis.bossProgression && analysis.bossProgression.length > 1 && (
+          {showAdvanced && analysis.bossProgression && analysis.bossProgression.length > 1 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-cyan-400" /> Histórico longitudinal do boss
@@ -1871,7 +1880,7 @@ export default function LogAnalysis() {
           )}
 
           {/* BURST WINDOW EFFICIENCY */}
-          {analysis.burstWindows && analysis.burstWindows.length > 0 && (
+          {showAdvanced && analysis.burstWindows && analysis.burstWindows.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
                 <Zap className="h-5 w-5 text-wow-gold" /> Eficiência de Burst Window
@@ -1901,6 +1910,7 @@ export default function LogAnalysis() {
           )}
 
           {/* Performance Bars */}
+          {showAdvanced && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { label: 'DPS Score', score: analysis.raidEfficiency?.dps || 0, color: 'bg-red-500', desc: 'Damage output efficiency' },
@@ -1919,6 +1929,7 @@ export default function LogAnalysis() {
               </div>
             ))}
           </div>
+          )}
 
           {/* Players Section - Collapsible */}
           <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
@@ -1971,12 +1982,12 @@ export default function LogAnalysis() {
           </div>
 
           {/* PHASE 2 ANALYSIS - Advanced Insights */}
-          {currentFight && (
+          {showAdvanced && currentFight && (
             <Phase2Analysis fight={currentFight} report={report} />
           )}
 
           {/* PHASE 3 - PROGRESSION TRACKING */}
-          {currentFight && (
+          {showAdvanced && currentFight && (
             <ProgressionTracking bossName={fightData.bossName} report={report} />
           )}
 
