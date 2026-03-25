@@ -3,7 +3,6 @@
 // ============================================
 // Run with: npx tsx scripts/analyze-wcl-data.ts
 
-import ZAI from 'z-ai-web-dev-sdk';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -276,7 +275,7 @@ async function analyzeReport(code: string, accessToken: string): Promise<Analyze
   const bestPulls: Record<string, { bossHP: number; duration: number }> = {};
 
   // Process fights in batches of 5
-  const fightBatches = [];
+  const fightBatches: WCLFight[][] = [];
   for (let i = 0; i < report.fights.length; i += 5) {
     fightBatches.push(report.fights.slice(i, i + 5));
   }

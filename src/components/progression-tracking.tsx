@@ -59,9 +59,9 @@ export function ProgressionTracking({ bossName, report, currentFight }: Progress
       duration: fight.duration || 0,
       deaths: fight.summary?.deaths || 0,
       raidDPS: fight.summary?.raidDPS || 0,
-      timestamp: fight.startTime || Date.now()
+      timestamp: fight.startTime ?? report.startTime ?? 0
     }));
-  }, [report?.fights, bossName]);
+  }, [report, bossName]);
   
   // Extract player data from fights
   const playerData = useMemo(() => {
@@ -74,7 +74,7 @@ export function ProgressionTracking({ bossName, report, currentFight }: Progress
     });
     
     return extractPlayerDataFromFights(report.fights, Array.from(allPlayers));
-  }, [report?.fights]);
+  }, [report]);
   
   const dashboard = useMemo(() => 
     generateProgressionDashboard(bossName, pullHistory, playerData),
