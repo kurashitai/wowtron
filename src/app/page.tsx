@@ -540,7 +540,7 @@ export default function WoWtronApp() {
               <h1 className="text-3xl font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
                 Welcome back, <span className="text-wow-gold">{userName}</span>
               </h1>
-              <p className="text-tron-silver-400 mt-1">Here's what's happening with your guild today.</p>
+              <p className="text-tron-silver-400 mt-1">Here&apos;s what&apos;s happening with your guild today.</p>
             </div>
 
             {/* Stats Grid */}
