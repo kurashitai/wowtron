@@ -154,11 +154,14 @@ function analyzeDeaths(
 
   for (const death of deaths) {
     // Find ability info
-    let abilityInfo = null;
-    if (bossData?.abilities) {
-      abilityInfo = bossData.abilities.find((a: any) => 
+    let abilityInfo: { isAvoidable?: boolean; tip?: string } | null = null;
+    const bossAbilities: Array<{ id: number; name: string; isAvoidable?: boolean; tip?: string }> =
+      Array.isArray(bossData?.abilities) ? bossData.abilities : [];
+
+    if (bossAbilities.length > 0) {
+      abilityInfo = bossAbilities.find((a) =>
         a.name === death.abilityName || a.id === death.abilityId
-      );
+      ) || null;
     }
 
     const phase = getPhaseAtTime(death.fightTime, bossData, duration);
