@@ -129,6 +129,30 @@ interface AnalysisResult {
   }[];
   regressionAlerts?: string[];
   bestPullChanges?: string[];
+  cooldownPlanner?: {
+    at: number;
+    phase: string;
+    action: string;
+    owner: string;
+    reason: string;
+  }[];
+  assignmentBreaks?: {
+    owner: string;
+    failure: string;
+    count: number;
+  }[];
+  killProbability?: number;
+  bossProgression?: {
+    pullId: number;
+    hpRemaining: number;
+    duration: number;
+    kill: boolean;
+  }[];
+  internalBenchmark?: {
+    rank: number;
+    total: number;
+    percentile: number;
+  };
 }
 
 interface NextPullAction {
@@ -460,7 +484,6 @@ export default function LogAnalysis() {
           100
           - ((player.deaths || 0) * 20)
           - Math.max(0, 95 - (normalizedActiveTime || 95))
-          - Math.max(0, 95 - (player.activeTime || 95))
           - missingConsumablesPenalty
           - Math.min(20, Math.floor((player.avoidableDamagePercent || player.avoidableDamageTaken || 0) / 5))
         )
@@ -850,6 +873,7 @@ export default function LogAnalysis() {
       avoidableDeaths.forEach((death) => {
         map.set(death.ability, (map.get(death.ability) || 0) + 1);
       });
+      const interruptCount = (fight.timeline || []).filter((e: any) => e.type === 'interrupt').length;
       return Array.from(map.entries())
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5)
@@ -867,7 +891,6 @@ export default function LogAnalysis() {
             score: Math.min(100, interruptCount * 10),
           },
         ]);
-        }));
     })();
 
     const regressionAlerts = (() => {
@@ -893,7 +916,6 @@ export default function LogAnalysis() {
         ? sameBossHistory.filter((f: any) => !f.kill)
         : sameBossHistory;
       const bestFight = comparisonPool
-      const bestFight = sameBossHistory
         .slice()
         .sort((a: any, b: any) => {
           const aHp = a.kill ? 0 : (a.bossHPPercent ?? 100);
@@ -1056,6 +1078,11 @@ export default function LogAnalysis() {
       mechanicScores,
       regressionAlerts,
       bestPullChanges,
+      cooldownPlanner,
+      assignmentBreaks,
+      killProbability,
+      bossProgression,
+      internalBenchmark,
     };
   };
 
@@ -1295,6 +1322,11 @@ export default function LogAnalysis() {
       : 'N/D';
     const regression = (analysis.regressionAlerts || []).map((a) => `- ${a}`).join('\n');
     const bestPull = (analysis.bestPullChanges || []).map((a) => `- ${a}`).join('\n');
+    const cdPlan = (analysis.cooldownPlanner || []).slice(0, 3).map((c) => `- ${formatTime(c.at)} [${c.phase}] ${c.action} (${c.owner})`).join('\n');
+    const assignment = (analysis.assignmentBreaks || []).slice(0, 3).map((a) => `- ${a.owner}: ${a.failure} (${a.count}x)`).join('\n');
+    const benchmark = analysis.internalBenchmark
+      ? `Rank ${analysis.internalBenchmark.rank}/${analysis.internalBenchmark.total} (${analysis.internalBenchmark.percentile}º percentil interno)`
+      : 'N/D';
     const brief = [
       `🎯 Raid Brief — ${fightData.bossName}`,
       `Status: ${fightData.kill ? 'KILL' : `WIPE @ ${fightData.bossHP}%`}`,
@@ -1605,88 +1637,6 @@ export default function LogAnalysis() {
             )}
           </div>
 
-          {/* RAID CALL QUICK PLAN */}
-          {analysis.nextPullActions && analysis.nextPullActions.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Crown className="h-5 w-5 text-wow-gold" /> Top 3 ações para o próximo pull
-              </h3>
-              <div className="space-y-2">
-                {analysis.nextPullActions.map((action) => (
-                  <div key={action.priority} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-tron-silver-200">
-                        #{action.priority} {action.title}
-                      </p>
-                      <Badge className="bg-wow-gold/20 text-wow-gold text-xs">{action.owner}</Badge>
-                    </div>
-                    <p className="text-xs text-tron-silver-400 mt-1">{action.reason}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {analysis.repeatedMistakes && analysis.repeatedMistakes.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Flame className="h-5 w-5 text-red-400" /> Erros repetidos (prioridade de correção)
-              </h3>
-              <div className="space-y-2">
-                {analysis.repeatedMistakes.map((mistake, index) => (
-                  <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                    <p className="text-sm text-tron-silver-200">
-                      <span className="font-semibold">{mistake.player}</span> morreu para <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* WIPE CAUSE + PULL DELTA */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {analysis.wipeCause && (
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-amber-400" /> Causa raiz do pull
-                </h3>
-                <Badge className="mb-2 bg-amber-500/20 text-amber-400">
-                  {analysis.wipeCause.primary}
-                </Badge>
-                <p className="text-sm text-tron-silver-300">{analysis.wipeCause.details}</p>
-              </div>
-            )}
-
-            {analysis.pullDelta && (
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
-                </h3>
-                <div className="grid grid-cols-3 gap-3 text-sm">
-                  <div>
-                    <p className="text-tron-silver-500">HP Delta</p>
-                    <p className={analysis.pullDelta.bossHPDelta >= 0 ? 'text-green-400 font-semibold' : 'text-red-400 font-semibold'}>
-                      {analysis.pullDelta.bossHPDelta >= 0 ? '-' : '+'}{Math.abs(analysis.pullDelta.bossHPDelta)}%
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-tron-silver-500">Tempo</p>
-                    <p className="text-tron-silver-200 font-semibold">{analysis.pullDelta.durationDelta > 0 ? '+' : ''}{analysis.pullDelta.durationDelta}s</p>
-                  </div>
-                  <div>
-                    <p className="text-tron-silver-500">Deaths</p>
-                    <p className="text-tron-silver-200 font-semibold">
-                      {typeof analysis.pullDelta.deathsDelta === 'number'
-                        ? `${analysis.pullDelta.deathsDelta > 0 ? '+' : ''}${analysis.pullDelta.deathsDelta}`
-                        : 'N/D'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
           {(analysis.phaseCausality || analysis.pullTrend || analysis.roleScores) && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {analysis.phaseCausality && (
@@ -1740,7 +1690,6 @@ export default function LogAnalysis() {
           )}
 
           {showAdvanced && ((analysis.mechanicScores && analysis.mechanicScores.length > 0) || (analysis.regressionAlerts && analysis.regressionAlerts.length > 0)) ? (
-          {(analysis.mechanicScores && analysis.mechanicScores.length > 0) || (analysis.regressionAlerts && analysis.regressionAlerts.length > 0) ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {analysis.mechanicScores && analysis.mechanicScores.length > 0 && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
@@ -1784,7 +1733,6 @@ export default function LogAnalysis() {
           ) : null}
 
           {showAdvanced && analysis.bestPullChanges && analysis.bestPullChanges.length > 0 && (
-          {analysis.bestPullChanges && analysis.bestPullChanges.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
                 <GitBranch className="h-5 w-5 text-sky-400" /> What changed from best pull
