@@ -1148,6 +1148,19 @@ export default function LogAnalysis() {
     const duration = fight.duration;
     const timeline = fight.timeline || [];
     const bossAbilities = fight.bossAbilities || [];
+    const raidCdPatterns = [
+      'bloodlust',
+      'heroism',
+      'time warp',
+      'tranquility',
+      'healing tide',
+      'divine hymn',
+      'aura mastery',
+      'barrier',
+      'rallying cry',
+      'spirit link',
+      'revival',
+    ];
     
     // Find damage spikes from boss abilities that hit multiple players
     bossAbilities.forEach((ability: any) => {
@@ -1159,12 +1172,14 @@ export default function LogAnalysis() {
         );
         
         abilityEvents.forEach((event: any) => {
-          // Check if any raid CD was used within 5s of this event
-          const cdEvents = timeline.filter((e: any) => 
-            e.type === 'buff' && 
-            ['Bloodlust', 'Tranquility', 'Healing Tide', 'Divine Hymn', 'Aura Mastery'].includes(e.description || '') &&
-            Math.abs(e.time - event.time) <= 5
-          );
+          // Check if any raid CD was used within a short window of this event
+          const cdEvents = timeline.filter((e: any) => {
+            const text = String(e.description || e.ability || '').toLowerCase();
+            const isRaidCdEvent = e.type === 'buff' || e.type === 'cast' || e.type === 'ability';
+            return isRaidCdEvent &&
+              raidCdPatterns.some((pattern) => text.includes(pattern)) &&
+              Math.abs((e.time || 0) - event.time) <= 6;
+          });
           
           if (cdEvents.length === 0) {
             gaps.push({
