@@ -113,7 +113,6 @@ Player pages now support an aggregated profile endpoint:
 /api/player/{region}/{realm}/{name}/sync-status
 /api/player/{region}/{realm}/{name}/history
 /api/player/supabase-check
-/api/raid-brief/discord
 ```
 
 And a UI route:
