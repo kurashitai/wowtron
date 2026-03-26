@@ -440,7 +440,9 @@ export default function LogAnalysis() {
   const generateAnalysis = (fight: any, historicalFights: any[] = []): AnalysisResult => {
     const players = fight.players || [];
     const fightDuration = Math.max(1, Number(fight.duration || 1));
-    const deaths = fight.timeline?.filter((e: any) => e.type === 'death') || [];
+    const timelineDeaths = fight.timeline?.filter((e: any) => e.type === 'death') || [];
+    const directDeaths = Array.isArray(fight.deaths) ? fight.deaths : [];
+    const deaths = timelineDeaths.length > 0 ? timelineDeaths : directDeaths;
     const currentReportFight = report?.fights?.find((f) => f.id === fight.id);
     const sameBossHistory = historicalFights
       .filter((f: any) => f?.bossName === fight.bossName && f?.id !== fight.id)
@@ -804,10 +806,7 @@ export default function LogAnalysis() {
 
     const phaseCausality = phaseBoundaries.map((phase) => {
       const phaseDeaths = deaths.filter((d: any) => (d.time || 0) >= phase.start && (d.time || 0) < phase.end);
-      const phaseAvoidable = phaseDeaths.filter((d: any) => {
-        const ability = String(d.ability || '').toLowerCase();
-        return ability.includes('swirl') || ability.includes('bomb') || ability.includes('void') || ability.includes('frontal');
-      });
+      const phaseAvoidable = phaseDeaths.filter((d: any) => guessIfAvoidable(String(d.ability || 'Unknown')));
       const phaseGaps = cooldownGaps.filter((g) => g.time >= phase.start && g.time < phase.end);
       const dominantCause: 'mechanics' | 'throughput' | 'cooldown_gap' | 'stable' =
         phaseAvoidable.length >= 2
@@ -830,24 +829,28 @@ export default function LogAnalysis() {
 
     const lastFiveSameBoss = sameBossHistory.slice(0, 5);
     const historicalMetrics = lastFiveSameBoss.map((f: any) => {
-      const fDeaths = (f.timeline || []).filter((e: any) => e.type === 'death');
-      const fAvoidable = fDeaths.filter((d: any) => {
-        const ability = String(d.ability || '').toLowerCase();
-        return ability.includes('swirl') || ability.includes('bomb') || ability.includes('void') || ability.includes('frontal');
-      });
+      const timelineDeaths = (f.timeline || []).filter((e: any) => e.type === 'death');
+      const directDeaths = Array.isArray(f.deaths) ? f.deaths : [];
+      const fDeaths = timelineDeaths.length > 0 ? timelineDeaths : directDeaths;
+      const fAvoidable = fDeaths.filter((d: any) => guessIfAvoidable(String(d.ability || 'Unknown')));
       return {
-        deaths: Number(f.summary?.deaths || fDeaths.length || 0),
+        deaths: Number(f.summary?.deaths ?? fDeaths.length ?? 0),
         avoidable: fAvoidable.length,
         duration: Number(f.duration || 0),
+        hasTimeline: timelineDeaths.length > 0,
       };
     });
 
-    const pullTrend = historicalMetrics.length > 0
+    const historicalMetricsWithSignal = historicalMetrics.filter((m) =>
+      m.deaths > 0 || m.avoidable > 0 || m.duration > 0 || m.hasTimeline
+    );
+
+    const pullTrend = historicalMetricsWithSignal.length > 0
       ? {
-          sampleSize: historicalMetrics.length,
-          avgDeathsPrev: Math.round((historicalMetrics.reduce((s, m) => s + m.deaths, 0) / historicalMetrics.length) * 10) / 10,
-          avgAvoidablePrev: Math.round((historicalMetrics.reduce((s, m) => s + m.avoidable, 0) / historicalMetrics.length) * 10) / 10,
-          avgDurationPrev: Math.round(historicalMetrics.reduce((s, m) => s + m.duration, 0) / historicalMetrics.length),
+          sampleSize: historicalMetricsWithSignal.length,
+          avgDeathsPrev: Math.round((historicalMetricsWithSignal.reduce((s, m) => s + m.deaths, 0) / historicalMetricsWithSignal.length) * 10) / 10,
+          avgAvoidablePrev: Math.round((historicalMetricsWithSignal.reduce((s, m) => s + m.avoidable, 0) / historicalMetricsWithSignal.length) * 10) / 10,
+          avgDurationPrev: Math.round(historicalMetricsWithSignal.reduce((s, m) => s + m.duration, 0) / historicalMetricsWithSignal.length),
           currentDeaths: Number(fight.summary?.deaths || deaths.length || 0),
           currentAvoidableDeaths: avoidableDeaths.length,
           currentDuration: Number(fight.duration || 0),
@@ -862,11 +865,14 @@ export default function LogAnalysis() {
       return Math.max(0, Math.min(100, Math.round(avgReliability - deathsPenalty)));
     };
 
-    const roleScores = {
+    const roleScoresRaw = {
       tanks: scoreRoleGroup('tank'),
       healers: scoreRoleGroup('healer'),
       dps: scoreRoleGroup('dps'),
     };
+    const roleScores = Object.values(roleScoresRaw).some((score) => score > 0)
+      ? roleScoresRaw
+      : undefined;
 
     const mechanicScores = (() => {
       const map = new Map<string, number>();
@@ -1038,6 +1044,8 @@ export default function LogAnalysis() {
       return { rank, total, percentile };
     })();
 
+    const hasPhaseSignal = phaseCausality.some((phase) => phase.deaths > 0 || phase.avoidableDeaths > 0 || phase.dominantCause !== 'stable');
+
     return {
       summary: {
         killPotential: fight.kill || (fight.bossHPPercent && fight.bossHPPercent < 10),
@@ -1072,7 +1080,7 @@ export default function LogAnalysis() {
       pullDelta,
       wipeCause,
       repeatedMistakes,
-      phaseCausality,
+      phaseCausality: hasPhaseSignal ? phaseCausality : undefined,
       pullTrend,
       roleScores,
       mechanicScores,
@@ -1553,26 +1561,91 @@ export default function LogAnalysis() {
                 valueClass="text-emerald-400"
               />
             </div>
+          )}
+
+          {/* WIPE CAUSE + PULL DELTA */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {analysis.wipeCause && (
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5 text-amber-400" /> Causa raiz do pull
+                </h3>
+                <Badge className="mb-2 bg-amber-500/20 text-amber-400">
+                  {analysis.wipeCause.primary}
+                </Badge>
+                <p className="text-sm text-tron-silver-300">{analysis.wipeCause.details}</p>
+              </div>
+            )}
+
+            {analysis.pullDelta && (
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
+                </h3>
+                <div className="grid grid-cols-3 gap-3 text-sm">
+                  <div>
+                    <p className="text-tron-silver-500">HP Delta</p>
+                    <p className={analysis.pullDelta.bossHPDelta >= 0 ? 'text-green-400 font-semibold' : 'text-red-400 font-semibold'}>
+                      {analysis.pullDelta.bossHPDelta >= 0 ? '-' : '+'}{Math.abs(analysis.pullDelta.bossHPDelta)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-tron-silver-500">Tempo</p>
+                    <p className="text-tron-silver-200 font-semibold">{analysis.pullDelta.durationDelta > 0 ? '+' : ''}{analysis.pullDelta.durationDelta}s</p>
+                  </div>
+                  <div>
+                    <p className="text-tron-silver-500">Deaths</p>
+                    <p className="text-tron-silver-200 font-semibold">
+                      {typeof analysis.pullDelta.deathsDelta === 'number'
+                        ? `${analysis.pullDelta.deathsDelta > 0 ? '+' : ''}${analysis.pullDelta.deathsDelta}`
+                        : 'N/D'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* RAID CALL QUICK PLAN */}
           {analysis.nextPullActions && analysis.nextPullActions.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Crown className="h-5 w-5 text-wow-gold" /> Top 3 ações para o próximo pull
-              </h3>
-              <div className="space-y-2">
-                {analysis.nextPullActions.map((action) => (
-                  <div key={action.priority} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-tron-silver-200">
-                        #{action.priority} {action.title}
-                      </p>
-                      <Badge className="bg-wow-gold/20 text-wow-gold text-xs">{action.owner}</Badge>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+              <div className="xl:col-span-2 bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                  <Crown className="h-5 w-5 text-wow-gold" /> Plano do próximo pull (objetivo + dono)
+                </h3>
+                <div className="space-y-2">
+                  {analysis.nextPullActions.map((action) => (
+                    <div key={action.priority} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-semibold text-tron-silver-200">
+                          #{action.priority} {action.title}
+                        </p>
+                        <Badge className="bg-wow-gold/20 text-wow-gold text-xs whitespace-nowrap">{action.owner}</Badge>
+                      </div>
+                      <p className="text-xs text-tron-silver-400 mt-1">{action.reason}</p>
                     </div>
-                    <p className="text-xs text-tron-silver-400 mt-1">{action.reason}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
+                  <Info className="h-5 w-5 text-cyan-400" /> Resumo executivo
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                    <p className="text-tron-silver-400 text-xs">Causa principal</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.wipeCause?.details || 'Sem causa dominante detectada.'}</p>
                   </div>
-                ))}
+                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                    <p className="text-tron-silver-400 text-xs">Mortes evitáveis</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.deaths.avoidable.length} no pull atual</p>
+                  </div>
+                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                    <p className="text-tron-silver-400 text-xs">Gap de DPS estimado</p>
+                    <p className="text-tron-silver-200 font-medium">{formatNumber(analysis.performance.dpsGap)} total</p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -1666,11 +1739,17 @@ export default function LogAnalysis() {
                     <BarChart3 className="h-5 w-5 text-cyan-400" /> Delta últimos pulls
                   </h3>
                   <p className="text-xs text-tron-silver-400 mb-2">Base: últimos {analysis.pullTrend.sampleSize} pulls do mesmo boss</p>
-                  <div className="space-y-1 text-sm">
-                    <p className="text-tron-silver-300">Deaths: <span className="font-semibold">{analysis.pullTrend.currentDeaths}</span> vs média <span className="font-semibold">{analysis.pullTrend.avgDeathsPrev}</span></p>
-                    <p className="text-tron-silver-300">Avoidable: <span className="font-semibold">{analysis.pullTrend.currentAvoidableDeaths}</span> vs média <span className="font-semibold">{analysis.pullTrend.avgAvoidablePrev}</span></p>
-                    <p className="text-tron-silver-300">Tempo: <span className="font-semibold">{analysis.pullTrend.currentDuration}s</span> vs média <span className="font-semibold">{analysis.pullTrend.avgDurationPrev}s</span></p>
-                  </div>
+                  {analysis.pullTrend.currentDeaths === 0 && analysis.pullTrend.avgDeathsPrev === 0 && analysis.pullTrend.currentAvoidableDeaths === 0 && analysis.pullTrend.avgAvoidablePrev === 0 ? (
+                    <p className="text-sm text-tron-silver-300">
+                      Sem sinal útil de morte/erro mecânico no histórico recente (dados de deaths muito baixos ou ausentes).
+                    </p>
+                  ) : (
+                    <div className="space-y-1 text-sm">
+                      <p className="text-tron-silver-300">Deaths: <span className="font-semibold">{analysis.pullTrend.currentDeaths}</span> vs média <span className="font-semibold">{analysis.pullTrend.avgDeathsPrev}</span></p>
+                      <p className="text-tron-silver-300">Avoidable: <span className="font-semibold">{analysis.pullTrend.currentAvoidableDeaths}</span> vs média <span className="font-semibold">{analysis.pullTrend.avgAvoidablePrev}</span></p>
+                      <p className="text-tron-silver-300">Tempo: <span className="font-semibold">{analysis.pullTrend.currentDuration}s</span> vs média <span className="font-semibold">{analysis.pullTrend.avgDurationPrev}s</span></p>
+                    </div>
+                  )}
                 </div>
               )}
 
