@@ -39,9 +39,12 @@ import {
   calculateAllScorecards
 } from '@/lib/analysis/phase2-analysis';
 import { getBossByNickname, type BossData } from '@/lib/boss-data-midnight';
+import { getCachedValue, setCachedValue } from '@/lib/wcl-cache';
 
 // Token cache
 let cachedToken: { token: string; expiresAt: number } | null = null;
+const REPORT_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h
+const FIGHT_CACHE_TTL_MS = 60 * 60 * 1000; // 1h
 
 async function getToken(): Promise<string> {
   const clientId = process.env.WCL_CLIENT_ID;
@@ -63,6 +66,7 @@ async function getToken(): Promise<string> {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const action = searchParams.get('action');
+  const forceRefresh = searchParams.get('refresh') === 'true';
   
   try {
     // ==========================================
@@ -75,31 +79,11 @@ export async function GET(request: NextRequest) {
       const reportCode = parseReportCode(code);
       if (!reportCode) return NextResponse.json({ error: 'Invalid report code or URL' }, { status: 400 });
       
-      const useMock = !process.env.WCL_CLIENT_ID || searchParams.get('mock') === 'true';
-      
-      if (useMock) {
-        const mockReport: ReportData = {
-          id: reportCode,
-          code: reportCode,
-          title: 'Demo Report (No API Key)',
-          owner: 'Demo',
-          zone: 'Nerub-ar Palace',
-          startTime: Date.now() - 86400000,
-          endTime: Date.now() - 82800000,
-          fights: [
-            { id: 1, bossName: "Ulgrax the Devourer", bossIcon: "ulgrax", difficulty: "Mythic", duration: 423, kill: true, bossHPPercent: 0 },
-            { id: 2, bossName: "The Bloodbound Horror", bossIcon: "bloodbound", difficulty: "Mythic", duration: 312, kill: true, bossHPPercent: 0 },
-            { id: 3, bossName: "Sikran, Captain of the Sureki", bossIcon: "sikran", difficulty: "Mythic", duration: 287, kill: true, bossHPPercent: 0 },
-            { id: 4, bossName: "Rasha'nan", bossIcon: "rashanan", difficulty: "Mythic", duration: 356, kill: true, bossHPPercent: 0 },
-            { id: 5, bossName: "Bloodtwister Ovi'nax", bossIcon: "ovinax", difficulty: "Mythic", duration: 445, kill: false, bossHPPercent: 35 },
-            { id: 6, bossName: "Nexus-Princess Ky'veza", bossIcon: "kyveza", difficulty: "Mythic", duration: 398, kill: true, bossHPPercent: 0 },
-            { id: 7, bossName: "Queen Ansurek", bossIcon: "ansurek", difficulty: "Mythic", duration: 623, kill: false, bossHPPercent: 42 },
-            { id: 8, bossName: "Queen Ansurek", bossIcon: "ansurek", difficulty: "Mythic", duration: 587, kill: false, bossHPPercent: 28 },
-            { id: 9, bossName: "Queen Ansurek", bossIcon: "ansurek", difficulty: "Mythic", duration: 612, kill: false, bossHPPercent: 15 },
-            { id: 10, bossName: "Queen Ansurek", bossIcon: "ansurek", difficulty: "Mythic", duration: 542, kill: true, bossHPPercent: 0 },
-          ]
-        };
-        return NextResponse.json({ report: mockReport, mock: true });
+      if (!forceRefresh) {
+        const cachedReport = await getCachedValue<ReportData>('report', reportCode, REPORT_CACHE_TTL_MS);
+        if (cachedReport) {
+          return NextResponse.json({ report: cachedReport, cached: true });
+        }
       }
       
       const token = await getToken();
@@ -127,8 +111,10 @@ export async function GET(request: NextRequest) {
           endTime: fight.endTime
         }))
       };
+
+      await setCachedValue('report', reportCode, report);
       
-      return NextResponse.json({ report, mock: false });
+      return NextResponse.json({ report, cached: false });
     }
     
     // ==========================================
@@ -155,12 +141,12 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid report code' }, { status: 400 });
       }
       
-      const useMock = !process.env.WCL_CLIENT_ID || searchParams.get('mock') === 'true';
-      console.log('[WCL FIGHT] UseMock:', useMock, 'Has WCL_CLIENT_ID:', !!process.env.WCL_CLIENT_ID);
-      
-      if (useMock) {
-        console.log('[WCL FIGHT] Returning mock data');
-        return NextResponse.json({ fight: generateMockFightData(fightId), mock: true });
+      const fightCacheKey = `${reportCode}:${fightId}`;
+      if (!forceRefresh) {
+        const cachedFightPayload = await getCachedValue<any>('fight', fightCacheKey, FIGHT_CACHE_TTL_MS);
+        if (cachedFightPayload) {
+          return NextResponse.json({ ...cachedFightPayload, cached: true });
+        }
       }
       
       // ===== REAL DATA FETCH =====
@@ -931,6 +917,20 @@ export async function GET(request: NextRequest) {
       });
       
       timeline.sort((a, b) => a.time - b.time);
+
+      // Build raid buffs from real buff events (no synthetic uptimes)
+      const raidBuffNames = ['Bloodlust', 'Power Word: Fortitude', 'Battle Shout', 'Arcane Intellect', 'Mark of the Wild'];
+      const raidBuffs = raidBuffNames
+        .map((buffName) => {
+          const buffEvent = buffsArray.find((b: WCLEvent) => b?.ability?.name?.toLowerCase().includes(buffName.toLowerCase()));
+          if (!buffEvent) return null;
+          return {
+            name: buffName,
+            uptime: 0,
+            source: buffEvent.source?.name || 'Unknown',
+          };
+        })
+        .filter(Boolean) as { name: string; uptime: number; source: string }[];
       
       // Build fight data
       const fightData: FightData = {
@@ -952,7 +952,7 @@ export async function GET(request: NextRequest) {
           healers: playersArray.filter(p => p.role === 'healer').length,
           dps: playersArray.filter(p => p.role === 'dps').length,
           total: playersArray.length,
-          bloodlust: true,
+          bloodlust: !!bloodlustCast,
           brez: playersArray.filter(p => ['Druid', 'Death Knight', 'Warlock'].includes(p.class)).length
         },
         
@@ -996,13 +996,7 @@ export async function GET(request: NextRequest) {
           interrupts: playersArray.reduce((s, p) => s + p.interruptions, 0)
         },
         
-        raidBuffs: [
-          { name: 'Bloodlust', uptime: 100, source: playersArray.find(p => p.class === 'Shaman')?.name || playersArray.find(p => p.class === 'Mage')?.name || playersArray.find(p => p.class === 'Evoker')?.name || 'Raid' },
-          { name: 'Power Word: Fortitude', uptime: 98, source: playersArray.find(p => p.class === 'Priest')?.name || 'Priest' },
-          { name: 'Battle Shout', uptime: 97, source: playersArray.find(p => p.class === 'Warrior')?.name || 'Warrior' },
-          { name: 'Arcane Intellect', uptime: 96, source: playersArray.find(p => p.class === 'Mage')?.name || 'Mage' },
-          { name: 'Mark of the Wild', uptime: 95, source: playersArray.find(p => p.class === 'Druid')?.name || 'Druid' },
-        ],
+        raidBuffs,
         
         enemies: [{ id: 0, name: fight.name, type: 'boss' as const, totalDamage, totalHP: 10000000000 }],
         
@@ -1020,13 +1014,16 @@ export async function GET(request: NextRequest) {
       const defensiveAnalysis = analyzeDefensiveUsage(fightData);
       const playerScorecards = calculateAllScorecards(fightData);
       
-      return NextResponse.json({ 
+      const responsePayload = { 
         fight: fightData, 
         deathAnalysis,
         defensiveAnalysis,
         playerScorecards,
-        mock: false 
-      });
+      };
+
+      await setCachedValue('fight', fightCacheKey, responsePayload);
+      
+      return NextResponse.json({ ...responsePayload, cached: false });
     }
     
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
@@ -1057,78 +1054,8 @@ function generateTimelineFromGraph(graphData: any, playerId: number, duration: n
     }
   }
   
-  // Otherwise generate deterministic data based on player ID and duration
-  return generateDeterministicTimeline(baseValue, duration, playerId);
-}
-
-// Helper: Generate deterministic timeline (no Math.random)
-function generateDeterministicTimeline(baseValue: number, duration: number, seed: number): number[] {
-  const timeline: number[] = [];
-  
-  for (let t = 0; t < duration; t++) {
-    // Deterministic variance using sine/cosine waves
-    const variance = Math.sin(seed * 0.1 + t * 0.12) * 0.3 + 
-                     Math.cos(seed * 0.07 + t * 0.09) * 0.2 + 0.8;
-    
-    // Bloodlust burst (typically around 8-48 seconds)
-    const burst = (t >= 8 && t < 48) ? 1.35 : 
-                  (t > duration * 0.8) ? 1.1 : 1;
-    
-    timeline.push(Math.max(0, Math.floor(baseValue * variance * burst)));
-  }
-  
-  return timeline;
-}
-
-// Mock fight data for demo mode
-function generateMockFightData(fightId: number): FightData {
-  return {
-    id: fightId,
-    reportId: 'demo',
-    bossId: 0,
-    bossName: 'Ulgrax the Devourer',
-    bossIcon: 'ulgrax',
-    zone: 'Nerub-ar Palace',
-    difficulty: 'Mythic',
-    duration: 423,
-    startTime: Date.now() - 3600000,
-    endTime: Date.now() - 3600000 + 423000,
-    kill: true,
-    bossHPPercent: 0,
-    composition: { tanks: 2, healers: 4, dps: 14, total: 20, bloodlust: true, brez: 3 },
-    phases: [
-      { name: 'Phase 1', startTime: 0, endTime: 141000, bossHP: [], events: [] },
-      { name: 'Phase 2', startTime: 141000, endTime: 282000, bossHP: [], events: [] },
-      { name: 'Phase 3', startTime: 282000, endTime: 423000, bossHP: [], events: [] }
-    ],
-    players: [],
-    bossAbilities: [],
-    timeline: [
-      { time: 0, type: 'phase', description: 'Phase 1', source: 'Ulgrax' },
-      { time: 8, type: 'bloodlust', description: 'Bloodlust', source: 'Shaman' },
-      { time: 141, type: 'phase', description: 'Phase 2', source: 'Ulgrax' },
-      { time: 282, type: 'phase', description: 'Phase 3', source: 'Ulgrax' }
-    ],
-    combatEvents: [],
-    summary: {
-      totalDamage: 8500000000,
-      totalHealing: 2500000000,
-      totalDamageTaken: 1800000000,
-      raidDPS: 20095000,
-      raidHPS: 5900000,
-      raidDTPS: 4250000,
-      deaths: 0,
-      combatResurrections: 0,
-      bloodlusts: 1,
-      dispels: 12,
-      interrupts: 45
-    },
-    raidBuffs: [
-      { name: 'Bloodlust', uptime: 100, source: 'Shaman' },
-      { name: 'Power Word: Fortitude', uptime: 98, source: 'Priest' }
-    ],
-    enemies: [{ id: 0, name: 'Ulgrax', type: 'boss', totalDamage: 8500000000, totalHP: 10000000000 }]
-  };
+  // No graph fallback: return empty data instead of synthetic timelines.
+  return [];
 }
 
 export async function POST(request: NextRequest) {

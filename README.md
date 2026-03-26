@@ -86,6 +86,54 @@ The Log Analysis module includes:
 - **Comprehensive metrics**: Deaths, interrupts, dispels, buff uptime, consumables
 - **Sortable player tables** with rank percentages
 
+### WCL Cache (new)
+
+To avoid re-fetching the same report/fight over and over, the API now caches WCL responses on disk:
+
+- Report cache TTL: **6 hours**
+- Fight cache TTL: **1 hour**
+- Cache location: `.wowtron-cache/wcl/`
+- Force refresh: add `&refresh=true` to `/api/wcl` requests
+
+Examples:
+
+```bash
+/api/wcl?action=report&code=YOUR_REPORT_CODE
+/api/wcl?action=fight&code=YOUR_REPORT_CODE&fightId=12
+/api/wcl?action=fight&code=YOUR_REPORT_CODE&fightId=12&refresh=true
+```
+
+### Player Profile API (MVP)
+
+Player pages now support an aggregated profile endpoint:
+
+```bash
+/api/player/{region}/{realm}/{name}
+/api/player/{region}/{realm}/{name}/sync
+/api/player/{region}/{realm}/{name}/sync-status
+/api/player/{region}/{realm}/{name}/history
+/api/player/supabase-check
+/api/raid-brief/discord
+```
+
+And a UI route:
+
+```bash
+/players/{region}/{realm}/{name}
+```
+
+Data currently merges public Raider.IO + Blizzard profile/equipment (when Blizzard credentials are available), with cache support.
+Profile sync snapshots are persisted in `.wowtron-cache/player-history/` (up to last 100 snapshots per player).
+
+If `SUPABASE_URL` + (`SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`) are configured, snapshot persistence uses Supabase (free tier friendly) instead of local files.
+Detailed setup guide: `docs/supabase-setup-guide.md`.
+
+For native Discord brief posting, configure:
+
+```bash
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+```
+
 ## Deployment
 
 ### Vercel (Recommended)
