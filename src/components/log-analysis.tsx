@@ -1557,9 +1557,26 @@ export default function LogAnalysis() {
               <StatCard
                 icon={<Gauge className="h-4 w-4" />}
                 label="Avg Reliability"
-                value={`${Math.floor(analysis.players.reduce((s, p) => s + (p.reliabilityScore || 0), 0) / Math.max(1, analysis.players.length))}`}
+                value={String(Math.floor(analysis.players.reduce((s, p) => s + (p.reliabilityScore || 0), 0) / Math.max(1, analysis.players.length)))}
                 valueClass="text-emerald-400"
               />
+            </div>
+          )}
+
+          {analysis.repeatedMistakes && analysis.repeatedMistakes.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                <Flame className="h-5 w-5 text-red-400" /> Erros repetidos (prioridade de correção)
+              </h3>
+              <div className="space-y-2">
+                {analysis.repeatedMistakes.map((mistake, index) => (
+                  <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                    <p className="text-sm text-tron-silver-200">
+                      <span className="font-semibold">{mistake.player}</span> morreu para <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
