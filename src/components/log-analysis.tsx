@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   Skull, AlertTriangle, CheckCircle, XCircle, Clock, Users, Zap,
-  Search, Copy, Loader2, ChevronRight, TrendingUp,
+  Search, Copy, Loader2, Send, ChevronRight, TrendingUp,
   TrendingDown, Minus, Flame, Target, Shield, Heart, Activity,
   BarChart3, Timer, RefreshCw, ChevronDown, ChevronUp,
   Star, Swords, ShieldAlert, AlertCircle, Sparkles, Gauge,
@@ -325,6 +325,8 @@ export default function LogAnalysis() {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [fightData, setFightData] = useState<FightData | null>(null);
   const [currentFight, setCurrentFight] = useState<any>(null);
+  const [isPostingBrief, setIsPostingBrief] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     deathCascade: true,
@@ -413,6 +415,7 @@ export default function LogAnalysis() {
 
   const generateAnalysis = (fight: any, historicalFights: any[] = []): AnalysisResult => {
     const players = fight.players || [];
+    const fightDuration = Math.max(1, Number(fight.duration || 1));
     const deaths = fight.timeline?.filter((e: any) => e.type === 'death') || [];
     const currentReportFight = report?.fights?.find((f) => f.id === fight.id);
     const sameBossHistory = historicalFights
@@ -440,6 +443,15 @@ export default function LogAnalysis() {
     }
     
     const playerStats: PlayerStats[] = players.map((player: any) => {
+      const derivedDps = Number(player.dps || 0) > 0
+        ? Number(player.dps)
+        : Math.round(Number(player.totalDamage || 0) / fightDuration);
+      const derivedHps = Number(player.hps || 0) > 0
+        ? Number(player.hps)
+        : Math.round(Number(player.totalHealing || 0) / fightDuration);
+      const normalizedActiveTime = Number(player.activeTime || 0) > 1
+        ? Number(player.activeTime)
+        : Math.round(Number(player.activeTime || 0) * 100);
       const missingConsumablesPenalty = (player.flaskUsed ? 0 : 5) + (player.foodUsed ? 0 : 5) + (player.potionUsed ? 0 : 5) + (player.runeUsed ? 0 : 3);
       const reliabilityScore = Math.max(
         0,
@@ -447,6 +459,7 @@ export default function LogAnalysis() {
           100,
           100
           - ((player.deaths || 0) * 20)
+          - Math.max(0, 95 - (normalizedActiveTime || 95))
           - Math.max(0, 95 - (player.activeTime || 95))
           - missingConsumablesPenalty
           - Math.min(20, Math.floor((player.avoidableDamagePercent || player.avoidableDamageTaken || 0) / 5))
@@ -458,8 +471,8 @@ export default function LogAnalysis() {
       class: player.class,
       spec: player.spec,
       role: player.role,
-      dps: player.dps || 0,
-      hps: player.hps || 0,
+      dps: derivedDps,
+      hps: derivedHps,
       rankPercent: player.rankPercent || 0,
       itemLevel: player.itemLevel || 480,
       server: player.server || 'unknown',
@@ -467,7 +480,7 @@ export default function LogAnalysis() {
       foodUsed: player.foodUsed ?? true,
       potionUsed: player.potionUsed ?? true,
       runeUsed: player.runeUsed ?? false,
-      activeTime: player.activeTime || 95,
+      activeTime: normalizedActiveTime || 95,
       deaths: player.deaths || 0,
       dtps: player.dtps || 0,
       avoidableDamageTaken: player.avoidableDamageTaken || player.avoidableDamagePercent || 0,
@@ -533,21 +546,36 @@ export default function LogAnalysis() {
     // NEW: Generate Death Cascade Analysis
     const deathCascade = generateDeathCascade(deaths, players, fight);
 
+    const dpsPlayersSorted = [...playerStats]
+      .filter((p) => p.role === 'dps')
+      .sort((a, b) => b.dps - a.dps);
+    dpsPlayersSorted.forEach((p, idx) => {
+      if (!p.rankPercent || p.rankPercent <= 0) {
+        p.rankPercent = Math.round((1 - idx / Math.max(1, dpsPlayersSorted.length - 1)) * 100);
+      }
+    });
+
     const lowPerformers: PerformanceIssue[] = [];
     let totalDPS = 0;
     let totalHPS = 0;
     
     players.forEach((player: any) => {
-      totalDPS += player.dps || 0;
-      totalHPS += player.hps || 0;
+      const effectiveDps = Number(player.dps || 0) > 0
+        ? Number(player.dps)
+        : Math.round(Number(player.totalDamage || 0) / fightDuration);
+      const effectiveHps = Number(player.hps || 0) > 0
+        ? Number(player.hps)
+        : Math.round(Number(player.totalHealing || 0) / fightDuration);
+      totalDPS += effectiveDps;
+      totalHPS += effectiveHps;
       const expectedDPS = getExpectedDPS(player.spec || player.class);
-      if (player.dps && player.dps < expectedDPS * 0.8 && player.role === 'dps') {
+      if (effectiveDps < expectedDPS * 0.8 && player.role === 'dps') {
         lowPerformers.push({
           player: player.name,
           class: player.class,
           expectedDPS,
-          actualDPS: player.dps,
-          gap: expectedDPS - player.dps,
+          actualDPS: effectiveDps,
+          gap: expectedDPS - effectiveDps,
           reason: diagnoseLowDPS(player),
         });
       }
@@ -577,9 +605,13 @@ export default function LogAnalysis() {
       { name: 'Mystic Touch', present: presentClasses.has('Monk'), source: players.find((p: any) => p.class === 'Monk')?.name, missingImpact: '+5% phys dmg' },
     ];
 
-    const bossHP = 10000000000;
-    const optimalDPS = totalDPS + estimatedDPSLoss + lowPerformers.reduce((s, p) => s + p.gap, 0);
-    const optimalTime = Math.floor(bossHP / optimalDPS);
+    const expectedRaidDps = Math.max(
+      1,
+      players
+        .filter((p: any) => p.role === 'dps')
+        .reduce((sum: number, p: any) => sum + getExpectedDPS(p.spec || p.class), 0)
+    );
+    const optimalTime = expectedRaidDps > 0 ? Math.floor((expectedRaidDps * fightDuration) / Math.max(1, totalDPS)) : fightDuration;
     const timeSaved = fight.duration - optimalTime;
 
     const whyWiped: string[] = [];
@@ -604,10 +636,8 @@ export default function LogAnalysis() {
 
     // Calculate DPS score - based on how much of required DPS was met
     // A good raid should meet or exceed required DPS
-    const requiredDPS = bossHP / fight.duration;
-    const dpsRatio = totalDPS / requiredDPS;
-    // Score from 0-100: 100% of required = 70 score, 110% = 80, 120% = 90, 130%+ = 100
-    const dpsScore = Math.min(100, Math.max(0, Math.floor((dpsRatio - 0.5) * 100)));
+    const dpsRatio = totalDPS / expectedRaidDps;
+    const dpsScore = Math.min(100, Math.max(0, Math.floor(dpsRatio * 100)));
     
     // Survival score - based on deaths (0 deaths = 100, each death reduces)
     const totalDeaths = deaths.length;
@@ -828,6 +858,15 @@ export default function LogAnalysis() {
           events,
           severity: events >= 3 ? 'critical' as const : 'warning' as const,
           score: Math.max(0, 100 - events * 18),
+        }))
+        .concat([
+          {
+            mechanic: 'Interrupts',
+            events: interruptCount,
+            severity: interruptCount === 0 ? 'critical' as const : 'warning' as const,
+            score: Math.min(100, interruptCount * 10),
+          },
+        ]);
         }));
     })();
 
@@ -850,6 +889,10 @@ export default function LogAnalysis() {
     })();
 
     const bestPullChanges = (() => {
+      const comparisonPool = !fight.kill
+        ? sameBossHistory.filter((f: any) => !f.kill)
+        : sameBossHistory;
+      const bestFight = comparisonPool
       const bestFight = sameBossHistory
         .slice()
         .sort((a: any, b: any) => {
@@ -888,6 +931,91 @@ export default function LogAnalysis() {
       return changes.slice(0, 4);
     })();
 
+    const cooldownPlanner = (() => {
+      const entries = cooldownGaps
+        .slice(0, 5)
+        .map((gap) => {
+          const phase = phaseCausality.find((p) => gap.time >= p.start && gap.time < p.end);
+          return {
+            at: gap.time,
+            phase: phase?.phase || 'Unknown',
+            action: gap.severity === 'critical' ? 'Usar CD defensivo maior' : 'Cobrir com CD de cura',
+            owner: healerNames.length > 0 ? healerNames.join(', ') : 'Healers + RL',
+            reason: `${Math.round(gap.damageTaken / 1000)}k de dano sem cobertura.`,
+          };
+        });
+      return entries;
+    })();
+
+    const assignmentBreaks = (() => {
+      const breaks = new Map<string, { owner: string; failure: string; count: number }>();
+
+      const addBreak = (owner: string, failure: string) => {
+        const key = `${owner}::${failure}`;
+        const current = breaks.get(key) || { owner, failure, count: 0 };
+        current.count += 1;
+        breaks.set(key, current);
+      };
+
+      // repeated avoidable deaths = likely assignment execution break
+      repeatedMistakes.forEach((m) => {
+        addBreak(m.player, `Falha repetida em ${m.ability}`);
+      });
+
+      // interrupt events are expected in many fights; detect players with zero interrupts among DPS/melee
+      const interrupters = new Set(
+        (fight.timeline || [])
+          .filter((e: any) => e.type === 'interrupt' && (e.source || e.sourceName))
+          .map((e: any) => e.source || e.sourceName)
+      );
+      playerStats
+        .filter((p) => p.role === 'dps')
+        .slice(0, 8)
+        .forEach((p) => {
+          if (!interrupters.has(p.name)) {
+            addBreak(p.name, 'Sem interrupções registradas no pull');
+          }
+        });
+
+      return Array.from(breaks.values()).sort((a, b) => b.count - a.count).slice(0, 6);
+    })();
+
+    const killProbability = (() => {
+      const hpRemaining = fight.bossHPPercent ?? (fight.kill ? 0 : 100);
+      const deathPenalty = Math.min(35, (fight.summary?.deaths || deaths.length || 0) * 3);
+      const avoidablePenalty = Math.min(30, avoidableDeaths.length * 4);
+      const cooldownPenalty = Math.min(20, cooldownGaps.length * 5);
+      const base = fight.kill ? 100 : Math.max(0, 100 - hpRemaining);
+      return Math.max(0, Math.min(100, Math.round(base - deathPenalty - avoidablePenalty - cooldownPenalty + (fight.kill ? 0 : 20))));
+    })();
+
+    const bossProgression = (() => {
+      if (!report?.fights || !fight?.bossName) return [];
+      return report.fights
+        .filter((f) => f.bossName === fight.bossName)
+        .sort((a, b) => a.id - b.id)
+        .map((f) => ({
+          pullId: f.id,
+          hpRemaining: f.kill ? 0 : (f.bossHPPercent ?? 100),
+          duration: f.duration,
+          kill: f.kill,
+        }));
+    })();
+
+    const internalBenchmark = (() => {
+      if (!bossProgression.length || !currentReportFight) return undefined;
+      const sorted = [...bossProgression].sort((a, b) => {
+        if (a.hpRemaining !== b.hpRemaining) return a.hpRemaining - b.hpRemaining;
+        return a.duration - b.duration;
+      });
+      const idx = sorted.findIndex((p) => p.pullId === currentReportFight.id);
+      if (idx === -1) return undefined;
+      const rank = idx + 1;
+      const total = sorted.length;
+      const percentile = Math.round((1 - idx / Math.max(1, total - 1)) * 100);
+      return { rank, total, percentile };
+    })();
+
     return {
       summary: {
         killPotential: fight.kill || (fight.bossHPPercent && fight.bossHPPercent < 10),
@@ -899,7 +1027,7 @@ export default function LogAnalysis() {
       performance: {
         raidDPS: totalDPS,
         raidHPS: totalHPS,
-        requiredDPS: Math.floor(bossHP / fight.duration),
+        requiredDPS: Math.floor(expectedRaidDps),
         dpsGap: lowPerformers.reduce((s, p) => s + p.gap, 0),
         lowPerformers: lowPerformers.sort((a, b) => b.gap - a.gap).slice(0, 5),
       },
@@ -910,7 +1038,7 @@ export default function LogAnalysis() {
       talents: [],
       raidEfficiency: { overall: overallScore, dps: dpsScore, survival: survivalScore, mechanics: mechanicsScore, consumables: consumablesScore, grade },
       bossInsight: {
-        dpsCheckMet: totalDPS >= bossHP / fight.duration,
+        dpsCheckMet: totalDPS >= expectedRaidDps,
         healingIntensity: totalHPS > 2000000 ? 'high' : totalHPS > 1000000 ? 'medium' : 'low',
         movementRequired: averageReliability >= 75 ? 'controlado' : 'caótico',
         keyMechanics: avoidableDeaths.slice(0, 3).map(d => ({ name: d.ability, deaths: 1, tip: d.tip })),
@@ -993,6 +1121,19 @@ export default function LogAnalysis() {
     const duration = fight.duration;
     const timeline = fight.timeline || [];
     const bossAbilities = fight.bossAbilities || [];
+    const raidCdPatterns = [
+      'bloodlust',
+      'heroism',
+      'time warp',
+      'tranquility',
+      'healing tide',
+      'divine hymn',
+      'aura mastery',
+      'barrier',
+      'rallying cry',
+      'spirit link',
+      'revival',
+    ];
     
     // Find damage spikes from boss abilities that hit multiple players
     bossAbilities.forEach((ability: any) => {
@@ -1004,12 +1145,14 @@ export default function LogAnalysis() {
         );
         
         abilityEvents.forEach((event: any) => {
-          // Check if any raid CD was used within 5s of this event
-          const cdEvents = timeline.filter((e: any) => 
-            e.type === 'buff' && 
-            ['Bloodlust', 'Tranquility', 'Healing Tide', 'Divine Hymn', 'Aura Mastery'].includes(e.description || '') &&
-            Math.abs(e.time - event.time) <= 5
-          );
+          // Check if any raid CD was used within a short window of this event
+          const cdEvents = timeline.filter((e: any) => {
+            const text = String(e.description || e.ability || '').toLowerCase();
+            const isRaidCdEvent = e.type === 'buff' || e.type === 'cast' || e.type === 'ability';
+            return isRaidCdEvent &&
+              raidCdPatterns.some((pattern) => text.includes(pattern)) &&
+              Math.abs((e.time || 0) - event.time) <= 6;
+          });
           
           if (cdEvents.length === 0) {
             gaps.push({
@@ -1157,6 +1300,8 @@ export default function LogAnalysis() {
       `Status: ${fightData.kill ? 'KILL' : `WIPE @ ${fightData.bossHP}%`}`,
       `Causa raiz: ${analysis.wipeCause?.primary || 'mixed'}`,
       `Score por role: ${roleScores}`,
+      `Kill probability: ${analysis.killProbability ?? 'N/D'}%`,
+      `Benchmark interno: ${benchmark}`,
       '',
       'Top 3 ações:',
       actions || '1. Executar fight sem mortes evitáveis',
@@ -1169,9 +1314,52 @@ export default function LogAnalysis() {
       '',
       'What changed from best pull:',
       bestPull || '- Sem diferenças relevantes detectadas',
+      '',
+      'Plano de CD (fase):',
+      cdPlan || '- Sem gaps críticos de CD detectados',
+      '',
+      'Assignment breaks:',
+      assignment || '- Sem assignment breaks evidentes',
     ].join('\n');
     navigator.clipboard.writeText(brief);
     toast({ title: 'Brief copiado', description: 'Resumo rápido pronto para Discord.' });
+  };
+
+  const sendRaidBriefToDiscord = async () => {
+    if (!analysis || !fightData) return;
+    const actions = (analysis.nextPullActions || [])
+      .map((a) => `${a.priority}. ${a.title} (${a.owner})`)
+      .join('\n');
+    const content = [
+      `🎯 Raid Brief — ${fightData.bossName}`,
+      `Status: ${fightData.kill ? 'KILL' : `WIPE @ ${fightData.bossHP}%`}`,
+      `Causa raiz: ${analysis.wipeCause?.primary || 'mixed'}`,
+      '',
+      'Top 3 ações:',
+      actions || '1. Executar fight sem mortes evitáveis',
+    ].join('\n');
+
+    try {
+      setIsPostingBrief(true);
+      const response = await fetch('/api/raid-brief/discord', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      });
+      const json = await response.json();
+      if (!response.ok || !json?.ok) {
+        throw new Error(json?.error || 'Falha ao enviar brief para Discord');
+      }
+      toast({ title: 'Brief enviado', description: 'Resumo enviado para o Discord com sucesso.' });
+    } catch (error: any) {
+      toast({
+        title: 'Erro ao enviar',
+        description: error?.message || 'Não foi possível enviar o brief para Discord.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsPostingBrief(false);
+    }
   };
 
   const generateDiscordText = (analysis: AnalysisResult, fight: FightData) => {
@@ -1290,11 +1478,29 @@ export default function LogAnalysis() {
                   <Button variant="outline" size="sm" onClick={copyRaidBrief} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
                     <Sparkles className="h-3.5 w-3.5 mr-1.5" /> Brief
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={sendRaidBriefToDiscord}
+                    disabled={isPostingBrief}
+                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                  >
+                    {isPostingBrief ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Send className="h-3.5 w-3.5 mr-1.5" />}
+                    Discord
+                  </Button>
                   <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
                     <Copy className="h-3.5 w-3.5 mr-1.5" /> Copy
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => { setSelectedFight(null); setAnalysis(null); }} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
                     <RefreshCw className="h-3.5 w-3.5 mr-1.5" /> New
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowAdvanced((v) => !v)}
+                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                  >
+                    <BarChart3 className="h-3.5 w-3.5 mr-1.5" /> {showAdvanced ? 'Modo simples' : 'Modo avançado'}
                   </Button>
                 </div>
               </div>
@@ -1315,6 +1521,88 @@ export default function LogAnalysis() {
                 valueClass="text-emerald-400"
               />
             </div>
+          </div>
+
+          {/* RAID CALL QUICK PLAN */}
+          {analysis.nextPullActions && analysis.nextPullActions.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                <Crown className="h-5 w-5 text-wow-gold" /> Top 3 ações para o próximo pull
+              </h3>
+              <div className="space-y-2">
+                {analysis.nextPullActions.map((action) => (
+                  <div key={action.priority} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold text-tron-silver-200">
+                        #{action.priority} {action.title}
+                      </p>
+                      <Badge className="bg-wow-gold/20 text-wow-gold text-xs">{action.owner}</Badge>
+                    </div>
+                    <p className="text-xs text-tron-silver-400 mt-1">{action.reason}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {analysis.repeatedMistakes && analysis.repeatedMistakes.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                <Flame className="h-5 w-5 text-red-400" /> Erros repetidos (prioridade de correção)
+              </h3>
+              <div className="space-y-2">
+                {analysis.repeatedMistakes.map((mistake, index) => (
+                  <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                    <p className="text-sm text-tron-silver-200">
+                      <span className="font-semibold">{mistake.player}</span> morreu para <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* WIPE CAUSE + PULL DELTA */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {analysis.wipeCause && (
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5 text-amber-400" /> Causa raiz do pull
+                </h3>
+                <Badge className="mb-2 bg-amber-500/20 text-amber-400">
+                  {analysis.wipeCause.primary}
+                </Badge>
+                <p className="text-sm text-tron-silver-300">{analysis.wipeCause.details}</p>
+              </div>
+            )}
+
+            {analysis.pullDelta && (
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
+                </h3>
+                <div className="grid grid-cols-3 gap-3 text-sm">
+                  <div>
+                    <p className="text-tron-silver-500">HP Delta</p>
+                    <p className={analysis.pullDelta.bossHPDelta >= 0 ? 'text-green-400 font-semibold' : 'text-red-400 font-semibold'}>
+                      {analysis.pullDelta.bossHPDelta >= 0 ? '-' : '+'}{Math.abs(analysis.pullDelta.bossHPDelta)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-tron-silver-500">Tempo</p>
+                    <p className="text-tron-silver-200 font-semibold">{analysis.pullDelta.durationDelta > 0 ? '+' : ''}{analysis.pullDelta.durationDelta}s</p>
+                  </div>
+                  <div>
+                    <p className="text-tron-silver-500">Deaths</p>
+                    <p className="text-tron-silver-200 font-semibold">
+                      {typeof analysis.pullDelta.deathsDelta === 'number'
+                        ? `${analysis.pullDelta.deathsDelta > 0 ? '+' : ''}${analysis.pullDelta.deathsDelta}`
+                        : 'N/D'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* RAID CALL QUICK PLAN */}
@@ -1451,6 +1739,7 @@ export default function LogAnalysis() {
             </div>
           )}
 
+          {showAdvanced && ((analysis.mechanicScores && analysis.mechanicScores.length > 0) || (analysis.regressionAlerts && analysis.regressionAlerts.length > 0)) ? (
           {(analysis.mechanicScores && analysis.mechanicScores.length > 0) || (analysis.regressionAlerts && analysis.regressionAlerts.length > 0) ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {analysis.mechanicScores && analysis.mechanicScores.length > 0 && (
@@ -1494,6 +1783,7 @@ export default function LogAnalysis() {
             </div>
           ) : null}
 
+          {showAdvanced && analysis.bestPullChanges && analysis.bestPullChanges.length > 0 && (
           {analysis.bestPullChanges && analysis.bestPullChanges.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
@@ -1503,6 +1793,85 @@ export default function LogAnalysis() {
                 {analysis.bestPullChanges.map((change, idx) => (
                   <div key={`${change}-${idx}`} className="rounded-md bg-sky-500/10 border border-sky-500/20 p-2 text-sm text-tron-silver-200">
                     {change}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {showAdvanced && ((analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0) || (analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0) || typeof analysis.killProbability === 'number' || analysis.internalBenchmark) ? (
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+              {typeof analysis.killProbability === 'number' && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-lime-400" /> Kill Probability
+                  </h3>
+                  <p className="text-3xl font-bold text-lime-400">{analysis.killProbability}%</p>
+                  <p className="text-xs text-tron-silver-400 mt-1">Estimativa baseada em HP, mortes, mecânicas evitáveis e gaps de CD.</p>
+                </div>
+              )}
+
+              {analysis.internalBenchmark && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                    <Medal className="h-5 w-5 text-yellow-400" /> Benchmark interno
+                  </h3>
+                  <p className="text-2xl font-bold text-yellow-400">
+                    #{analysis.internalBenchmark.rank}/{analysis.internalBenchmark.total}
+                  </p>
+                  <p className="text-xs text-tron-silver-400 mt-1">
+                    Percentil interno: {analysis.internalBenchmark.percentile}
+                  </p>
+                </div>
+              )}
+
+              {analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0 && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-violet-400" /> CD Planner por fase
+                  </h3>
+                  <div className="space-y-2">
+                    {analysis.cooldownPlanner.slice(0, 5).map((item, idx) => (
+                      <div key={`${item.at}-${idx}`} className="rounded-md bg-violet-500/10 border border-violet-500/20 p-2 text-xs">
+                        <p className="text-tron-silver-200 font-medium">{formatTime(item.at)} [{item.phase}] {item.action}</p>
+                        <p className="text-tron-silver-400">{item.owner} • {item.reason}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0 && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                    <ShieldAlert className="h-5 w-5 text-fuchsia-400" /> Assignment breaks
+                  </h3>
+                  <div className="space-y-2">
+                    {analysis.assignmentBreaks.slice(0, 6).map((item, idx) => (
+                      <div key={`${item.owner}-${idx}`} className="rounded-md bg-fuchsia-500/10 border border-fuchsia-500/20 p-2 text-xs">
+                        <p className="text-tron-silver-200 font-medium">{item.owner}</p>
+                        <p className="text-tron-silver-400">{item.failure} • {item.count}x</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          {showAdvanced && analysis.bossProgression && analysis.bossProgression.length > 1 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-cyan-400" /> Histórico longitudinal do boss
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                {analysis.bossProgression.slice(-8).map((p) => (
+                  <div key={p.pullId} className="rounded-md bg-dark-700/40 p-2">
+                    <p className="text-tron-silver-300 font-semibold">Pull #{p.pullId}</p>
+                    <p className={p.kill ? 'text-green-400' : 'text-red-400'}>
+                      {p.kill ? 'KILL' : `HP ${p.hpRemaining}%`}
+                    </p>
+                    <p className="text-tron-silver-500">{p.duration}s</p>
                   </div>
                 ))}
               </div>
@@ -1626,7 +1995,7 @@ export default function LogAnalysis() {
           )}
 
           {/* BURST WINDOW EFFICIENCY */}
-          {analysis.burstWindows && analysis.burstWindows.length > 0 && (
+          {showAdvanced && analysis.burstWindows && analysis.burstWindows.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
                 <Zap className="h-5 w-5 text-wow-gold" /> Eficiência de Burst Window
@@ -1656,6 +2025,7 @@ export default function LogAnalysis() {
           )}
 
           {/* Performance Bars */}
+          {showAdvanced && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { label: 'DPS Score', score: analysis.raidEfficiency?.dps || 0, color: 'bg-red-500', desc: 'Damage output efficiency' },
@@ -1674,6 +2044,7 @@ export default function LogAnalysis() {
               </div>
             ))}
           </div>
+          )}
 
           {/* Players Section - Collapsible */}
           <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
@@ -1726,12 +2097,12 @@ export default function LogAnalysis() {
           </div>
 
           {/* PHASE 2 ANALYSIS - Advanced Insights */}
-          {currentFight && (
+          {showAdvanced && currentFight && (
             <Phase2Analysis fight={currentFight} report={report} />
           )}
 
           {/* PHASE 3 - PROGRESSION TRACKING */}
-          {currentFight && (
+          {showAdvanced && currentFight && (
             <ProgressionTracking bossName={fightData.bossName} report={report} />
           )}
 

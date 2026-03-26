@@ -127,6 +127,12 @@ Profile sync snapshots are persisted in `.wowtron-cache/player-history/` (up to 
 If `SUPABASE_URL` + (`SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`) are configured, snapshot persistence uses Supabase (free tier friendly) instead of local files.
 Detailed setup guide: `docs/supabase-setup-guide.md`.
 
+For native Discord brief posting, configure:
+
+```bash
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+```
+
 ## Deployment
 
 ### Vercel (Recommended)
