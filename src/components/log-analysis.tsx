@@ -1561,6 +1561,49 @@ export default function LogAnalysis() {
                 valueClass="text-emerald-400"
               />
             </div>
+          )}
+
+          {/* WIPE CAUSE + PULL DELTA */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {analysis.wipeCause && (
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5 text-amber-400" /> Causa raiz do pull
+                </h3>
+                <Badge className="mb-2 bg-amber-500/20 text-amber-400">
+                  {analysis.wipeCause.primary}
+                </Badge>
+                <p className="text-sm text-tron-silver-300">{analysis.wipeCause.details}</p>
+              </div>
+            )}
+
+            {analysis.pullDelta && (
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
+                </h3>
+                <div className="grid grid-cols-3 gap-3 text-sm">
+                  <div>
+                    <p className="text-tron-silver-500">HP Delta</p>
+                    <p className={analysis.pullDelta.bossHPDelta >= 0 ? 'text-green-400 font-semibold' : 'text-red-400 font-semibold'}>
+                      {analysis.pullDelta.bossHPDelta >= 0 ? '-' : '+'}{Math.abs(analysis.pullDelta.bossHPDelta)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-tron-silver-500">Tempo</p>
+                    <p className="text-tron-silver-200 font-semibold">{analysis.pullDelta.durationDelta > 0 ? '+' : ''}{analysis.pullDelta.durationDelta}s</p>
+                  </div>
+                  <div>
+                    <p className="text-tron-silver-500">Deaths</p>
+                    <p className="text-tron-silver-200 font-semibold">
+                      {typeof analysis.pullDelta.deathsDelta === 'number'
+                        ? `${analysis.pullDelta.deathsDelta > 0 ? '+' : ''}${analysis.pullDelta.deathsDelta}`
+                        : 'N/D'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* RAID CALL QUICK PLAN */}
