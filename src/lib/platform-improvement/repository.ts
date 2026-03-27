@@ -32,6 +32,21 @@ import type {
   SnapshotQualityRecord,
 } from './types';
 
+function logPersistenceWarning(scope: string, error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  console.warn(`[platform-improvement] ${scope} persistence skipped: ${message}`);
+}
+
+async function runBestEffort(scope: string, operation: () => Promise<unknown>) {
+  try {
+    await operation();
+    return true;
+  } catch (error) {
+    logPersistenceWarning(scope, error);
+    return false;
+  }
+}
+
 function hashValue(value: string) {
   return createHash('sha256').update(value).digest('hex');
 }
@@ -147,8 +162,12 @@ export async function persistRawLogArtifact(record: Omit<RawLogArtifactRecord, '
     capturedAt: new Date().toISOString(),
   };
 
-  await writeRawArtifact(record.artifactType, record.cacheKey, normalized);
-  await persistRawLogArtifactToDb(normalized);
+  await runBestEffort(`raw-artifact:file:${record.cacheKey}`, () =>
+    writeRawArtifact(record.artifactType, record.cacheKey, normalized)
+  );
+  await runBestEffort(`raw-artifact:db:${record.cacheKey}`, () =>
+    persistRawLogArtifactToDb(normalized)
+  );
   return normalized;
 }
 
@@ -157,10 +176,14 @@ export async function persistFightRecord(fight: FightData, reportCode: string, s
   const players = normalizeFightPlayers(fight, reportCode);
   const phases = normalizeFightPhases(fight, reportCode);
 
-  await writeStructuredRecord('fight-records', fightRecord.key, fightRecord);
-  await Promise.all(players.map((player) => writeStructuredRecord('fight-player-records', player.key, player)));
-  await Promise.all(phases.map((phase) => writeStructuredRecord('fight-phase-records', phase.key, phase)));
-  await persistFightBundleToDb(fightRecord, players, phases);
+  await runBestEffort(`fight-record:file:${fightRecord.key}`, async () => {
+    await writeStructuredRecord('fight-records', fightRecord.key, fightRecord);
+    await Promise.all(players.map((player) => writeStructuredRecord('fight-player-records', player.key, player)));
+    await Promise.all(phases.map((phase) => writeStructuredRecord('fight-phase-records', phase.key, phase)));
+  });
+  await runBestEffort(`fight-record:db:${fightRecord.key}`, () =>
+    persistFightBundleToDb(fightRecord, players, phases)
+  );
   return { fightRecord, players, phases };
 }
 
@@ -201,49 +224,81 @@ export async function persistAnalyzerRun(args: {
     analysis: args.analysis,
   };
 
-  await writeStructuredRecord('analyzer-runs', record.key, record);
-  await persistAnalyzerRunToDb(record);
+  await runBestEffort(`analyzer-run:file:${record.key}`, () =>
+    writeStructuredRecord('analyzer-runs', record.key, record)
+  );
+  await runBestEffort(`analyzer-run:db:${record.key}`, () =>
+    persistAnalyzerRunToDb(record)
+  );
   return record;
 }
 
 export async function persistCoverageRollup(record: CoverageRollupRecord) {
-  await writeStructuredRecord('coverage-rollups', record.key, record);
-  await persistCoverageRollupToDb(record);
+  await runBestEffort(`coverage-rollup:file:${record.key}`, () =>
+    writeStructuredRecord('coverage-rollups', record.key, record)
+  );
+  await runBestEffort(`coverage-rollup:db:${record.key}`, () =>
+    persistCoverageRollupToDb(record)
+  );
   return record;
 }
 
 export async function persistCalibrationReview(record: CalibrationReviewRecord) {
-  await writeStructuredRecord('calibration-reviews', record.key, record);
-  await persistCalibrationReviewToDb(record);
+  await runBestEffort(`calibration-review:file:${record.key}`, () =>
+    writeStructuredRecord('calibration-reviews', record.key, record)
+  );
+  await runBestEffort(`calibration-review:db:${record.key}`, () =>
+    persistCalibrationReviewToDb(record)
+  );
   return record;
 }
 
 export async function persistRulepackGap(record: RulepackGapRecord) {
-  await writeStructuredRecord('rulepack-gaps', record.key, record);
-  await persistRulepackGapToDb(record);
+  await runBestEffort(`rulepack-gap:file:${record.key}`, () =>
+    writeStructuredRecord('rulepack-gaps', record.key, record)
+  );
+  await runBestEffort(`rulepack-gap:db:${record.key}`, () =>
+    persistRulepackGapToDb(record)
+  );
   return record;
 }
 
 export async function persistOutputQualityReview(record: OutputQualityReviewRecord) {
-  await writeStructuredRecord('output-quality-reviews', record.key, record);
-  await persistOutputQualityReviewToDb(record);
+  await runBestEffort(`output-quality:file:${record.key}`, () =>
+    writeStructuredRecord('output-quality-reviews', record.key, record)
+  );
+  await runBestEffort(`output-quality:db:${record.key}`, () =>
+    persistOutputQualityReviewToDb(record)
+  );
   return record;
 }
 
 export async function persistAnalyzerHealthSnapshot(record: AnalyzerHealthSnapshotRecord) {
-  await writeStructuredRecord('analyzer-health-snapshots', record.key, record);
-  await persistAnalyzerHealthSnapshotToDb(record);
+  await runBestEffort(`analyzer-health:file:${record.key}`, () =>
+    writeStructuredRecord('analyzer-health-snapshots', record.key, record)
+  );
+  await runBestEffort(`analyzer-health:db:${record.key}`, () =>
+    persistAnalyzerHealthSnapshotToDb(record)
+  );
   return record;
 }
 
 export async function persistImprovementBacklog(record: ImprovementBacklogRecord) {
-  await writeStructuredRecord('improvement-backlog-items', record.key, record);
-  await persistImprovementBacklogToDb(record);
+  await runBestEffort(`improvement-backlog:file:${record.key}`, () =>
+    writeStructuredRecord('improvement-backlog-items', record.key, record)
+  );
+  await runBestEffort(`improvement-backlog:db:${record.key}`, () =>
+    persistImprovementBacklogToDb(record)
+  );
   return record;
 }
 
 export async function persistReviewCadenceSnapshot(record: ReviewCadenceSnapshotRecord) {
-  await writeStructuredRecord('review-cadence-snapshots', record.key, record);
-  await persistReviewCadenceSnapshotToDb(record);
+  await runBestEffort(`review-cadence:file:${record.key}`, () =>
+    writeStructuredRecord('review-cadence-snapshots', record.key, record)
+  );
+  await runBestEffort(`review-cadence:db:${record.key}`, () =>
+    persistReviewCadenceSnapshotToDb(record)
+  );
   return record;
 }
