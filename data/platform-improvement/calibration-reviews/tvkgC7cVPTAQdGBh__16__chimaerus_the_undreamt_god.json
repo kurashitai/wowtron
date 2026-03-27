@@ -1,0 +1,40 @@
+{
+  "key": "tvkgC7cVPTAQdGBh__16__chimaerus_the_undreamt_god",
+  "bossName": "Chimaerus the Undreamt God",
+  "reportCode": "tvkgC7cVPTAQdGBh",
+  "fightId": 16,
+  "fixtureType": "wipe_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "add control",
+      "Cosmic Rupture",
+      "soak",
+      "tank stability"
+    ],
+    "expectedCauseChainIncludes": [
+      "add control",
+      "Cosmic Rupture",
+      "soak ownership",
+      "control loss"
+    ],
+    "expectedOwners": [
+      "Assigned kickers",
+      "Healers + RL",
+      "Raid",
+      "Tanks"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "gear issue",
+      "healing issue only"
+    ],
+    "reviewerNotes": "Early MQD draft. Keep the analyzer broad and conservative. The current useful read is coordination-first: add control, healer coverage, soak ownership, and tank stability."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

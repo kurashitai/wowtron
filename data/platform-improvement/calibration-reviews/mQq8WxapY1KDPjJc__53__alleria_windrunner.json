@@ -1,0 +1,39 @@
+{
+  "key": "mQq8WxapY1KDPjJc__53__alleria_windrunner",
+  "bossName": "Alleria Windrunner",
+  "reportCode": "mQq8WxapY1KDPjJc",
+  "fightId": 53,
+  "fixtureType": "wipe_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "movement",
+      "add control",
+      "Barrage",
+      "Void Collapse"
+    ],
+    "expectedCauseChainIncludes": [
+      "movement",
+      "add control",
+      "Void Collapse",
+      "raid instability"
+    ],
+    "expectedOwners": [
+      "Assigned kickers",
+      "Healers + RL",
+      "Raid"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "gear issue",
+      "hard throughput wall"
+    ],
+    "reviewerNotes": "Early MQD draft. Keep the analyzer conservative. The best current read is movement discipline, add control, Barrage ownership, and healer coverage, not raw throughput blame."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

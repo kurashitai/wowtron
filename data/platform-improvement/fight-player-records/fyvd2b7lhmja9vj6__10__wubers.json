@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__wubers",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 19,
+  "name": "Wubers",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 257,
+  "server": "Malfurion",
+  "dps": 0,
+  "hps": 1916,
+  "dtps": 0,
+  "activeTime": 77,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

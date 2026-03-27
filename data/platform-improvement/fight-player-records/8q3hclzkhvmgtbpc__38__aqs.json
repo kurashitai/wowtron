@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__aqs",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 14,
+  "name": "Aqs",
+  "role": "healer",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 251,
+  "server": "Sargeras",
+  "dps": 62094,
+  "hps": 4491,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 19,
+  "avoidableDamageTaken": 0
+}

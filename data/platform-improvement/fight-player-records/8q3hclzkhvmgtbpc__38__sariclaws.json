@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__sariclaws",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 24,
+  "name": "Sariclaws",
+  "role": "dps",
+  "className": "Druid",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 252,
+  "server": "Sargeras",
+  "dps": 51459,
+  "hps": 1947,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 0,
+  "rankPercent": 36,
+  "avoidableDamageTaken": 0
+}

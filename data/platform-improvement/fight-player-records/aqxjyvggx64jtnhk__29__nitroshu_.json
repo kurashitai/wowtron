@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:elemental",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__nitroshu_",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 14,
+  "name": "Nitroshuá",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Elemental",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "Stormrage",
+  "dps": 49387,
+  "hps": 5337,
+  "dtps": 0,
+  "activeTime": 88,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

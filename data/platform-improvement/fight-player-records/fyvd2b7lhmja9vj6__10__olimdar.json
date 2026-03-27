@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:restoration",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__olimdar",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 23,
+  "name": "Olimdar",
+  "role": "healer",
+  "className": "Shaman",
+  "spec": "Restoration",
+  "talents": [],
+  "itemLevel": 260,
+  "server": "Kael'thas",
+  "dps": 0,
+  "hps": 7818,
+  "dtps": 0,
+  "activeTime": 60,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:demonology",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__dotterparty",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 886,
+  "name": "Dotterparty",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Demonology",
+  "talents": [],
+  "itemLevel": 233,
+  "server": "Cho'gall",
+  "dps": 33226,
+  "hps": 2377,
+  "dtps": 0,
+  "activeTime": 18,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -42,6 +42,7 @@ export interface PlayerStats {
   class: string;
   spec: string;
   role: 'tank' | 'healer' | 'dps';
+  talents?: string[];
   itemLevel: number;
   server: string;
   
@@ -248,9 +249,9 @@ export interface FightData {
   
   // Player Details from WCL (for accurate role detection)
   playerDetails?: {
-    tanks: { name: string; class: string; spec: string }[];
-    healers: { name: string; class: string; spec: string }[];
-    dps: { name: string; class: string; spec: string }[];
+    tanks: { name: string; class: string; spec: string; talents?: unknown[]; combatantInfo?: { talents?: unknown[]; pvpTalents?: unknown[] } }[];
+    healers: { name: string; class: string; spec: string; talents?: unknown[]; combatantInfo?: { talents?: unknown[]; pvpTalents?: unknown[] } }[];
+    dps: { name: string; class: string; spec: string; talents?: unknown[]; combatantInfo?: { talents?: unknown[]; pvpTalents?: unknown[] } }[];
   };
 }
 

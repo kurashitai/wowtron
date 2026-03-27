@@ -1,0 +1,22 @@
+{
+  "key": "r3xjWwKB6X7F8ALT__65__vorasius",
+  "bossName": "Vorasius",
+  "reportCode": "r3xjWwKB6X7F8ALT",
+  "fightId": 65,
+  "source": "heuristic_review",
+  "payload": {
+    "biggestBlockerBelievable": true,
+    "nextWipeBelievable": true,
+    "topActionsActionable": true,
+    "causeChainUseful": true,
+    "bossMemoryReady": true,
+    "reliabilityHighlightsReady": true,
+    "calibrationPassed": true,
+    "calibrationScore": 75,
+    "findings": [
+      "Cause chain did not include the expected wipe story."
+    ],
+    "topInsightSummary": "Phase 3: Unending Hunger is the progression breakpoint for this pull."
+  },
+  "reviewedAt": "2026-03-27T06:45:41.575Z"
+}

@@ -1,0 +1,188 @@
+{
+  "generatedAt": "2026-03-27T05:05:20.786Z",
+  "runs": [
+    {
+      "recordedAt": "2026-03-27T05:05:20.786Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:05:20.761Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 0,
+        "failed": 9,
+        "averageScore": 0
+      },
+      "regression": null
+    },
+    {
+      "recordedAt": "2026-03-27T05:10:03.473Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:07:02.221Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 100
+      },
+      "regression": {
+        "averageScoreDelta": 100,
+        "passedDelta": 9,
+        "failedDelta": -9
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:15:51.117Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:15:51.100Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 100
+      },
+      "regression": {
+        "averageScoreDelta": 0,
+        "passedDelta": 0,
+        "failedDelta": 0
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:17:53.414Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:15:51.100Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 100
+      },
+      "regression": {
+        "averageScoreDelta": 0,
+        "passedDelta": 0,
+        "failedDelta": 0
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:18:10.683Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:17:53.414Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 2,
+        "failed": 7,
+        "averageScore": 51
+      },
+      "regression": {
+        "averageScoreDelta": -49,
+        "passedDelta": -7,
+        "failedDelta": 7
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:22:43.681Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:22:43.384Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 8,
+        "failed": 1,
+        "averageScore": 93
+      },
+      "regression": {
+        "averageScoreDelta": 42,
+        "passedDelta": 6,
+        "failedDelta": -6
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:23:44.350Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:23:34.049Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 97
+      },
+      "regression": {
+        "averageScoreDelta": 4,
+        "passedDelta": 1,
+        "failedDelta": -1
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:41:07.954Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:40:32.006Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 97
+      },
+      "regression": {
+        "averageScoreDelta": 0,
+        "passedDelta": 0,
+        "failedDelta": 0
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:48:09.117Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:47:55.352Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 97
+      },
+      "regression": {
+        "averageScoreDelta": 0,
+        "passedDelta": 0,
+        "failedDelta": 0
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T05:54:32.632Z",
+      "summary": {
+        "generatedAt": "2026-03-27T05:47:55.352Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "averageScore": 97
+      },
+      "regression": {
+        "averageScoreDelta": 0,
+        "passedDelta": 0,
+        "failedDelta": 0
+      }
+    },
+    {
+      "recordedAt": "2026-03-27T14:14:01.656Z",
+      "summary": {
+        "generatedAt": "2026-03-27T14:14:01.337Z",
+        "fixturesPath": "data/midnight-reviewed-fixtures.json",
+        "snapshotsPath": "data/midnight-calibration-snapshots.json",
+        "total": 11,
+        "passed": 11,
+        "failed": 0,
+        "averageScore": 98
+      },
+      "regression": {
+        "averageScoreDelta": 1,
+        "passedDelta": 2,
+        "failedDelta": 0
+      }
+    }
+  ]
+}

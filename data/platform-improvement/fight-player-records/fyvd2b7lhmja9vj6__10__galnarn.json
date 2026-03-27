@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:brewmaster",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__galnarn",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 17,
+  "name": "Galnarn",
+  "role": "tank",
+  "className": "Monk",
+  "spec": "Brewmaster",
+  "talents": [],
+  "itemLevel": 267,
+  "server": "Kael'thas",
+  "dps": 1,
+  "hps": 32189,
+  "dtps": 0,
+  "activeTime": 97,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

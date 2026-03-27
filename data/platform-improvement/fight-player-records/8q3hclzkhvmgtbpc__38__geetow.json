@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:demonology",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__geetow",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 21,
+  "name": "Geetow",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Demonology",
+  "talents": [],
+  "itemLevel": 251,
+  "server": "Area52",
+  "dps": 50587,
+  "hps": 3704,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 19,
+  "avoidableDamageTaken": 0
+}

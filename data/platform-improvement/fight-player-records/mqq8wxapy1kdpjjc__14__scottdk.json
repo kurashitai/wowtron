@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:blood",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__scottdk",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 40,
+  "name": "Scottdk",
+  "role": "tank",
+  "className": "DeathKnight",
+  "spec": "Blood",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Illidan",
+  "dps": 1,
+  "hps": 25090,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

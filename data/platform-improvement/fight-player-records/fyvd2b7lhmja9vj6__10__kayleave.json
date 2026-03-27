@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:shadow",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__kayleave",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 22,
+  "name": "Kayleave",
+  "role": "dps",
+  "className": "Priest",
+  "spec": "Shadow",
+  "talents": [],
+  "itemLevel": 263,
+  "server": "Lothar",
+  "dps": 1,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

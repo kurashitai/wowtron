@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__tanishalfelf",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 20,
+  "name": "Tanishalfelf",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 249,
+  "server": "Stormrage",
+  "dps": 1,
+  "hps": 6467,
+  "dtps": 0,
+  "activeTime": 70,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

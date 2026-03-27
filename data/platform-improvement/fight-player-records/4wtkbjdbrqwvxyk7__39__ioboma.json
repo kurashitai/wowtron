@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:frost",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__ioboma",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 888,
+  "name": "Ioboma",
+  "role": "dps",
+  "className": "Mage",
+  "spec": "Frost",
+  "talents": [],
+  "itemLevel": 233,
+  "server": "Ghostlands",
+  "dps": 42308,
+  "hps": 20352,
+  "dtps": 0,
+  "activeTime": 19,
+  "deaths": 1,
+  "rankPercent": 1,
+  "avoidableDamageTaken": 0
+}

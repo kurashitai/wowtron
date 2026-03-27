@@ -34,6 +34,41 @@ export {
   type PlayerComparison
 } from './pull-comparison';
 
+// Insight contracts and supporting engines
+export type {
+  BriefInsight,
+  AssignmentAssessment,
+  AssignmentPlan,
+  InsightSnapshot,
+  PhaseSuccessCriterion,
+} from './log-insight-types';
+export { getBossRulePackInsight } from './boss-rule-engine';
+export { buildInsightSnapshot, loadInsightSnapshots, loadInsightSnapshotsForReport, persistInsightSnapshot, exportInsightSnapshots } from './insight-snapshots';
+export { calibrateSnapshot, calibrateSnapshots, type CalibrationFixture, type CalibrationResult } from './calibration';
+export { analyzeLogFight, type AnalyzeLogFightParams, type AnalysisResult as LogAnalysisResult, type FightData as LogAnalysisFightData } from './log-analysis-engine';
+export {
+  buildBossMemory,
+  buildPlayerReliabilityTrends,
+  buildSessionReview,
+  buildSessionCommandCenter,
+  buildNightComparison,
+  buildGuildBossKnowledge,
+  buildPlayerBossCoachingMemory,
+  buildSessionRecap,
+} from './progression-memory';
+export {
+  diagnoseLowDPS,
+  EMPTY_ASSIGNMENT_PLAN,
+  extractPlanOwners,
+  getExpectedDPS,
+  getExpectedMechanicOccurrences,
+  getPhaseAtTime,
+  guessIfAvoidable,
+  mechanicTipFromContext,
+  normalizePlanLines,
+  resolveBossData,
+} from './log-analysis-helpers';
+
 // ============================================
 // COMBINED ANALYSIS FUNCTION
 // ============================================

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:beastmastery",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__boxiebrown",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 160,
+  "name": "Boxiebrown",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "BeastMastery",
+  "talents": [],
+  "itemLevel": 242,
+  "server": "Ghostlands",
+  "dps": 41327,
+  "hps": 676,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 43,
+  "avoidableDamageTaken": 0
+}

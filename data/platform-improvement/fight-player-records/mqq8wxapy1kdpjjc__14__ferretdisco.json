@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__ferretdisco",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 43,
+  "name": "Ferretdisco",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 239,
+  "server": "Illidan",
+  "dps": 1,
+  "hps": 144,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

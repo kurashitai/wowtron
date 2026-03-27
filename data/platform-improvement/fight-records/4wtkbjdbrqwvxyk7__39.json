@@ -1,0 +1,44 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__39",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 39,
+  "bossName": "Vaelgor & Ezzorak",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Normal",
+  "kill": true,
+  "bossHPPercent": 0,
+  "durationSec": 457,
+  "startTime": 7586282,
+  "endTime": 8043554,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:13:17.140Z",
+  "composition": {
+    "tanks": 2,
+    "healers": 6,
+    "dps": 16,
+    "total": 24,
+    "bloodlust": false,
+    "brez": 5
+  },
+  "summary": {
+    "raidDPS": 842880,
+    "raidHPS": 369102,
+    "raidDTPS": 0,
+    "totalDamage": 385196368,
+    "totalHealing": 168680003,
+    "totalDamageTaken": 182539506,
+    "deaths": 3,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 24,
+    "deaths": 3,
+    "timelineEvents": 3,
+    "combatEvents": 5000,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

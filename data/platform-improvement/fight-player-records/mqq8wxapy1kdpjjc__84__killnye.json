@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:havoc",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__84__killnye",
+  "fightKey": "mQq8WxapY1KDPjJc__84",
+  "actorId": 481,
+  "name": "Killnye",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Havoc",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "EmeraldDream",
+  "dps": 1,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 79,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

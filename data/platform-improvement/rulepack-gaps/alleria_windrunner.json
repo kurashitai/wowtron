@@ -1,0 +1,33 @@
+{
+  "key": "alleria_windrunner",
+  "bossName": "Alleria Windrunner",
+  "status": "ready_for_rules",
+  "payload": {
+    "coverage": {
+      "totalPulls": 24,
+      "kills": 0,
+      "wipes": 24,
+      "bestWipeHP": 100,
+      "goodAssignmentSignal": 0,
+      "poorDataQuality": 24
+    },
+    "reviewedFixtureCount": 1,
+    "expectedMechanics": [
+      "Windrunner Adds",
+      "Void Collapse",
+      "Barrage ownership"
+    ],
+    "expectedAssignmentTypes": [
+      "interrupt",
+      "soak",
+      "raid_cd"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Improve public coverage quality before adding deeper rules."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

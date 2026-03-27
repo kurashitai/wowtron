@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:demonology",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__camporezi",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 84,
+  "name": "Camporezi",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Demonology",
+  "talents": [],
+  "itemLevel": 251,
+  "server": "Azralon",
+  "dps": 58222,
+  "hps": 6732,
+  "dtps": 0,
+  "activeTime": 88,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

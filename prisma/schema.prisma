@@ -6,8 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
 
 // User Model - Platform users
@@ -266,4 +265,222 @@ model Notification {
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@map("notifications")
+}
+
+model RawLogArtifact {
+  key         String   @id
+  artifactType String
+  source      String
+  cacheKey    String   @unique
+  reportCode  String?
+  fightId     Int?
+  bossName    String?
+  contentHash String
+  payload     Json
+  metadata    Json?
+  capturedAt  DateTime
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([artifactType, capturedAt])
+  @@index([reportCode, fightId])
+  @@map("raw_log_artifacts")
+}
+
+model FightRecord {
+  key               String            @id
+  reportCode        String
+  fightId           Int
+  bossName          String
+  zone              String
+  difficulty        String
+  kill              Boolean
+  bossHPPercent     Float?
+  durationSec       Int
+  startTime         BigInt?
+  endTime           BigInt?
+  source            String
+  capturedAt        DateTime
+  composition       Json
+  summary           Json
+  bossContextSource String?
+  dataQuality       Json?
+  players           FightPlayerRecord[]
+  phases            FightPhaseRecord[]
+  analyzerRuns      AnalyzerRun[]
+
+  @@unique([reportCode, fightId])
+  @@index([bossName, kill])
+  @@index([zone, bossName])
+  @@map("fight_records")
+}
+
+model FightPlayerRecord {
+  key                 String      @id
+  fightKey            String
+  fight               FightRecord @relation(fields: [fightKey], references: [key], onDelete: Cascade)
+  actorId             Int?
+  name                String
+  role                String
+  className           String
+  spec                String
+  talents             Json?
+  buildSignature      String?
+  buildSource         String?
+  itemLevel           Int
+  server              String?
+  dps                 Int
+  hps                 Int
+  dtps                Int
+  activeTime          Int
+  deaths              Int
+  rankPercent         Float
+  reliabilityScore    Int?
+  avoidableDamageTaken Int?
+
+  @@index([fightKey, role])
+  @@index([name])
+  @@map("fight_player_records")
+}
+
+model FightPhaseRecord {
+  key       String      @id
+  fightKey  String
+  fight     FightRecord @relation(fields: [fightKey], references: [key], onDelete: Cascade)
+  ordinal   Int
+  name      String
+  startTime BigInt
+  endTime   BigInt
+
+  @@unique([fightKey, ordinal])
+  @@map("fight_phase_records")
+}
+
+model AnalyzerRun {
+  key             String      @id
+  fightKey        String
+  fight           FightRecord @relation(fields: [fightKey], references: [key], onDelete: Cascade)
+  reportCode      String
+  fightId         Int
+  bossName        String
+  source          String
+  analyzerVersion String
+  recordedAt      DateTime
+  summaryText     String?
+  topOwner        String?
+  topPhase        String?
+  snapshotQuality Json
+  snapshot        Json
+  analysis        Json
+  createdAt       DateTime @default(now())
+
+  @@index([bossName, recordedAt])
+  @@index([reportCode, fightId])
+  @@map("analyzer_runs")
+}
+
+model CalibrationReview {
+  key           String   @id
+  bossName      String
+  reportCode    String
+  fightId       Int
+  fixtureType   String
+  expected      Json
+  actual        Json?
+  passed        Boolean?
+  failureReason String?
+  tags          Json?
+  reviewedAt    DateTime?
+  source        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([bossName])
+  @@index([reportCode, fightId])
+  @@map("calibration_reviews")
+}
+
+model CoverageRollup {
+  key         String   @id
+  scope       String
+  bossName    String?
+  zone        String?
+  payload     Json
+  generatedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([scope, bossName])
+  @@map("coverage_rollups")
+}
+
+model RulepackGap {
+  key       String   @id
+  bossName  String
+  phaseName String?
+  status    String
+  payload   Json
+  updatedAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([bossName, phaseName])
+  @@map("rulepack_gaps")
+}
+
+model OutputQualityReview {
+  key         String   @id
+  bossName    String?
+  reportCode  String?
+  fightId     Int?
+  source      String
+  payload     Json
+  reviewedAt  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([bossName, reviewedAt])
+  @@map("output_quality_reviews")
+}
+
+model AnalyzerHealthSnapshot {
+  key         String   @id
+  scope       String
+  payload     Json
+  generatedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([scope, generatedAt])
+  @@map("analyzer_health_snapshots")
+}
+
+model ImprovementBacklogItem {
+  key           String   @id
+  category      String
+  status        String
+  priorityScore Int
+  bossName      String?
+  title         String
+  rationale     String
+  payload       Json
+  generatedAt   DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([priorityScore, category])
+  @@index([bossName, generatedAt])
+  @@map("improvement_backlog_items")
+}
+
+model ReviewCadenceSnapshot {
+  key         String   @id
+  scope       String
+  payload     Json
+  generatedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([scope, generatedAt])
+  @@map("review_cadence_snapshots")
 }

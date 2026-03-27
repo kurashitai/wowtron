@@ -1,0 +1,32 @@
+{
+  "key": "vaelgor_ezzorak",
+  "bossName": "Vaelgor & Ezzorak",
+  "status": "stable",
+  "payload": {
+    "coverage": {
+      "totalPulls": 111,
+      "kills": 34,
+      "wipes": 77,
+      "bestWipeHP": 0,
+      "goodAssignmentSignal": 73,
+      "poorDataQuality": 11
+    },
+    "reviewedFixtureCount": 2,
+    "expectedMechanics": [
+      "Duplicate control",
+      "Twisted Fusion",
+      "Shadow Nova"
+    ],
+    "expectedAssignmentTypes": [
+      "raid_cd",
+      "assignment"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Maintain and expand with phase-specific false-positive suppressors."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

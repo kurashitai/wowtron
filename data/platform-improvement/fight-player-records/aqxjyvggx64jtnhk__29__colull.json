@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:restoration",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__colull",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 7,
+  "name": "Colull",
+  "role": "healer",
+  "className": "Druid",
+  "spec": "Restoration",
+  "talents": [],
+  "itemLevel": 248,
+  "server": "Stormrage",
+  "dps": 1170,
+  "hps": 36776,
+  "dtps": 0,
+  "activeTime": 72,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

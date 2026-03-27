@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:preservation",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__68__nicksevokerw",
+  "fightKey": "mQq8WxapY1KDPjJc__68",
+  "actorId": 490,
+  "name": "Nicksevokerw",
+  "role": "healer",
+  "className": "Evoker",
+  "spec": "Preservation",
+  "talents": [],
+  "itemLevel": 244,
+  "server": "Illidan",
+  "dps": 0,
+  "hps": 10010,
+  "dtps": 0,
+  "activeTime": 86,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

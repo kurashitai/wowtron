@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__ando",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 800,
+  "name": "Ando",
+  "role": "dps",
+  "className": "Druid",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 234,
+  "server": "Ghostlands",
+  "dps": 50158,
+  "hps": 4547,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 56,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,11 @@
+{
+  "sources": [
+    {
+      "guildName": "Example Guild",
+      "guildServerSlug": "stormrage",
+      "guildServerRegion": "US",
+      "zoneID": 38,
+      "limit": 10
+    }
+  ]
+}

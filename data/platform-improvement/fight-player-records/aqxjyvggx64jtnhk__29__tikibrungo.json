@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__tikibrungo",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 81,
+  "name": "Tikibrungo",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 252,
+  "server": "BleedingHollow",
+  "dps": 54147,
+  "hps": 5290,
+  "dtps": 0,
+  "activeTime": 76,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,24 +1,50 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   Skull, AlertTriangle, CheckCircle, XCircle, Clock, Users, Zap,
-  Search, Copy, Loader2, Send, ChevronRight, TrendingUp,
+  Loader2, Send, ChevronRight, TrendingUp,
   TrendingDown, Minus, Flame, Target, Shield, Heart, Activity,
   BarChart3, Timer, RefreshCw, ChevronDown, ChevronUp,
   Star, Swords, ShieldAlert, AlertCircle, Sparkles, Gauge,
   Trophy, Medal, Award, Crown, Flame as Fire, Info,
-  ArrowRight, GitBranch, Clock4, ShieldCheck
+  ArrowRight, GitBranch, Clock4, ShieldCheck, Download
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { getClassColor } from '@/lib/wow-data';
+import { buildInsightSnapshot, exportInsightSnapshots, loadInsightSnapshots, loadInsightSnapshotsForReport, persistInsightSnapshot } from '@/lib/analysis/insight-snapshots';
+import {
+  buildBossMemory,
+  buildGuildBossKnowledge,
+  buildNightComparison,
+  buildPlayerBossCoachingMemory,
+  buildPlayerReliabilityTrends,
+  buildSessionRecap,
+  buildSessionCommandCenter,
+  buildSessionReview,
+} from '@/lib/analysis/progression-memory';
+import { analyzeLogFight } from '@/lib/analysis/log-analysis-engine';
+import {
+  EMPTY_ASSIGNMENT_PLAN,
+} from '@/lib/analysis/log-analysis-helpers';
+import type {
+  AssignmentAssessment,
+  AssignmentPlan,
+  AssignmentPlanOverview,
+  BriefInsight,
+  CommandDecision,
+  InsightSnapshot,
+  PhaseReadiness,
+  PhaseSuccessCriterion,
+} from '@/lib/analysis/log-insight-types';
 import { Phase2Analysis } from './phase2-analysis';
-import { ProgressionTracking } from './progression-tracking';
 
 // Types
 interface ReportData {
@@ -90,6 +116,16 @@ interface AnalysisResult {
   };
   // NEW: Valuable insights
   deathCascade?: DeathCascadeAnalysis;
+  causeChains?: string[];
+  causeChainDetails?: {
+    id: string;
+    owner: string;
+    phase: string;
+    steps: {
+      label: 'first_failure' | 'immediate_consequence' | 'failed_recovery' | 'wipe_conversion';
+      text: string;
+    }[];
+  }[];
   cooldownGaps?: CooldownGapAnalysis[];
   burstWindows?: BurstWindowAnalysis[];
   nextPullActions?: NextPullAction[];
@@ -107,6 +143,7 @@ interface AnalysisResult {
     avoidableDeaths: number;
     dominantCause: 'mechanics' | 'throughput' | 'cooldown_gap' | 'stable';
   }[];
+  phaseSuccessCriteria?: PhaseSuccessCriterion[];
   pullTrend?: {
     sampleSize: number;
     avgDeathsPrev: number;
@@ -129,6 +166,11 @@ interface AnalysisResult {
   }[];
   regressionAlerts?: string[];
   bestPullChanges?: string[];
+  categoryDelta?: {
+    mechanics: number;
+    cooldowns: number;
+    throughput: number;
+  };
   cooldownPlanner?: {
     at: number;
     phase: string;
@@ -136,6 +178,8 @@ interface AnalysisResult {
     owner: string;
     reason: string;
   }[];
+  assignmentAssessments?: AssignmentAssessment[];
+  assignmentPlanOverview?: AssignmentPlanOverview;
   assignmentBreaks?: {
     owner: string;
     failure: string;
@@ -152,7 +196,14 @@ interface AnalysisResult {
     rank: number;
     total: number;
     percentile: number;
+    scope: 'same_difficulty' | 'mixed_difficulty';
+    difficulty?: string;
   };
+  briefInsights?: BriefInsight[];
+  deltaInsights?: BriefInsight[];
+  playerCoaching?: BriefInsight[];
+  phaseReadiness?: PhaseReadiness[];
+  commandView?: CommandDecision;
 }
 
 interface NextPullAction {
@@ -168,6 +219,8 @@ interface PullDelta {
   durationDelta: number;
   deathsDelta?: number;
   trend: 'better' | 'worse' | 'same';
+  scope?: 'same_difficulty' | 'mixed_difficulty';
+  comparedDifficulty?: string;
 }
 
 interface RepeatedMistake {
@@ -289,6 +342,39 @@ interface CooldownIssue {
   actual: number;
 }
 
+interface BuildSignificanceInsight {
+  playerName: string;
+  role: 'tank' | 'healer' | 'dps';
+  className?: string;
+  spec: string;
+  comparisonMode: 'talent' | 'spec_fallback';
+  confidence: 'high' | 'medium' | 'low';
+  sampleSize: number;
+  killSampleSize: number;
+  significancePercent: number;
+  currentBuildLabel: string;
+  betterBuildLabel?: string;
+  summary: string;
+  recommendation: string;
+  note?: string;
+}
+
+interface BuildSignificanceResponse {
+  bossName: string;
+  generatedAt: string;
+  datasetSummary: {
+    totalRecords: number;
+    killRecords: number;
+    talentCoverageRecords: number;
+    supportedSpecs: number;
+    requestedDifficulty?: string;
+    scope: 'same_difficulty' | 'cross_difficulty_fallback';
+    comparedDifficulties: string[];
+    summary: string;
+  };
+  insights: BuildSignificanceInsight[];
+}
+
 interface FightData {
   id: number;
   bossName: string;
@@ -340,6 +426,45 @@ const getGradeBg = (grade: string): string => {
   }
 };
 
+const getReadinessBadgeClass = (status: 'ready' | 'close' | 'not_ready'): string => {
+  switch (status) {
+    case 'ready':
+      return 'bg-emerald-500/20 text-emerald-300';
+    case 'close':
+      return 'bg-amber-500/20 text-amber-300';
+    case 'not_ready':
+      return 'bg-red-500/20 text-red-300';
+    default:
+      return 'bg-dark-700 text-tron-silver-300';
+  }
+};
+
+const getPlanStatusBadgeClass = (status: 'missing' | 'partial' | 'ready'): string => {
+  switch (status) {
+    case 'ready':
+      return 'bg-emerald-500/20 text-emerald-300';
+    case 'partial':
+      return 'bg-amber-500/20 text-amber-300';
+    case 'missing':
+      return 'bg-red-500/20 text-red-300';
+    default:
+      return 'bg-dark-700 text-tron-silver-300';
+  }
+};
+
+const getCoverageBadgeClass = (coverage: 'weak' | 'mixed' | 'strong'): string => {
+  switch (coverage) {
+    case 'strong':
+      return 'bg-emerald-500/20 text-emerald-300';
+    case 'mixed':
+      return 'bg-amber-500/20 text-amber-300';
+    case 'weak':
+      return 'bg-red-500/20 text-red-300';
+    default:
+      return 'bg-dark-700 text-tron-silver-300';
+  }
+};
+
 // Main Component
 export default function LogAnalysis() {
   const [logUrl, setLogUrl] = useState('');
@@ -349,8 +474,13 @@ export default function LogAnalysis() {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [fightData, setFightData] = useState<FightData | null>(null);
   const [currentFight, setCurrentFight] = useState<any>(null);
-  const [isPostingBrief, setIsPostingBrief] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [assignmentPlan, setAssignmentPlan] = useState<AssignmentPlan>(EMPTY_ASSIGNMENT_PLAN);
+  const [savedSnapshots, setSavedSnapshots] = useState<InsightSnapshot[]>([]);
+  const [buildSignificance, setBuildSignificance] = useState<BuildSignificanceResponse | null>(null);
+  const [isLoadingBuildSignificance, setIsLoadingBuildSignificance] = useState(false);
+  const historicalFightsRef = useRef<any[]>([]);
+  const persistedRunSignatureRef = useRef<string>('');
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     deathCascade: true,
@@ -363,6 +493,95 @@ export default function LogAnalysis() {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
+  useEffect(() => {
+    if (!currentFight?.bossName) {
+      setAssignmentPlan(EMPTY_ASSIGNMENT_PLAN);
+      setSavedSnapshots([]);
+      return;
+    }
+
+    const storageKey = `wowtron:assignment-plan:${currentFight.bossName.toLowerCase()}`;
+    try {
+      const stored = window.localStorage.getItem(storageKey);
+      if (!stored) {
+        setAssignmentPlan(EMPTY_ASSIGNMENT_PLAN);
+        return;
+      }
+
+      const parsed = JSON.parse(stored) as Partial<AssignmentPlan>;
+      setAssignmentPlan({
+        interrupts: parsed.interrupts || '',
+        soaks: parsed.soaks || '',
+        dispels: parsed.dispels || '',
+        raidCooldowns: parsed.raidCooldowns || '',
+        tankAssignments: parsed.tankAssignments || '',
+        notes: parsed.notes || '',
+      });
+    } catch {
+      setAssignmentPlan(EMPTY_ASSIGNMENT_PLAN);
+    }
+    setSavedSnapshots(loadInsightSnapshots(currentFight.bossName));
+  }, [currentFight?.bossName]);
+
+  useEffect(() => {
+    if (!currentFight?.bossName) return;
+    const storageKey = `wowtron:assignment-plan:${currentFight.bossName.toLowerCase()}`;
+    window.localStorage.setItem(storageKey, JSON.stringify(assignmentPlan));
+    setAnalysis(generateAnalysis(currentFight, historicalFightsRef.current, assignmentPlan));
+  }, [assignmentPlan, currentFight, generateAnalysis]);
+
+  useEffect(() => {
+    if (!analysis || !fightData) return;
+    const snapshot = buildInsightSnapshot(fightData, analysis, report?.code);
+    persistInsightSnapshot(snapshot);
+    setSavedSnapshots(loadInsightSnapshots(fightData.bossName));
+
+    if (!report?.code || !currentFight) return;
+
+    const signature = [
+      report.code,
+      fightData.id,
+      analysis.commandView?.biggestBlocker?.summary || '',
+      analysis.commandView?.mostLikelyNextWipe?.summary || '',
+      (analysis.briefInsights || []).slice(0, 3).map((insight) => insight.summary).join('|'),
+      analysis.assignmentPlanOverview?.status || '',
+      assignmentPlan.interrupts,
+      assignmentPlan.soaks,
+      assignmentPlan.dispels,
+      assignmentPlan.raidCooldowns,
+      assignmentPlan.tankAssignments,
+      assignmentPlan.notes,
+    ].join('::');
+
+    if (persistedRunSignatureRef.current === signature) return;
+    persistedRunSignatureRef.current = signature;
+
+    void fetch('/api/analyzer-runs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        reportCode: report.code,
+        fight: currentFight,
+        analysis,
+        snapshot,
+        source: 'client_analysis',
+      }),
+    }).catch(() => undefined);
+  }, [
+    analysis,
+    assignmentPlan.dispels,
+    assignmentPlan.interrupts,
+    assignmentPlan.notes,
+    assignmentPlan.raidCooldowns,
+    assignmentPlan.soaks,
+    assignmentPlan.tankAssignments,
+    currentFight,
+    fightData,
+    report?.code,
+  ]);
+
   const playersByRole = useMemo(() => {
     if (!analysis?.players) return { tanks: [], healers: [], dps: [] };
     return {
@@ -371,6 +590,143 @@ export default function LogAnalysis() {
       dps: analysis.players.filter(p => p.role === 'dps').sort((a, b) => b.dps - a.dps)
     };
   }, [analysis?.players]);
+
+  const recentSnapshots = useMemo(
+    () => savedSnapshots.filter((snapshot) => snapshot.fightId !== fightData?.id).slice(0, 5),
+    [savedSnapshots, fightData?.id]
+  );
+  const sessionSnapshots = useMemo(
+    () => {
+      const snapshotCount = savedSnapshots.length;
+      void snapshotCount;
+      return report?.code && fightData?.bossName ? loadInsightSnapshotsForReport(report.code, fightData.bossName) : [];
+    },
+    [report?.code, fightData?.bossName, savedSnapshots.length]
+  );
+  const sessionReview = useMemo(
+    () => buildSessionReview(sessionSnapshots),
+    [sessionSnapshots]
+  );
+  const allBossSnapshots = useMemo(
+    () => {
+      const snapshotCount = savedSnapshots.length;
+      void snapshotCount;
+      return fightData?.bossName ? loadInsightSnapshots(fightData.bossName) : [];
+    },
+    [fightData?.bossName, savedSnapshots.length]
+  );
+  const bossMemory = useMemo(
+    () => buildBossMemory(allBossSnapshots),
+    [allBossSnapshots]
+  );
+  const reliabilityTrends = useMemo(
+    () => buildPlayerReliabilityTrends(sessionSnapshots),
+    [sessionSnapshots]
+  );
+  const sessionCommandCenter = useMemo(
+    () => buildSessionCommandCenter(sessionReview, bossMemory, reliabilityTrends),
+    [sessionReview, bossMemory, reliabilityTrends]
+  );
+  const nightComparison = useMemo(
+    () => buildNightComparison(sessionSnapshots, allBossSnapshots, report?.code),
+    [sessionSnapshots, allBossSnapshots, report?.code]
+  );
+  const guildBossKnowledge = useMemo(
+    () => buildGuildBossKnowledge(allBossSnapshots),
+    [allBossSnapshots]
+  );
+  const playerBossCoachingMemory = useMemo(
+    () => buildPlayerBossCoachingMemory(allBossSnapshots),
+    [allBossSnapshots]
+  );
+  const sessionRecap = useMemo(
+    () =>
+      buildSessionRecap({
+        sessionReview,
+        sessionCommandCenter,
+        nightComparison,
+        guildBossKnowledge,
+        playerBossCoachingMemory,
+        buildSignals: (buildSignificance?.insights || []).map((insight) => ({
+          playerName: insight.playerName,
+          summary: insight.summary,
+          significancePercent: insight.significancePercent,
+          confidence: insight.confidence,
+        })),
+      }),
+    [sessionReview, sessionCommandCenter, nightComparison, guildBossKnowledge, playerBossCoachingMemory, buildSignificance]
+  );
+
+  useEffect(() => {
+    if (!analysis || !fightData?.bossName) {
+      setBuildSignificance(null);
+      setIsLoadingBuildSignificance(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setIsLoadingBuildSignificance(true);
+
+    fetch('/api/build-significance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        bossName: fightData.bossName,
+        difficulty: fightData.difficulty,
+        players: (analysis.players || []).map((player) => ({
+          name: player.name,
+          role: player.role,
+          className: player.class,
+          spec: player.spec,
+          talents: player.talents || [],
+          rankPercent: player.rankPercent,
+          activeTime: player.activeTime,
+          reliabilityScore: player.reliabilityScore || 0,
+        })),
+      }),
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error || 'Failed to load build significance.');
+        }
+        setBuildSignificance(data as BuildSignificanceResponse);
+      })
+      .catch((error: any) => {
+        if (error?.name === 'AbortError') return;
+        setBuildSignificance(null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setIsLoadingBuildSignificance(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [analysis, fightData?.bossName, fightData?.difficulty]);
+
+  const handleExportSnapshots = useCallback(() => {
+    if (!fightData?.bossName) return;
+    const payload = exportInsightSnapshots(fightData.bossName);
+    if (payload.count === 0) {
+      toast({ title: 'No snapshots', description: 'There are no saved snapshots to export for this boss yet.' });
+      return;
+    }
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    const safeBossName = fightData.bossName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    anchor.href = url;
+    anchor.download = `wowtron-snapshots-${safeBossName}.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+
+    toast({ title: 'Snapshots exported', description: `${payload.count} snapshot(s) exported for ${fightData.bossName}.` });
+  }, [fightData?.bossName]);
 
   const handleLoadReport = async () => {
     if (!logUrl.trim()) return;
@@ -418,6 +774,7 @@ export default function LogAnalysis() {
         })
       );
       const historicalFights = previousFightsPayload.filter(Boolean);
+      historicalFightsRef.current = historicalFights;
 
       const fight = data.fight;
       setFightData({
@@ -429,7 +786,7 @@ export default function LogAnalysis() {
         bossHP: fight.bossHPPercent,
       });
       setCurrentFight(fight);
-      setAnalysis(generateAnalysis(fight, historicalFights));
+      setAnalysis(generateAnalysis(fight, historicalFights, assignmentPlan));
     } catch (err: any) {
       toast({ title: 'Error', description: err.message || 'Failed to analyze fight', variant: 'destructive' });
     } finally {
@@ -437,990 +794,262 @@ export default function LogAnalysis() {
     }
   };
 
-  const generateAnalysis = (fight: any, historicalFights: any[] = []): AnalysisResult => {
-    const players = fight.players || [];
-    const fightDuration = Math.max(1, Number(fight.duration || 1));
-    const timelineDeaths = fight.timeline?.filter((e: any) => e.type === 'death') || [];
-    const directDeaths = Array.isArray(fight.deaths) ? fight.deaths : [];
-    const deaths = timelineDeaths.length > 0 ? timelineDeaths : directDeaths;
-    const currentReportFight = report?.fights?.find((f) => f.id === fight.id);
-    const sameBossHistory = historicalFights
-      .filter((f: any) => f?.bossName === fight.bossName && f?.id !== fight.id)
-      .sort((a: any, b: any) => b.id - a.id);
-    const previousSameBossPulls = report?.fights
-      ?.filter((f) => f.bossName === fight.bossName && f.id !== fight.id) || [];
-    const comparedPull = [...sameBossHistory, ...previousSameBossPulls]
-      .sort((a: any, b: any) => {
-        const aHp = a.kill ? 0 : (a.bossHPPercent ?? 100);
-        const bHp = b.kill ? 0 : (b.bossHPPercent ?? 100);
-        if (aHp !== bHp) return aHp - bHp;
-        if ((a.duration ?? 0) !== (b.duration ?? 0)) return (a.duration ?? 0) - (b.duration ?? 0);
-        return (b.id ?? 0) - (a.id ?? 0);
-      })[0];
-    
-    // Check if we have any valid player data
-    const hasValidPlayerData = players.some((p: any) => 
-      (p.dps > 0) || (p.hps > 0) || (p.totalDamage > 0) || (p.totalHealing > 0)
-    );
-    
-    // If no valid data, return early with appropriate indicators
-    if (!hasValidPlayerData && players.length > 0) {
-      console.warn('[ANALYSIS] No valid player data found - returning N/A state');
-    }
-    
-    const playerStats: PlayerStats[] = players.map((player: any) => {
-      const derivedDps = Number(player.dps || 0) > 0
-        ? Number(player.dps)
-        : Math.round(Number(player.totalDamage || 0) / fightDuration);
-      const derivedHps = Number(player.hps || 0) > 0
-        ? Number(player.hps)
-        : Math.round(Number(player.totalHealing || 0) / fightDuration);
-      const normalizedActiveTime = Number(player.activeTime || 0) > 1
-        ? Number(player.activeTime)
-        : Math.round(Number(player.activeTime || 0) * 100);
-      const missingConsumablesPenalty = (player.flaskUsed ? 0 : 5) + (player.foodUsed ? 0 : 5) + (player.potionUsed ? 0 : 5) + (player.runeUsed ? 0 : 3);
-      const reliabilityScore = Math.max(
-        0,
-        Math.min(
-          100,
-          100
-          - ((player.deaths || 0) * 20)
-          - Math.max(0, 95 - (normalizedActiveTime || 95))
-          - missingConsumablesPenalty
-          - Math.min(20, Math.floor((player.avoidableDamagePercent || player.avoidableDamageTaken || 0) / 5))
-        )
-      );
-
-      return {
-      name: player.name,
-      class: player.class,
-      spec: player.spec,
-      role: player.role,
-      dps: derivedDps,
-      hps: derivedHps,
-      rankPercent: player.rankPercent || 0,
-      itemLevel: player.itemLevel || 480,
-      server: player.server || 'unknown',
-      flaskUsed: player.flaskUsed ?? true,
-      foodUsed: player.foodUsed ?? true,
-      potionUsed: player.potionUsed ?? true,
-      runeUsed: player.runeUsed ?? false,
-      activeTime: normalizedActiveTime || 95,
-      deaths: player.deaths || 0,
-      dtps: player.dtps || 0,
-      avoidableDamageTaken: player.avoidableDamageTaken || player.avoidableDamagePercent || 0,
-      reliabilityScore,
-      improvementFocus: diagnoseLowDPS(player),
-      };
-    });
-
-    const avoidableDeaths: AnalyzedDeath[] = [];
-    const unavoidableDeaths: AnalyzedDeath[] = [];
-    
-    deaths.forEach((death: any) => {
-      const isAvoidable = guessIfAvoidable(death.ability || 'Unknown');
-      const analyzed: AnalyzedDeath = {
-        player: death.target || 'Unknown',
-        ability: death.ability || 'Unknown',
-        time: death.time,
-        avoidable: isAvoidable,
-        phase: getPhaseAtTime(death.time, fight.duration),
-        tip: getTipForAbility(death.ability || 'Unknown'),
-        impact: death.time > fight.duration * 0.7 ? 'high' : death.time > fight.duration * 0.4 ? 'medium' : 'low',
-      };
-      if (isAvoidable) avoidableDeaths.push(analyzed);
-      else unavoidableDeaths.push(analyzed);
-    });
-
-    const repeatedMistakesMap = new Map<string, { occurrences: number; pulls: Set<number | string> }>();
-    const registerAvoidableDeath = (player: string, ability: string, pullId: number | string) => {
-      const key = `${player}::${ability}`;
-      const entry = repeatedMistakesMap.get(key) || { occurrences: 0, pulls: new Set<number | string>() };
-      entry.occurrences += 1;
-      entry.pulls.add(pullId);
-      repeatedMistakesMap.set(key, entry);
-    };
-
-    avoidableDeaths.forEach((death) => {
-      registerAvoidableDeath(death.player, death.ability, fight.id);
-    });
-
-    historicalFights
-      .filter((f: any) => f?.bossName === fight.bossName)
-      .slice(0, 5)
-      .forEach((historicalFight: any) => {
-        const historicalDeaths = (historicalFight.timeline || []).filter((e: any) => e.type === 'death');
-        historicalDeaths.forEach((death: any) => {
-          const ability = death.ability || 'Unknown';
-          const player = death.target || death.playerName || 'Unknown';
-          if (guessIfAvoidable(ability)) {
-            registerAvoidableDeath(player, ability, historicalFight.id ?? 'unknown');
-          }
-        });
-      });
-
-    const repeatedMistakes: RepeatedMistake[] = Array.from(repeatedMistakesMap.entries())
-      .filter(([, value]) => value.pulls.size >= 2)
-      .map(([key, value]) => {
-        const [player, ability] = key.split('::');
-        return { player, ability, count: value.occurrences };
-      })
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
-
-    // NEW: Generate Death Cascade Analysis
-    const deathCascade = generateDeathCascade(deaths, players, fight);
-
-    const dpsPlayersSorted = [...playerStats]
-      .filter((p) => p.role === 'dps')
-      .sort((a, b) => b.dps - a.dps);
-    dpsPlayersSorted.forEach((p, idx) => {
-      if (!p.rankPercent || p.rankPercent <= 0) {
-        p.rankPercent = Math.round((1 - idx / Math.max(1, dpsPlayersSorted.length - 1)) * 100);
-      }
-    });
-
-    const lowPerformers: PerformanceIssue[] = [];
-    let totalDPS = 0;
-    let totalHPS = 0;
-    
-    players.forEach((player: any) => {
-      const effectiveDps = Number(player.dps || 0) > 0
-        ? Number(player.dps)
-        : Math.round(Number(player.totalDamage || 0) / fightDuration);
-      const effectiveHps = Number(player.hps || 0) > 0
-        ? Number(player.hps)
-        : Math.round(Number(player.totalHealing || 0) / fightDuration);
-      totalDPS += effectiveDps;
-      totalHPS += effectiveHps;
-      const expectedDPS = getExpectedDPS(player.spec || player.class);
-      if (effectiveDps < expectedDPS * 0.8 && player.role === 'dps') {
-        lowPerformers.push({
-          player: player.name,
-          class: player.class,
-          expectedDPS,
-          actualDPS: effectiveDps,
-          gap: expectedDPS - effectiveDps,
-          reason: diagnoseLowDPS(player),
-        });
-      }
-    });
-
-    const missingFlask: string[] = [];
-    const missingFood: string[] = [];
-    const missingPotion: string[] = [];
-    const missingRune: string[] = [];
-    let estimatedDPSLoss = 0;
-
-    players.forEach((player: any) => {
-      if (!player.flaskUsed) { missingFlask.push(player.name); estimatedDPSLoss += 50000; }
-      if (!player.foodUsed) { missingFood.push(player.name); estimatedDPSLoss += 25000; }
-      if (!player.potionUsed) { missingPotion.push(player.name); estimatedDPSLoss += 80000; }
-      if (!player.runeUsed) { missingRune.push(player.name); estimatedDPSLoss += 30000; }
-    });
-
-    const presentClasses = new Set(players.map((p: any) => p.class));
-    const raidBuffs: RaidBuff[] = [
-      { name: 'Bloodlust', present: presentClasses.has('Shaman') || presentClasses.has('Mage') || presentClasses.has('Evoker'), source: players.find((p: any) => ['Shaman', 'Mage', 'Evoker'].includes(p.class))?.name, missingImpact: '+30% haste' },
-      { name: 'Fortitude', present: presentClasses.has('Priest'), source: players.find((p: any) => p.class === 'Priest')?.name, missingImpact: '+10% stamina' },
-      { name: 'Battle Shout', present: presentClasses.has('Warrior'), source: players.find((p: any) => p.class === 'Warrior')?.name, missingImpact: '+10% AP' },
-      { name: 'Arcane Intellect', present: presentClasses.has('Mage'), source: players.find((p: any) => p.class === 'Mage')?.name, missingImpact: '+10% intellect' },
-      { name: 'Mark of the Wild', present: presentClasses.has('Druid'), source: players.find((p: any) => p.class === 'Druid')?.name, missingImpact: '+5% stats' },
-      { name: 'Chaos Brand', present: presentClasses.has('Demon Hunter'), source: players.find((p: any) => p.class === 'Demon Hunter')?.name, missingImpact: '+5% magic dmg' },
-      { name: 'Mystic Touch', present: presentClasses.has('Monk'), source: players.find((p: any) => p.class === 'Monk')?.name, missingImpact: '+5% phys dmg' },
-    ];
-
-    const expectedRaidDps = Math.max(
-      1,
-      players
-        .filter((p: any) => p.role === 'dps')
-        .reduce((sum: number, p: any) => sum + getExpectedDPS(p.spec || p.class), 0)
-    );
-    const optimalTime = expectedRaidDps > 0 ? Math.floor((expectedRaidDps * fightDuration) / Math.max(1, totalDPS)) : fightDuration;
-    const timeSaved = fight.duration - optimalTime;
-
-    const whyWiped: string[] = [];
-    let fightEfficiency: { actualTime: number; optimalTime: number; timeSaved: number; dpsLoss: number } | undefined;
-
-    if (!fight.kill) {
-      if (deathCascade && deathCascade.rootDeath) {
-        whyWiped.push(`${deathCascade.rootDeath.player} morreu cedo (${formatTime(deathCascade.rootDeath.time)}) iniciando cadeia de mortes`);
-      }
-      if (fight.bossHPPercent && fight.bossHPPercent > 20) whyWiped.push(`Boss em ${fight.bossHPPercent}% HP`);
-      if (estimatedDPSLoss > 300000) whyWiped.push(`~${formatNumber(estimatedDPSLoss)} DPS perdido`);
-      if (lowPerformers.length > 2) whyWiped.push(`${lowPerformers.length} players abaixo do esperado`);
-      if (whyWiped.length === 0) whyWiped.push('Quase lá! Pequenos ajustes necessários');
-    } else {
-      fightEfficiency = {
-        actualTime: fight.duration,
-        optimalTime: Math.max(30, optimalTime),
-        timeSaved: Math.max(0, timeSaved),
-        dpsLoss: estimatedDPSLoss,
-      };
-    }
-
-    // Calculate DPS score - based on how much of required DPS was met
-    // A good raid should meet or exceed required DPS
-    const dpsRatio = totalDPS / expectedRaidDps;
-    const dpsScore = Math.min(100, Math.max(0, Math.floor(dpsRatio * 100)));
-    
-    // Survival score - based on deaths (0 deaths = 100, each death reduces)
-    const totalDeaths = deaths.length;
-    const survivalScore = Math.max(0, 100 - totalDeaths * 10);
-    
-    // Mechanics score - based on avoidable deaths (each avoidable death reduces more)
-    const mechanicsScore = Math.max(0, 100 - avoidableDeaths.length * 15);
-    
-    // Consumables score - based on how many players are missing consumables
-    const missingConsumablesCount = missingFlask.length + missingFood.length + missingPotion.length + missingRune.length;
-    const consumablesScore = Math.max(0, 100 - (missingConsumablesCount * 3));
-    
-    // Overall score - weighted average
-    const overallScore = Math.floor(dpsScore * 0.35 + survivalScore * 0.30 + mechanicsScore * 0.25 + consumablesScore * 0.10);
-    const averageReliability = playerStats.length > 0
-      ? Math.floor(playerStats.reduce((sum, p) => sum + (p.reliabilityScore || 0), 0) / playerStats.length)
-      : 0;
-    
-    // Grade based on overall score
-    let grade = 'C';
-    if (overallScore >= 95) grade = 'S';
-    else if (overallScore >= 85) grade = 'A';
-    else if (overallScore >= 70) grade = 'B';
-    else if (overallScore >= 55) grade = 'C';
-    else if (overallScore >= 40) grade = 'D';
-    else grade = 'F';
-
-    const keyIssues: Issue[] = [];
-    avoidableDeaths.slice(0, 3).forEach((death) => {
-      keyIssues.push({
-        type: 'death',
-        severity: death.impact === 'high' ? 'critical' : 'warning',
-        message: `${death.player} died to ${death.ability}`,
-        details: `At ${formatTime(death.time)} (${death.phase})`,
-        player: death.player,
-        suggestion: death.tip,
-      });
-    });
-
-    // NEW: Generate Cooldown Gap Analysis
-    const cooldownGaps = generateCooldownGaps(fight, players);
-
-    // NEW: Generate Burst Window Analysis
-    const burstWindows = generateBurstWindows(fight, players);
-
-    const comparedPullDeaths = (comparedPull as any)?.summary?.deaths;
-    const currentDeaths = fight.summary?.deaths;
-    const pullDelta: PullDelta | undefined = comparedPull && currentReportFight ? {
-      comparedPullId: comparedPull.id,
-      bossHPDelta: (comparedPull.bossHPPercent ?? 100) - (currentReportFight.bossHPPercent ?? 100),
-      durationDelta: currentReportFight.duration - comparedPull.duration,
-      deathsDelta: typeof currentDeaths === 'number' && typeof comparedPullDeaths === 'number'
-        ? currentDeaths - comparedPullDeaths
-        : undefined,
-      trend: (currentReportFight.bossHPPercent ?? 100) < (comparedPull.bossHPPercent ?? 100) ? 'better'
-        : (currentReportFight.bossHPPercent ?? 100) > (comparedPull.bossHPPercent ?? 100) ? 'worse'
-        : 'same',
-    } : undefined;
-
-    const wipeCause: AnalysisResult['wipeCause'] = (() => {
-      if (fight.kill) return { primary: 'mixed', details: 'Fight finalizada com kill.' };
-      if (cooldownGaps.length >= 2) return { primary: 'cooldown_gap', details: 'Picos de dano sem cobertura adequada de cooldowns de raid.' };
-      if (avoidableDeaths.length >= Math.max(2, deaths.length * 0.5)) return { primary: 'mechanics', details: 'Muitas mortes evitáveis em mecânicas-chave.' };
-      if (lowPerformers.length >= 3 || (fight.bossHPPercent ?? 100) > 20) return { primary: 'throughput', details: 'Dano/heal efetivo abaixo da exigência para o checkpoint do boss.' };
-      return { primary: 'mixed', details: 'Wipe por combinação de execução, throughput e timings.' };
-    })();
-
-    const topAvoidableAbility = (() => {
-      const abilityCounts = new Map<string, { count: number; players: Set<string> }>();
-      avoidableDeaths.forEach((death) => {
-        const key = death.ability || 'Mecânica desconhecida';
-        const entry = abilityCounts.get(key) || { count: 0, players: new Set<string>() };
-        entry.count += 1;
-        entry.players.add(death.player);
-        abilityCounts.set(key, entry);
-      });
-      return Array.from(abilityCounts.entries())
-        .sort((a, b) => b[1].count - a[1].count)[0];
-    })();
-
-    const healerNames = playerStats
-      .filter((p) => p.role === 'healer')
-      .map((p) => p.name)
-      .slice(0, 2);
-
-    const topThroughputPlayers = lowPerformers
-      .sort((a, b) => b.gap - a.gap)
-      .slice(0, 2)
-      .map((p) => p.player);
-
-    const nextPullActions: NextPullAction[] = [
-      {
-        priority: 1,
-        title: topAvoidableAbility
-          ? `Corrigir mecânica: ${topAvoidableAbility[0]}`
-          : 'Executar pull limpo sem mortes no early',
-        owner: topAvoidableAbility
-          ? Array.from(topAvoidableAbility[1].players).slice(0, 3).join(', ')
-          : 'Raid inteira',
-        reason: topAvoidableAbility
-          ? `${topAvoidableAbility[1].count} morte(s) evitável(is) ligadas a essa mecânica.`
-          : 'Sem wipe mecânico dominante, foco em consistência.',
-      },
-      {
-        priority: 2,
-        title: cooldownGaps.length > 0
-          ? `Cobrir gap de CD em ${formatTime(cooldownGaps[0].time)}`
-          : 'Sincronizar CDs de cura para picos da luta',
-        owner: healerNames.length > 0 ? healerNames.join(', ') : 'Healers + RL',
-        reason: cooldownGaps.length > 0
-          ? `${cooldownGaps.length} gap(s) sem CD identificado(s).`
-          : 'Evita colapso de raid HP em janelas críticas.',
-      },
-      {
-        priority: 3,
-        title: topThroughputPlayers.length > 0
-          ? `Melhorar throughput de ${topThroughputPlayers.join(' + ')}`
-          : 'Otimizar uptime e burst window',
-        owner: topThroughputPlayers.length > 0 ? topThroughputPlayers.join(', ') : 'DPS Core',
-        reason: lowPerformers.length > 0
-          ? `Gap total estimado de ${formatNumber(lowPerformers.slice(0, 2).reduce((sum, p) => sum + p.gap, 0))} DPS entre os principais underperformers.`
-          : 'Ganho incremental de kill chance em boss HP baixo.',
-      },
-    ];
-
-    const explicitPhases = (fight.timeline || [])
-      .filter((e: any) => e.type === 'phase' && typeof e.time === 'number')
-      .sort((a: any, b: any) => a.time - b.time);
-
-    const phaseBoundaries = explicitPhases.length > 0
-      ? explicitPhases.map((phaseEvent: any, index: number) => ({
-          label: phaseEvent.description || `P${index + 1}`,
-          start: phaseEvent.time,
-          end: explicitPhases[index + 1]?.time ?? fight.duration,
-        }))
-      : [
-          { label: 'P1', start: 0, end: Math.floor(fight.duration / 3) },
-          { label: 'P2', start: Math.floor(fight.duration / 3), end: Math.floor((fight.duration * 2) / 3) },
-          { label: 'P3', start: Math.floor((fight.duration * 2) / 3), end: fight.duration },
-        ];
-
-    const phaseCausality = phaseBoundaries.map((phase) => {
-      const phaseDeaths = deaths.filter((d: any) => (d.time || 0) >= phase.start && (d.time || 0) < phase.end);
-      const phaseAvoidable = phaseDeaths.filter((d: any) => guessIfAvoidable(String(d.ability || 'Unknown')));
-      const phaseGaps = cooldownGaps.filter((g) => g.time >= phase.start && g.time < phase.end);
-      const dominantCause: 'mechanics' | 'throughput' | 'cooldown_gap' | 'stable' =
-        phaseAvoidable.length >= 2
-          ? 'mechanics'
-          : phaseGaps.length > 0
-            ? 'cooldown_gap'
-            : (phaseDeaths.length > 0 && lowPerformers.length >= 2)
-              ? 'throughput'
-              : 'stable';
-
-      return {
-        phase: phase.label,
-        start: phase.start,
-        end: phase.end,
-        deaths: phaseDeaths.length,
-        avoidableDeaths: phaseAvoidable.length,
-        dominantCause,
-      };
-    });
-
-    const lastFiveSameBoss = sameBossHistory.slice(0, 5);
-    const historicalMetrics = lastFiveSameBoss.map((f: any) => {
-      const timelineDeaths = (f.timeline || []).filter((e: any) => e.type === 'death');
-      const directDeaths = Array.isArray(f.deaths) ? f.deaths : [];
-      const fDeaths = timelineDeaths.length > 0 ? timelineDeaths : directDeaths;
-      const fAvoidable = fDeaths.filter((d: any) => guessIfAvoidable(String(d.ability || 'Unknown')));
-      return {
-        deaths: Number(f.summary?.deaths ?? fDeaths.length ?? 0),
-        avoidable: fAvoidable.length,
-        duration: Number(f.duration || 0),
-        hasTimeline: timelineDeaths.length > 0,
-      };
-    });
-
-    const historicalMetricsWithSignal = historicalMetrics.filter((m) =>
-      m.deaths > 0 || m.avoidable > 0 || m.duration > 0 || m.hasTimeline
-    );
-
-    const pullTrend = historicalMetricsWithSignal.length > 0
-      ? {
-          sampleSize: historicalMetricsWithSignal.length,
-          avgDeathsPrev: Math.round((historicalMetricsWithSignal.reduce((s, m) => s + m.deaths, 0) / historicalMetricsWithSignal.length) * 10) / 10,
-          avgAvoidablePrev: Math.round((historicalMetricsWithSignal.reduce((s, m) => s + m.avoidable, 0) / historicalMetricsWithSignal.length) * 10) / 10,
-          avgDurationPrev: Math.round(historicalMetricsWithSignal.reduce((s, m) => s + m.duration, 0) / historicalMetricsWithSignal.length),
-          currentDeaths: Number(fight.summary?.deaths || deaths.length || 0),
-          currentAvoidableDeaths: avoidableDeaths.length,
-          currentDuration: Number(fight.duration || 0),
-        }
-      : undefined;
-
-    const scoreRoleGroup = (role: 'tank' | 'healer' | 'dps') => {
-      const rolePlayers = playerStats.filter((p) => p.role === role);
-      if (rolePlayers.length === 0) return 0;
-      const avgReliability = rolePlayers.reduce((s, p) => s + (p.reliabilityScore || 0), 0) / rolePlayers.length;
-      const deathsPenalty = rolePlayers.reduce((s, p) => s + (p.deaths || 0), 0) * 6;
-      return Math.max(0, Math.min(100, Math.round(avgReliability - deathsPenalty)));
-    };
-
-    const roleScoresRaw = {
-      tanks: scoreRoleGroup('tank'),
-      healers: scoreRoleGroup('healer'),
-      dps: scoreRoleGroup('dps'),
-    };
-    const roleScores = Object.values(roleScoresRaw).some((score) => score > 0)
-      ? roleScoresRaw
-      : undefined;
-
-    const mechanicScores = (() => {
-      const map = new Map<string, number>();
-      avoidableDeaths.forEach((death) => {
-        map.set(death.ability, (map.get(death.ability) || 0) + 1);
-      });
-      const interruptCount = (fight.timeline || []).filter((e: any) => e.type === 'interrupt').length;
-      return Array.from(map.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([mechanic, events]) => ({
-          mechanic,
-          events,
-          severity: events >= 3 ? 'critical' as const : 'warning' as const,
-          score: Math.max(0, 100 - events * 18),
-        }))
-        .concat([
-          {
-            mechanic: 'Interrupts',
-            events: interruptCount,
-            severity: interruptCount === 0 ? 'critical' as const : 'warning' as const,
-            score: Math.min(100, interruptCount * 10),
-          },
-        ]);
-    })();
-
-    const regressionAlerts = (() => {
-      if (historicalMetrics.length < 3) return [];
-      const recent3 = historicalMetrics.slice(0, 3);
-      const avgRecentDeaths = recent3.reduce((s, m) => s + m.deaths, 0) / recent3.length;
-      const avgRecentAvoidable = recent3.reduce((s, m) => s + m.avoidable, 0) / recent3.length;
-      const alerts: string[] = [];
-      if ((fight.summary?.deaths || deaths.length) > avgRecentDeaths + 1) {
-        alerts.push(`Regressão de mortes: atual ${(fight.summary?.deaths || deaths.length)} vs média recente ${avgRecentDeaths.toFixed(1)}.`);
-      }
-      if (avoidableDeaths.length > avgRecentAvoidable + 1) {
-        alerts.push(`Regressão de mecânica: avoidable atual ${avoidableDeaths.length} vs média recente ${avgRecentAvoidable.toFixed(1)}.`);
-      }
-      if (!fight.kill && (fight.bossHPPercent ?? 100) > 20 && historicalFights.some((f: any) => f?.bossName === fight.bossName && f?.kill)) {
-        alerts.push('Houve kill anterior no mesmo boss e o pull atual voltou para wipe alto de HP.');
-      }
-      return alerts.slice(0, 3);
-    })();
-
-    const bestPullChanges = (() => {
-      const comparisonPool = !fight.kill
-        ? sameBossHistory.filter((f: any) => !f.kill)
-        : sameBossHistory;
-      const bestFight = comparisonPool
-        .slice()
-        .sort((a: any, b: any) => {
-          const aHp = a.kill ? 0 : (a.bossHPPercent ?? 100);
-          const bHp = b.kill ? 0 : (b.bossHPPercent ?? 100);
-          if (aHp !== bHp) return aHp - bHp;
-          return (a.duration ?? 0) - (b.duration ?? 0);
-        })[0];
-
-      if (!bestFight) return [];
-
-      const bestDeaths = Number(bestFight.summary?.deaths || (bestFight.timeline || []).filter((e: any) => e.type === 'death').length || 0);
-      const currentDeathsCount = Number(fight.summary?.deaths || deaths.length || 0);
-      const bestAvoidable = (bestFight.timeline || [])
-        .filter((e: any) => e.type === 'death' && guessIfAvoidable(e.ability || 'Unknown')).length;
-
-      const changes: string[] = [];
-      if (currentDeathsCount > bestDeaths) {
-        changes.push(`+${currentDeathsCount - bestDeaths} mortes vs best pull (#${bestFight.id}).`);
-      } else if (currentDeathsCount < bestDeaths) {
-        changes.push(`-${bestDeaths - currentDeathsCount} mortes vs best pull (#${bestFight.id}).`);
-      }
-
-      if (avoidableDeaths.length > bestAvoidable) {
-        changes.push(`+${avoidableDeaths.length - bestAvoidable} mortes evitáveis vs best pull.`);
-      } else if (avoidableDeaths.length < bestAvoidable) {
-        changes.push(`-${bestAvoidable - avoidableDeaths.length} mortes evitáveis vs best pull.`);
-      }
-
-      if ((fight.duration || 0) > (bestFight.duration || 0)) {
-        changes.push(`Pull ${fight.duration - bestFight.duration}s mais lento que o best pull.`);
-      } else if ((fight.duration || 0) < (bestFight.duration || 0)) {
-        changes.push(`Pull ${bestFight.duration - fight.duration}s mais rápido que o best pull.`);
-      }
-
-      return changes.slice(0, 4);
-    })();
-
-    const cooldownPlanner = (() => {
-      const entries = cooldownGaps
-        .slice(0, 5)
-        .map((gap) => {
-          const phase = phaseCausality.find((p) => gap.time >= p.start && gap.time < p.end);
-          return {
-            at: gap.time,
-            phase: phase?.phase || 'Unknown',
-            action: gap.severity === 'critical' ? 'Usar CD defensivo maior' : 'Cobrir com CD de cura',
-            owner: healerNames.length > 0 ? healerNames.join(', ') : 'Healers + RL',
-            reason: `${Math.round(gap.damageTaken / 1000)}k de dano sem cobertura.`,
-          };
-        });
-      return entries;
-    })();
-
-    const assignmentBreaks = (() => {
-      const breaks = new Map<string, { owner: string; failure: string; count: number }>();
-
-      const addBreak = (owner: string, failure: string) => {
-        const key = `${owner}::${failure}`;
-        const current = breaks.get(key) || { owner, failure, count: 0 };
-        current.count += 1;
-        breaks.set(key, current);
-      };
-
-      // repeated avoidable deaths = likely assignment execution break
-      repeatedMistakes.forEach((m) => {
-        addBreak(m.player, `Falha repetida em ${m.ability}`);
-      });
-
-      // interrupt events are expected in many fights; detect players with zero interrupts among DPS/melee
-      const interrupters = new Set(
-        (fight.timeline || [])
-          .filter((e: any) => e.type === 'interrupt' && (e.source || e.sourceName))
-          .map((e: any) => e.source || e.sourceName)
-      );
-      playerStats
-        .filter((p) => p.role === 'dps')
-        .slice(0, 8)
-        .forEach((p) => {
-          if (!interrupters.has(p.name)) {
-            addBreak(p.name, 'Sem interrupções registradas no pull');
-          }
-        });
-
-      return Array.from(breaks.values()).sort((a, b) => b.count - a.count).slice(0, 6);
-    })();
-
-    const killProbability = (() => {
-      const hpRemaining = fight.bossHPPercent ?? (fight.kill ? 0 : 100);
-      const deathPenalty = Math.min(35, (fight.summary?.deaths || deaths.length || 0) * 3);
-      const avoidablePenalty = Math.min(30, avoidableDeaths.length * 4);
-      const cooldownPenalty = Math.min(20, cooldownGaps.length * 5);
-      const base = fight.kill ? 100 : Math.max(0, 100 - hpRemaining);
-      return Math.max(0, Math.min(100, Math.round(base - deathPenalty - avoidablePenalty - cooldownPenalty + (fight.kill ? 0 : 20))));
-    })();
-
-    const bossProgression = (() => {
-      if (!report?.fights || !fight?.bossName) return [];
-      return report.fights
-        .filter((f) => f.bossName === fight.bossName)
-        .sort((a, b) => a.id - b.id)
-        .map((f) => ({
-          pullId: f.id,
-          hpRemaining: f.kill ? 0 : (f.bossHPPercent ?? 100),
-          duration: f.duration,
-          kill: f.kill,
-        }));
-    })();
-
-    const internalBenchmark = (() => {
-      if (!bossProgression.length || !currentReportFight) return undefined;
-      const sorted = [...bossProgression].sort((a, b) => {
-        if (a.hpRemaining !== b.hpRemaining) return a.hpRemaining - b.hpRemaining;
-        return a.duration - b.duration;
-      });
-      const idx = sorted.findIndex((p) => p.pullId === currentReportFight.id);
-      if (idx === -1) return undefined;
-      const rank = idx + 1;
-      const total = sorted.length;
-      const percentile = Math.round((1 - idx / Math.max(1, total - 1)) * 100);
-      return { rank, total, percentile };
-    })();
-
-    const hasPhaseSignal = phaseCausality.some((phase) => phase.deaths > 0 || phase.avoidableDeaths > 0 || phase.dominantCause !== 'stable');
-
-    return {
-      summary: {
-        killPotential: fight.kill || (fight.bossHPPercent && fight.bossHPPercent < 10),
-        whyWiped,
-        keyIssues: keyIssues.slice(0, 5),
-        fightEfficiency,
-      },
-      deaths: { avoidable: avoidableDeaths, unavoidable: unavoidableDeaths },
-      performance: {
-        raidDPS: totalDPS,
-        raidHPS: totalHPS,
-        requiredDPS: Math.floor(expectedRaidDps),
-        dpsGap: lowPerformers.reduce((s, p) => s + p.gap, 0),
-        lowPerformers: lowPerformers.sort((a, b) => b.gap - a.gap).slice(0, 5),
-      },
-      players: playerStats.sort((a, b) => b.dps - a.dps),
-      consumables: { missingFlask, missingFood, missingPotion, missingRune, estimatedDPSLoss },
-      raidBuffs,
-      cooldowns: { defensives: [], raidCooldowns: [] },
-      talents: [],
-      raidEfficiency: { overall: overallScore, dps: dpsScore, survival: survivalScore, mechanics: mechanicsScore, consumables: consumablesScore, grade },
-      bossInsight: {
-        dpsCheckMet: totalDPS >= expectedRaidDps,
-        healingIntensity: totalHPS > 2000000 ? 'high' : totalHPS > 1000000 ? 'medium' : 'low',
-        movementRequired: averageReliability >= 75 ? 'controlado' : 'caótico',
-        keyMechanics: avoidableDeaths.slice(0, 3).map(d => ({ name: d.ability, deaths: 1, tip: d.tip })),
-      },
-      deathCascade,
-      cooldownGaps,
-      burstWindows,
-      nextPullActions,
-      pullDelta,
-      wipeCause,
-      repeatedMistakes,
-      phaseCausality: hasPhaseSignal ? phaseCausality : undefined,
-      pullTrend,
-      roleScores,
-      mechanicScores,
-      regressionAlerts,
-      bestPullChanges,
-      cooldownPlanner,
-      assignmentBreaks,
-      killProbability,
-      bossProgression,
-      internalBenchmark,
-    };
-  };
-
-  // NEW: Generate Death Cascade Analysis
-  const generateDeathCascade = (deaths: any[], players: any[], fight: any): DeathCascadeAnalysis | undefined => {
-    if (deaths.length === 0) return undefined;
-
-    const sortedDeaths = [...deaths].sort((a, b) => (a.time || 0) - (b.time || 0));
-    const firstDeath = sortedDeaths[0];
-    
-    const player = players.find((p: any) => p.name === (firstDeath.target || firstDeath.playerName));
-    const role = player?.role || 'dps';
-    
-    // Determine impact based on role and timing
-    const timePercent = (firstDeath.time || 0) / fight.duration;
-    let impact: 'critical' | 'high' | 'medium' = 'medium';
-    
-    if (role === 'tank' || timePercent < 0.3) impact = 'critical';
-    else if (role === 'healer' || timePercent < 0.5) impact = 'high';
-
-    // Find chain deaths (deaths within 15 seconds of root death)
-    const chainDeaths = sortedDeaths.slice(1)
-      .filter((d: any) => (d.time || 0) - (firstDeath.time || 0) <= 15)
-      .map((d: any) => {
-        const chainPlayer = players.find((p: any) => p.name === (d.target || d.playerName));
-        return {
-          player: d.target || d.playerName || 'Unknown',
-          role: chainPlayer?.role || 'dps',
-          ability: d.ability || 'Unknown',
-          time: d.time || 0,
-          causedByRoot: true,
-        };
-      });
-
-    // Generate recommendation
-    let recommendation = '';
-    if (role === 'tank') {
-      recommendation = 'Tank swap pode estar atrasado. Verifique defensives e externals.';
-    } else if (role === 'healer') {
-      recommendation = 'Healer morreu cedo - posicionamento ou uso de CDs pode estar inadequado.';
-    } else {
-      recommendation = `${firstDeath.target} morreu para ${firstDeath.ability}. ${getTipForAbility(firstDeath.ability || 'Unknown')}`;
-    }
-
-    return {
-      rootDeath: {
-        player: firstDeath.target || firstDeath.playerName || 'Unknown',
-        role,
-        ability: firstDeath.ability || 'Unknown',
-        time: firstDeath.time || 0,
-        impact,
-      },
-      chainDeaths,
-      timeToWipe: fight.duration - (firstDeath.time || 0),
-      recoveryPossible: chainDeaths.length < 3 && role !== 'tank',
-      recommendation,
-    };
-  };
-
-  // NEW: Generate Cooldown Gap Analysis - Uses REAL data from fight
-  const generateCooldownGaps = (fight: any, players: any[]): CooldownGapAnalysis[] => {
-    const gaps: CooldownGapAnalysis[] = [];
-    const duration = fight.duration;
-    const timeline = fight.timeline || [];
-    const bossAbilities = fight.bossAbilities || [];
-    const raidCdPatterns = [
-      'bloodlust',
-      'heroism',
-      'time warp',
-      'tranquility',
-      'healing tide',
-      'divine hymn',
-      'aura mastery',
-      'barrier',
-      'rallying cry',
-      'spirit link',
-      'revival',
-    ];
-    
-    // Find damage spikes from boss abilities that hit multiple players
-    bossAbilities.forEach((ability: any) => {
-      // High damage abilities that should have had a CD
-      if (ability.damage > 1500000 && ability.type === 'avoidable') {
-        // Check timeline for when this ability was cast
-        const abilityEvents = timeline.filter((e: any) => 
-          e.type === 'ability' && e.description?.includes(ability.name)
-        );
-        
-        abilityEvents.forEach((event: any) => {
-          // Check if any raid CD was used within a short window of this event
-          const cdEvents = timeline.filter((e: any) => {
-            const text = String(e.description || e.ability || '').toLowerCase();
-            const isRaidCdEvent = e.type === 'buff' || e.type === 'cast' || e.type === 'ability';
-            return isRaidCdEvent &&
-              raidCdPatterns.some((pattern) => text.includes(pattern)) &&
-              Math.abs((e.time || 0) - event.time) <= 6;
-          });
-          
-          if (cdEvents.length === 0) {
-            gaps.push({
-              time: event.time,
-              duration: ability.hits > 50 ? 6 : 4,
-              damageTaken: ability.damage,
-              availableCds: ['Tranquility', 'Healing Tide', 'Divine Hymn', 'Aura Mastery'],
-              severity: ability.damage > 2000000 ? 'critical' : 'warning',
-            });
-          }
-        });
-      }
-    });
-    
-    // Also check DTPS timeline for spikes without CDs
-    const dtpsData = players.reduce((acc: number[], p: any) => {
-      if (p.dtpsTimeline) {
-        p.dtpsTimeline.forEach((val: number, i: number) => {
-          acc[i] = (acc[i] || 0) + val;
-        });
-      }
-      return acc;
-    }, []);
-    
-    if (dtpsData.length > 0) {
-      const avgDtps = dtpsData.reduce((a: number, b: number) => a + b, 0) / dtpsData.length;
-      const threshold = avgDtps * 1.8;
-      
-      for (let i = 0; i < dtpsData.length; i++) {
-        if (dtpsData[i] > threshold) {
-          // Found a spike - check if it's already in gaps
-          const existingGap = gaps.find(g => Math.abs(g.time - i) < 10);
-          if (!existingGap) {
-            gaps.push({
-              time: i,
-              duration: 3,
-              damageTaken: dtpsData[i] * 3,
-              availableCds: ['Tranquility', 'Healing Tide', 'Divine Hymn'],
-              severity: dtpsData[i] > avgDtps * 2.5 ? 'critical' : 'warning',
-            });
-          }
-        }
-      }
-    }
-
-    return gaps.sort((a, b) => a.time - b.time).slice(0, 5);
-  };
-
-  // NEW: Generate Burst Window Analysis - Uses REAL data from fight
-  const generateBurstWindows = (fight: any, players: any[]): BurstWindowAnalysis[] => {
-    const windows: BurstWindowAnalysis[] = [];
-    const duration = fight.duration;
-    const timeline = fight.timeline || [];
-    
-    // Find bloodlust window from timeline
-    const bloodlustEvent = timeline.find((e: any) => 
-      e.type === 'bloodlust' || e.description?.toLowerCase().includes('bloodlust') ||
-      e.description?.toLowerCase().includes('heroism') || e.description?.toLowerCase().includes('time warp')
-    );
-    
-    if (bloodlustEvent) {
-      const bloodlustTime = bloodlustEvent.time;
-      const bloodlustDuration = 40;
-      
-      // Check which DPS had their DPS spike during bloodlust (indicates CD usage)
-      const dpsPlayers = players.filter((p: any) => p.role === 'dps');
-      const playersWithoutCDs: string[] = [];
-      
-      dpsPlayers.forEach((player: any) => {
-        if (player.dpsTimeline && player.dpsTimeline.length > bloodlustTime + 10) {
-          // Check if DPS during bloodlust window is significantly higher than average
-          const bloodlustDPS = player.dpsTimeline.slice(bloodlustTime, bloodlustTime + 30);
-          const avgBloodlustDPS = bloodlustDPS.reduce((a: number, b: number) => a + b, 0) / bloodlustDPS.length;
-          const overallAvg = player.dps;
-          
-          // If DPS during bloodlust isn't at least 50% higher than average, they might not have used CDs
-          if (avgBloodlustDPS < overallAvg * 1.3) {
-            playersWithoutCDs.push(player.name);
-          }
-        }
-      });
-
-      windows.push({
-        name: 'Bloodlust',
-        startTime: bloodlustTime,
-        duration: bloodlustDuration,
-        playersWithoutCDs,
-        efficiency: Math.max(50, 100 - (playersWithoutCDs.length * 8)),
-      });
-    }
-    
-    // Execute phase window (last 20% of fight)
-    if (!fight.kill && fight.bossHPPercent && fight.bossHPPercent < 30) {
-      const executeStart = Math.floor(duration * 0.8);
-      
-      // Calculate DPS efficiency in execute phase
-      const executeDPS = players
-        .filter((p: any) => p.role === 'dps' && p.dpsTimeline)
-        .reduce((sum: number, p: any) => {
-          const executeSlice = p.dpsTimeline.slice(executeStart);
-          return sum + (executeSlice.reduce((a: number, b: number) => a + b, 0) / executeSlice.length);
-        }, 0);
-      
-      const avgDPS = players
-        .filter((p: any) => p.role === 'dps')
-        .reduce((sum: number, p: any) => sum + p.dps, 0);
-      
-      const efficiency = avgDPS > 0 ? Math.floor((executeDPS / avgDPS) * 100) : 85;
-      
-      windows.push({
-        name: 'Execute Phase',
-        startTime: executeStart,
-        duration: duration - executeStart,
-        playersWithoutCDs: [],
-        efficiency: Math.min(100, Math.max(50, efficiency)),
-      });
-    }
-
-    return windows;
-  };
-
-  const copyToClipboard = () => {
-    if (!analysis || !fightData) return;
-    const text = generateDiscordText(analysis, fightData);
-    navigator.clipboard.writeText(text);
-    toast({ title: 'Copied!', description: 'Analysis copied to clipboard' });
-  };
-
-  const copyRaidBrief = () => {
-    if (!analysis || !fightData) return;
-    const actions = (analysis.nextPullActions || [])
-      .map((a) => `${a.priority}. ${a.title} (${a.owner})`)
+  const generateAnalysis = useCallback((fight: any, historicalFights: any[] = [], assignmentPlanInput: AssignmentPlan = EMPTY_ASSIGNMENT_PLAN): AnalysisResult => {
+  return analyzeLogFight({
+    fight,
+    historicalFights,
+    assignmentPlanInput,
+    reportFights: report?.fights || [],
+  });
+}, [report?.fights]);
+
+  const formatBriefInsights = (insights: BriefInsight[] = []) =>
+    insights
+      .slice(0, 3)
+      .map((insight, index) =>
+        `${index + 1}. [${insight.kind.toUpperCase()}|${insight.severity.toUpperCase()}|${insight.confidence.toUpperCase()}] ${insight.summary}\n` +
+        `   Owner: ${insight.owner} | Phase: ${insight.phase}\n` +
+        `   Evidence: ${insight.evidence}\n` +
+        `   Action: ${insight.recommendation}`
+      )
       .join('\n');
-    const phaseChecklist = (analysis.phaseCausality || [])
-      .filter((p) => p.dominantCause !== 'stable')
-      .map((p) => `- ${p.phase}: ${p.dominantCause} (${p.deaths} deaths, ${p.avoidableDeaths} avoidable)`)
-      .join('\n');
+
+  const formatBulletList = (items: string[] = [], fallback: string) =>
+    items.length > 0 ? items.map((item) => `- ${item}`).join('\n') : fallback;
+
+  const formatInsightList = (insights: BriefInsight[] = [], fallback: string) =>
+    insights.length > 0
+      ? insights
+          .slice(0, 3)
+          .map((insight) => `- ${insight.summary} (${insight.owner}, ${insight.phase})`)
+          .join('\n')
+      : fallback;
+
+  const copyNormalizedRaidBrief = () => {
+    if (!analysis || !fightData) return;
     const roleScores = analysis.roleScores
       ? `Tanks ${analysis.roleScores.tanks} | Healers ${analysis.roleScores.healers} | DPS ${analysis.roleScores.dps}`
-      : 'N/D';
-    const regression = (analysis.regressionAlerts || []).map((a) => `- ${a}`).join('\n');
-    const bestPull = (analysis.bestPullChanges || []).map((a) => `- ${a}`).join('\n');
-    const cdPlan = (analysis.cooldownPlanner || []).slice(0, 3).map((c) => `- ${formatTime(c.at)} [${c.phase}] ${c.action} (${c.owner})`).join('\n');
-    const assignment = (analysis.assignmentBreaks || []).slice(0, 3).map((a) => `- ${a.owner}: ${a.failure} (${a.count}x)`).join('\n');
-    const benchmark = analysis.internalBenchmark
-      ? `Rank ${analysis.internalBenchmark.rank}/${analysis.internalBenchmark.total} (${analysis.internalBenchmark.percentile}º percentil interno)`
-      : 'N/D';
+      : 'N/A';
+    const nextPullPlan = (analysis.nextPullActions || [])
+      .slice(0, 3)
+      .map((action) => `- P${action.priority}: ${action.title} (${action.owner})`)
+      .join('\n');
+    const phaseChecklist = (analysis.phaseCausality || [])
+      .filter((phase) => phase.dominantCause !== 'stable')
+      .map((phase) => `- ${phase.phase}: ${phase.dominantCause} (${phase.deaths} deaths, ${phase.avoidableDeaths} avoidable)`)
+      .join('\n');
+    const assignmentCoverage = (analysis.assignmentAssessments || [])
+      .filter((assessment) => assessment.status !== 'covered')
+      .slice(0, 3)
+      .map((assessment) => `- ${assessment.mechanic}: ${assessment.status} (${assessment.owner}, ${assessment.phase})`)
+      .join('\n');
+    const phaseCriteria = (analysis.phaseSuccessCriteria || [])
+      .slice(0, 3)
+      .map((phase) => `- ${phase.phase}: ${phase.status} | ${phase.summary}`)
+      .join('\n');
+    const phaseReadiness = (analysis.phaseReadiness || [])
+      .slice(0, 3)
+      .map((phase) => `- ${phase.phase}: ${phase.status} | ${phase.blocker}`)
+      .join('\n');
+    const buildReview = (buildSignificance?.insights || [])
+      .slice(0, 2)
+      .map((insight) => `- ${insight.playerName}: ${insight.summary}`)
+      .join('\n');
+    const planVsExecution = analysis.assignmentPlanOverview
+      ? `- Plan status: ${analysis.assignmentPlanOverview.status}\n- Coverage: ${analysis.assignmentPlanOverview.coverage}\n- ${analysis.assignmentPlanOverview.summary}\n- ${analysis.assignmentPlanOverview.recommendation}`
+      : '- No plan-vs-execution summary available.';
     const brief = [
-      `🎯 Raid Brief — ${fightData.bossName}`,
+      `Raid Brief - ${fightData.bossName}`,
       `Status: ${fightData.kill ? 'KILL' : `WIPE @ ${fightData.bossHP}%`}`,
-      `Causa raiz: ${analysis.wipeCause?.primary || 'mixed'}`,
-      `Score por role: ${roleScores}`,
-      `Kill probability: ${analysis.killProbability ?? 'N/D'}%`,
-      `Benchmark interno: ${benchmark}`,
+      `Root cause: ${analysis.wipeCause?.primary || 'mixed'}`,
+      `Role scores: ${roleScores}`,
+      `Kill probability: ${analysis.killProbability ?? 'N/A'}%`,
+      `Biggest blocker: ${analysis.commandView?.biggestBlocker?.summary || 'No clear blocker.'}`,
+      `Most likely next wipe: ${analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}`,
       '',
-      'Top 3 ações:',
-      actions || '1. Executar fight sem mortes evitáveis',
+      'Top 3 actions:',
+      formatBriefInsights(analysis.briefInsights) || '1. Clean up avoidable deaths before adding more throughput pressure.',
       '',
-      'Checklist por fase:',
-      phaseChecklist || '- Sem fase crítica dominante detectada',
+      'Next pull plan:',
+      nextPullPlan || '- No explicit next-pull actions were generated.',
       '',
-      'Alertas de regressão:',
-      regression || '- Sem regressão relevante detectada',
+      'Plan vs execution:',
+      planVsExecution,
+      '',
+      'Phase readiness:',
+      phaseReadiness || '- No phase readiness readout available.',
+      '',
+      'Phase checklist:',
+      phaseChecklist || '- No dominant failure phase detected.',
       '',
       'What changed from best pull:',
-      bestPull || '- Sem diferenças relevantes detectadas',
+      formatInsightList(analysis.deltaInsights, '- No major delta versus the comparison pull.'),
       '',
-      'Plano de CD (fase):',
-      cdPlan || '- Sem gaps críticos de CD detectados',
+      'Player coaching:',
+      formatInsightList(analysis.playerCoaching, '- No focused coaching targets detected.'),
       '',
-      'Assignment breaks:',
-      assignment || '- Sem assignment breaks evidentes',
+      'Build review:',
+      buildReview || '- No boss-specific build review was generated yet.',
+      '',
+      'Assignment coverage:',
+      assignmentCoverage || '- No assignment failures detected.',
+      '',
+      'Phase success criteria:',
+      phaseCriteria || '- No phase criteria available for this pull.',
+      '',
+      'Cause chain:',
+      formatBulletList(analysis.causeChains, '- No explicit cause chain was built for this pull.'),
+      '',
+      'Raid notes:',
+      assignmentPlan.notes.trim() || '- No extra raid notes saved for this boss.',
     ].join('\n');
+
     navigator.clipboard.writeText(brief);
-    toast({ title: 'Brief copiado', description: 'Resumo rápido pronto para Discord.' });
+    toast({ title: 'Brief copied', description: 'Pull brief is ready to share.' });
   };
 
-  const sendRaidBriefToDiscord = async () => {
-    if (!analysis || !fightData) return;
-    const actions = (analysis.nextPullActions || [])
-      .map((a) => `${a.priority}. ${a.title} (${a.owner})`)
+  const generateAnalysisSummaryText = (analysis: AnalysisResult, fight: FightData) => {
+    const rootDeath = analysis.deathCascade
+      ? `${analysis.deathCascade.rootDeath.player} at ${formatTime(analysis.deathCascade.rootDeath.time)} from ${analysis.deathCascade.rootDeath.ability}`
+      : 'No dominant root death identified.';
+    const nextPullPlan = (analysis.nextPullActions || [])
+      .slice(0, 3)
+      .map((action) => `- ${action.title} (${action.owner})`)
       .join('\n');
-    const content = [
-      `🎯 Raid Brief — ${fightData.bossName}`,
-      `Status: ${fightData.kill ? 'KILL' : `WIPE @ ${fightData.bossHP}%`}`,
-      `Causa raiz: ${analysis.wipeCause?.primary || 'mixed'}`,
+    const buildReview = (buildSignificance?.insights || [])
+      .slice(0, 2)
+      .map((insight) => `- ${insight.playerName}: ${insight.summary}`)
+      .join('\n');
+
+    return [
+      `${fight.kill ? 'Fight Summary' : 'Wipe Summary'} - ${fight.bossName}`,
+      `Grade: ${analysis.raidEfficiency?.grade || 'N/A'} (${analysis.raidEfficiency?.overall ?? 'N/A'}%)`,
+      `Root death: ${rootDeath}`,
+      `Biggest blocker: ${analysis.commandView?.biggestBlocker?.summary || 'No clear blocker.'}`,
+      `Most likely next wipe: ${analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}`,
       '',
-      'Top 3 ações:',
-      actions || '1. Executar fight sem mortes evitáveis',
+      'Why this pull failed:',
+      formatBulletList(analysis.summary.whyWiped, '- No clear wipe driver detected.'),
+      '',
+      'Next pull plan:',
+      nextPullPlan || '- No explicit next-pull actions were generated.',
+      '',
+      'Highest-priority brief insights:',
+      formatInsightList(analysis.briefInsights, '- No prioritized brief insights available.'),
+      '',
+      'Plan vs execution:',
+      analysis.assignmentPlanOverview
+        ? `- ${analysis.assignmentPlanOverview.summary}\n- ${analysis.assignmentPlanOverview.recommendation}`
+        : '- No plan-vs-execution summary available.',
+      '',
+      'Phase readiness:',
+      (analysis.phaseReadiness || [])
+        .slice(0, 3)
+        .map((phase) => `- ${phase.phase}: ${phase.status} | ${phase.blocker}`)
+        .join('\n') || '- No phase readiness readout available.',
+      '',
+      'What changed from the comparison pull:',
+      formatInsightList(analysis.deltaInsights, '- No major delta versus the comparison pull.'),
+      '',
+      'Player coaching:',
+      formatInsightList(analysis.playerCoaching, '- No focused coaching targets detected.'),
+      '',
+      'Build review:',
+      buildReview || '- No boss-specific build review was generated yet.',
+      '',
+      'Assignment coverage:',
+      (analysis.assignmentAssessments || [])
+        .filter((assessment) => assessment.status !== 'covered')
+        .slice(0, 3)
+        .map((assessment) => `- ${assessment.mechanic}: ${assessment.status} (${assessment.owner}, ${assessment.phase})`)
+        .join('\n') || '- No assignment failures detected.',
+      '',
+      'Phase success criteria:',
+      (analysis.phaseSuccessCriteria || [])
+        .slice(0, 3)
+        .map((phase) => `- ${phase.phase}: ${phase.status} | ${phase.summary}`)
+        .join('\n') || '- No phase criteria available for this pull.',
+      '',
+      'Cause chain:',
+      formatBulletList(analysis.causeChains, '- No explicit cause chain was built for this pull.'),
+      '',
+      'Raid notes:',
+      assignmentPlan.notes.trim() || '- No extra raid notes saved for this boss.',
+      '',
+      'Generated by WoWtron',
+    ].join('\n');
+  };
+
+  const copyAnalysisSummary = () => {
+    if (!analysis || !fightData) return;
+    navigator.clipboard.writeText(generateAnalysisSummaryText(analysis, fightData));
+    toast({ title: 'Summary copied', description: 'Short pull summary is ready to share.' });
+  };
+
+  const copySessionCommandBrief = () => {
+    if (!fightData || !sessionCommandCenter) return;
+
+    const payload = [
+      `Session Command Brief - ${fightData.bossName}`,
+      `Verdict: ${sessionCommandCenter.verdict}`,
+      `Headline: ${sessionCommandCenter.headline}`,
+      `Rationale: ${sessionCommandCenter.rationale}`,
+      '',
+      'Tonight calls:',
+      ...sessionCommandCenter.tonightCalls.map((call, index) => `${index + 1}. ${call}`),
+      '',
+      'Coaching targets:',
+      ...(sessionCommandCenter.coachingTargets.length > 0
+        ? sessionCommandCenter.coachingTargets.map((target) => `- ${target.name} (${target.role}): ${target.reason}`)
+        : ['- No urgent coaching target recorded.']),
+      '',
+      'Night comparison:',
+      nightComparison
+        ? `- ${nightComparison.summary}\n- ${nightComparison.progressDelta}\n- ${nightComparison.recommendation}`
+        : '- No cross-night baseline stored yet.',
+      '',
+      'Guild boss knowledge:',
+      guildBossKnowledge
+        ? `- ${guildBossKnowledge.summary}\n- Known blockers: ${guildBossKnowledge.knownBlockers.join(', ') || 'None yet.'}`
+        : '- No stored guild memory for this boss yet.',
+      '',
+      'Build review:',
+      ...(buildSignificance?.insights?.length
+        ? buildSignificance.insights.slice(0, 2).map((insight) => `- ${insight.playerName}: ${insight.summary}`)
+        : ['- No boss-specific build review available yet.']),
+      '',
+      `Escalation risk: ${sessionCommandCenter.escalationRisk}`,
+      '',
+      'Generated by WoWtron',
     ].join('\n');
 
-    try {
-      setIsPostingBrief(true);
-      const response = await fetch('/api/raid-brief/discord', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content }),
-      });
-      const json = await response.json();
-      if (!response.ok || !json?.ok) {
-        throw new Error(json?.error || 'Falha ao enviar brief para Discord');
-      }
-      toast({ title: 'Brief enviado', description: 'Resumo enviado para o Discord com sucesso.' });
-    } catch (error: any) {
-      toast({
-        title: 'Erro ao enviar',
-        description: error?.message || 'Não foi possível enviar o brief para Discord.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsPostingBrief(false);
-    }
+    navigator.clipboard.writeText(payload);
+    toast({ title: 'Session brief copied', description: 'Night-level command brief is ready to share.' });
   };
 
-  const generateDiscordText = (analysis: AnalysisResult, fight: FightData) => {
-    let text = `**${fight.kill ? 'Fight Analysis' : 'Wipe Analysis'} - ${fight.bossName}**\n`;
-    text += `Grade: ${analysis.raidEfficiency?.grade} (${analysis.raidEfficiency?.overall}%)\n\n`;
-    
-    // Add death cascade info
-    if (analysis.deathCascade) {
-      text += `**Morte Raiz:** ${analysis.deathCascade.rootDeath.player} aos ${formatTime(analysis.deathCascade.rootDeath.time)}\n`;
-      if (analysis.deathCascade.chainDeaths.length > 0) {
-        text += `**Cadeia:** ${analysis.deathCascade.chainDeaths.map(d => d.player).join(' → ')}\n`;
-      }
-      text += `\n`;
-    }
-    
-    if (!fight.kill) {
-      text += `**Por que wipeamos:**\n`;
-      analysis.summary.whyWiped.forEach(r => { text += `• ${r}\n`; });
-    }
-    text += `\n_Analisado por WoWtron_`;
-    return text;
+  const copyNightRecap = () => {
+    if (!fightData || !sessionRecap) return;
+
+    const payload = [
+      `Night Recap - ${fightData.bossName}`,
+      sessionRecap.oneSentenceSummary,
+      '',
+      'Keep doing:',
+      ...(sessionRecap.keepDoing.length > 0 ? sessionRecap.keepDoing.map((item) => `- ${item}`) : ['- No stable keep signal yet.']),
+      '',
+      'Change now:',
+      ...(sessionRecap.changeNow.length > 0 ? sessionRecap.changeNow.map((item) => `- ${item}`) : ['- No immediate change was flagged.']),
+      '',
+      'Watch next:',
+      ...(sessionRecap.watchNext.length > 0 ? sessionRecap.watchNext.map((item) => `- ${item}`) : ['- No watch item recorded yet.']),
+      '',
+      `Next night start call: ${sessionRecap.nextNightStartCall}`,
+      '',
+      'Generated by WoWtron',
+    ].join('\n');
+
+    navigator.clipboard.writeText(payload);
+    toast({ title: 'Night recap copied', description: 'Officer-style night recap is ready to share.' });
   };
 
   return (
@@ -1429,7 +1058,7 @@ export default function LogAnalysis() {
       <div className="rounded-2xl border border-dark-700 bg-gradient-to-br from-dark-800/80 to-dark-900/80 p-4 md:p-5">
         <div className="mb-3">
           <h2 className="text-lg font-bold text-tron-silver-200">Warcraft Logs Analyzer</h2>
-          <p className="text-sm text-tron-silver-400">Cole URL/código do report para gerar insights de raid call em formato bento.</p>
+          <p className="text-sm text-tron-silver-400">Paste a report URL or code to turn Warcraft Logs into a raid-ready diagnosis.</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <Input
@@ -1504,7 +1133,7 @@ export default function LogAnalysis() {
               </div>
               <div className="flex-1 min-w-0">
                 <h2 className="text-xl font-bold text-wow-gold truncate">{fightData.bossName}</h2>
-                <div className="flex items-center gap-2 text-sm text-tron-silver-400 mt-1">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-tron-silver-400 mt-1">
                   <span>{fightData.difficulty}</span>
                   <span>•</span>
                   <span>{formatTime(fightData.duration)}</span>
@@ -1514,22 +1143,40 @@ export default function LogAnalysis() {
                     <Badge className="bg-red-500/20 text-red-400 text-xs ml-1">WIPE @ {fightData.bossHP}%</Badge>
                   )}
                 </div>
-                <div className="flex gap-2 mt-3">
-                  <Button variant="outline" size="sm" onClick={copyRaidBrief} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
+                <div className="flex flex-wrap gap-2 mt-3">
+                  <Button variant="outline" size="sm" onClick={copyNormalizedRaidBrief} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
                     <Sparkles className="h-3.5 w-3.5 mr-1.5" /> Brief
                   </Button>
+                  {sessionCommandCenter && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={copySessionCommandBrief}
+                      className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                    >
+                      <Clock4 className="h-3.5 w-3.5 mr-1.5" />
+                      Session Brief
+                    </Button>
+                  )}
+                  {sessionRecap && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={copyNightRecap}
+                      className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                    >
+                      <Download className="h-3.5 w-3.5 mr-1.5" />
+                      Night Recap
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={sendRaidBriefToDiscord}
-                    disabled={isPostingBrief}
+                    onClick={copyAnalysisSummary}
                     className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
                   >
-                    {isPostingBrief ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Send className="h-3.5 w-3.5 mr-1.5" />}
-                    Discord
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
-                    <Copy className="h-3.5 w-3.5 mr-1.5" /> Copy
+                    <Send className="h-3.5 w-3.5 mr-1.5" />
+                    Summary
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => { setSelectedFight(null); setAnalysis(null); }} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
                     <RefreshCw className="h-3.5 w-3.5 mr-1.5" /> New
@@ -1540,18 +1187,95 @@ export default function LogAnalysis() {
                     onClick={() => setShowAdvanced((v) => !v)}
                     className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
                   >
-                    <BarChart3 className="h-3.5 w-3.5 mr-1.5" /> {showAdvanced ? 'Modo simples' : 'Modo avançado'}
+                    <BarChart3 className="h-3.5 w-3.5 mr-1.5" /> {showAdvanced ? 'Simple View' : 'Advanced View'}
                   </Button>
                 </div>
+            </div>
+          </div>
+          </div>
+
+          {showAdvanced && (
+          <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2">
+                  <ShieldAlert className="h-5 w-5 text-fuchsia-400" /> Edit Assignment Plan
+                </h3>
+                <p className="text-sm text-tron-silver-400 mt-1">
+                  Define the intended plan for this boss so WoWtron can compare execution versus assignment.
+                </p>
               </div>
+              <Badge className="bg-dark-700 text-tron-silver-300 text-xs">
+                Saved per boss
+              </Badge>
             </div>
 
-            {/* Stats Grid */}
-            <div className="col-span-12 lg:col-span-9 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
-              <StatCard icon={<Swords className="h-4 w-4" />} label="Raid DPS" value={formatNumber(analysis.performance.raidDPS)} />
-              <StatCard icon={<Heart className="h-4 w-4" />} label="Raid HPS" value={formatNumber(analysis.performance.raidHPS)} />
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-tron-silver-500">Interrupts</p>
+                <Textarea
+                  value={assignmentPlan.interrupts}
+                  onChange={(e) => setAssignmentPlan((prev) => ({ ...prev, interrupts: e.target.value }))}
+                  placeholder={`Void Scream: Kicker1, Kicker2, Kicker3`}
+                  className="min-h-24 bg-dark-900 border-dark-600 text-tron-silver-200 placeholder:text-tron-silver-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-tron-silver-500">Soaks</p>
+                <Textarea
+                  value={assignmentPlan.soaks}
+                  onChange={(e) => setAssignmentPlan((prev) => ({ ...prev, soaks: e.target.value }))}
+                  placeholder={`Orb 1: PlayerA, PlayerB`}
+                  className="min-h-24 bg-dark-900 border-dark-600 text-tron-silver-200 placeholder:text-tron-silver-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-tron-silver-500">Dispels</p>
+                <Textarea
+                  value={assignmentPlan.dispels}
+                  onChange={(e) => setAssignmentPlan((prev) => ({ ...prev, dispels: e.target.value }))}
+                  placeholder={`Debuff X: Healer1, Healer2`}
+                  className="min-h-24 bg-dark-900 border-dark-600 text-tron-silver-200 placeholder:text-tron-silver-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-tron-silver-500">Raid Cooldowns</p>
+                <Textarea
+                  value={assignmentPlan.raidCooldowns}
+                  onChange={(e) => setAssignmentPlan((prev) => ({ ...prev, raidCooldowns: e.target.value }))}
+                  placeholder={`Shadow Feast: Barrier - PriestName`}
+                  className="min-h-24 bg-dark-900 border-dark-600 text-tron-silver-200 placeholder:text-tron-silver-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-tron-silver-500">Tank Swaps / Externals</p>
+                <Textarea
+                  value={assignmentPlan.tankAssignments}
+                  onChange={(e) => setAssignmentPlan((prev) => ({ ...prev, tankAssignments: e.target.value }))}
+                  placeholder={`2 stacks swap. External on second combo.`}
+                  className="min-h-24 bg-dark-900 border-dark-600 text-tron-silver-200 placeholder:text-tron-silver-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-tron-silver-500">Raid Notes</p>
+                <Textarea
+                  value={assignmentPlan.notes}
+                  onChange={(e) => setAssignmentPlan((prev) => ({ ...prev, notes: e.target.value }))}
+                  placeholder={`Extra context for this boss or comp.`}
+                  className="min-h-24 bg-dark-900 border-dark-600 text-tron-silver-200 placeholder:text-tron-silver-500"
+                />
+              </div>
+            </div>
+          </div>
+          )}
+
+          {/* Stats Grid */}
+          <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-3">
+              <StatCard icon={<Swords className="h-4 w-4" />} label="Raid DPS" value={formatNumber(analysis.performance.raidDPS)} helpText="How much damage the whole raid is doing each second. Bigger is better if people are still alive." />
+              <StatCard icon={<Heart className="h-4 w-4" />} label="Raid HPS" value={formatNumber(analysis.performance.raidHPS)} helpText="How much healing the whole raid is doing each second. Bigger helps only if it keeps people alive at the right time." />
               <StatCard icon={<Skull className="h-4 w-4" />} label="Deaths" value={String(analysis.deaths.avoidable.length + analysis.deaths.unavoidable.length)} valueClass="text-red-400" />
-              <StatCard icon={<AlertTriangle className="h-4 w-4" />} label="Avoidable" value={String(analysis.deaths.avoidable.length)} valueClass="text-amber-400" />
+              <StatCard icon={<AlertTriangle className="h-4 w-4" />} label="Avoidable" value={String(analysis.deaths.avoidable.length)} valueClass="text-amber-400" helpText="Deaths or hits that usually should not happen. Lower is better." />
               <StatCard icon={<TrendingDown className="h-4 w-4" />} label="DPS Lost" value={formatNumber(analysis.consumables.estimatedDPSLoss)} valueClass="text-orange-400" />
               <StatCard icon={<Users className="h-4 w-4" />} label="Players" value={String(analysis.players.length)} />
               <StatCard
@@ -1559,87 +1283,518 @@ export default function LogAnalysis() {
                 label="Avg Reliability"
                 value={String(Math.floor(analysis.players.reduce((s, p) => s + (p.reliabilityScore || 0), 0) / Math.max(1, analysis.players.length)))}
                 valueClass="text-emerald-400"
+                helpText="A simple trust score. Higher means the raid was more stable and made fewer costly mistakes."
               />
             </div>
-          )}
+          </div>
 
-          {analysis.repeatedMistakes && analysis.repeatedMistakes.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-              <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Flame className="h-5 w-5 text-red-400" /> Erros repetidos (prioridade de correção)
-              </h3>
-              <div className="space-y-2">
-                {analysis.repeatedMistakes.map((mistake, index) => (
-                  <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                    <p className="text-sm text-tron-silver-200">
-                      <span className="font-semibold">{mistake.player}</span> morreu para <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
-                    </p>
-                  </div>
-                ))}
+          {(analysis.commandView?.biggestBlocker || analysis.commandView?.mostLikelyNextWipe || (analysis.nextPullActions && analysis.nextPullActions.length > 0)) && (
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-red-500/20">
+                <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                  <AlertCircle className="h-5 w-5 text-red-400" /> Biggest Blocker
+                </h3>
+                <p className="text-sm font-semibold text-tron-silver-200">
+                  {analysis.commandView?.biggestBlocker?.summary || 'No clear blocker detected.'}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-tron-silver-400">
+                  <span>Owner: <span className="text-tron-silver-200">{analysis.commandView?.biggestBlocker?.owner || 'Raid'}</span></span>
+                  <span>Phase: <span className="text-tron-silver-200">{analysis.commandView?.biggestBlocker?.phase || 'Full Fight'}</span></span>
+                </div>
+                <p className="text-xs text-tron-silver-400 mt-2">
+                  {analysis.commandView?.biggestBlocker?.reason || 'No blocker reason recorded.'}
+                </p>
+              </div>
+
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-amber-500/20">
+                <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                  <ShieldAlert className="h-5 w-5 text-amber-400" /> Most Likely Next Wipe
+                </h3>
+                <p className="text-sm font-semibold text-tron-silver-200">
+                  {analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-tron-silver-400">
+                  <span>Owner: <span className="text-tron-silver-200">{analysis.commandView?.mostLikelyNextWipe?.owner || 'Raid'}</span></span>
+                  <span>Phase: <span className="text-tron-silver-200">{analysis.commandView?.mostLikelyNextWipe?.phase || 'Full Fight'}</span></span>
+                </div>
+                <p className="text-xs text-tron-silver-400 mt-2">
+                  {analysis.commandView?.mostLikelyNextWipe?.reason || 'No repeat wipe reason recorded.'}
+                </p>
+              </div>
+
+              <div className="bg-dark-800/50 rounded-lg p-4 border border-wow-gold/20">
+                <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                  <Target className="h-5 w-5 text-wow-gold" /> Next Pull Plan
+                </h3>
+                <div className="space-y-2">
+                  {(analysis.nextPullActions || []).slice(0, 3).map((action) => (
+                    <div key={`${action.priority}-${action.title}`} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                      <p className="font-semibold text-tron-silver-200">P{action.priority}. {action.title}</p>
+                      <p className="text-xs text-tron-silver-400 mt-1">{action.owner}</p>
+                      <p className="text-xs text-wow-gold mt-1">{action.reason}</p>
+                    </div>
+                  ))}
+                  {(!analysis.nextPullActions || analysis.nextPullActions.length === 0) && (
+                    <p className="text-sm text-tron-silver-400">No explicit next-pull actions were generated.</p>
+                  )}
+                </div>
               </div>
             </div>
           )}
 
-          {/* WIPE CAUSE + PULL DELTA */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {analysis.wipeCause && (
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-amber-400" /> Causa raiz do pull
-                </h3>
-                <Badge className="mb-2 bg-amber-500/20 text-amber-400">
-                  {analysis.wipeCause.primary}
-                </Badge>
-                <p className="text-sm text-tron-silver-300">{analysis.wipeCause.details}</p>
-              </div>
-            )}
-
-            {analysis.pullDelta && (
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-                <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
-                </h3>
-                <div className="grid grid-cols-3 gap-3 text-sm">
-                  <div>
-                    <p className="text-tron-silver-500">HP Delta</p>
-                    <p className={analysis.pullDelta.bossHPDelta >= 0 ? 'text-green-400 font-semibold' : 'text-red-400 font-semibold'}>
-                      {analysis.pullDelta.bossHPDelta >= 0 ? '-' : '+'}{Math.abs(analysis.pullDelta.bossHPDelta)}%
-                    </p>
+          {(analysis.assignmentPlanOverview || (analysis.phaseReadiness && analysis.phaseReadiness.length > 0)) && (
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              {analysis.assignmentPlanOverview && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <ShieldCheck className="h-5 w-5 text-fuchsia-400" /> Plan vs Execution <InlineHelp text="Checks whether the key jobs for this boss were planned clearly and actually covered in the pull." />
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <Badge className={getPlanStatusBadgeClass(analysis.assignmentPlanOverview.status)}>
+                      plan {analysis.assignmentPlanOverview.status}
+                    </Badge>
+                    <Badge className={getCoverageBadgeClass(analysis.assignmentPlanOverview.coverage)}>
+                      coverage {analysis.assignmentPlanOverview.coverage}
+                    </Badge>
                   </div>
-                  <div>
-                    <p className="text-tron-silver-500">Tempo</p>
-                    <p className="text-tron-silver-200 font-semibold">{analysis.pullDelta.durationDelta > 0 ? '+' : ''}{analysis.pullDelta.durationDelta}s</p>
-                  </div>
-                  <div>
-                    <p className="text-tron-silver-500">Deaths</p>
-                    <p className="text-tron-silver-200 font-semibold">
-                      {typeof analysis.pullDelta.deathsDelta === 'number'
-                        ? `${analysis.pullDelta.deathsDelta > 0 ? '+' : ''}${analysis.pullDelta.deathsDelta}`
-                        : 'N/D'}
-                    </p>
+                  <p className="text-sm text-tron-silver-300">{analysis.assignmentPlanOverview.summary}</p>
+                  <p className="text-xs text-wow-gold mt-2">{analysis.assignmentPlanOverview.recommendation}</p>
+                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {analysis.assignmentPlanOverview.categories.filter((category) => category.required).map((category) => (
+                      <div key={category.key} className="rounded-md bg-dark-700/40 p-3 text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-semibold text-tron-silver-200">{category.label}</p>
+                          <Badge className={
+                            category.execution === 'covered'
+                              ? 'bg-emerald-500/20 text-emerald-300'
+                              : category.execution === 'at_risk'
+                                ? 'bg-amber-500/20 text-amber-300'
+                                : 'bg-red-500/20 text-red-300'
+                          }>
+                            {category.execution}
+                          </Badge>
+                        </div>
+                        <p className="text-tron-silver-400 mt-1">{category.summary}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+
+              {analysis.phaseReadiness && analysis.phaseReadiness.length > 0 && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Award className="h-5 w-5 text-emerald-400" /> Phase Readiness <InlineHelp text="Tells you if a phase already looks ready to progress, almost ready, or still not ready." />
+                  </h3>
+                  <div className="space-y-2">
+                    {analysis.phaseReadiness.map((phase) => (
+                      <div key={phase.phase} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-semibold text-tron-silver-200">{phase.phase}</p>
+                          <Badge className={getReadinessBadgeClass(phase.status)}>
+                            {phase.status.replace('_', ' ')}
+                          </Badge>
+                        </div>
+                        <p className="text-tron-silver-300 mt-1">{phase.summary}</p>
+                        <p className="text-xs text-tron-silver-400 mt-2">{phase.blocker}</p>
+                        <p className="text-xs text-wow-gold mt-1">Owner: {phase.owner}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {(sessionRecap || sessionCommandCenter || sessionReview || bossMemory || reliabilityTrends.length > 0 || nightComparison || guildBossKnowledge || playerBossCoachingMemory.length > 0 || buildSignificance || isLoadingBuildSignificance) && (
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+              {sessionRecap && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-wow-gold/20">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Trophy className="h-5 w-5 text-wow-gold" /> Night Recap
+                    <InlineHelp text="The shortest officer-style summary of what to keep, what to change, and how to start the next night." />
+                  </h3>
+                  <p className="text-sm font-semibold text-tron-silver-100">{sessionRecap.oneSentenceSummary}</p>
+                  <div className="mt-3 grid gap-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Keep doing</p>
+                      <div className="mt-2 space-y-1">
+                        {sessionRecap.keepDoing.length > 0 ? sessionRecap.keepDoing.map((item) => (
+                          <p key={item} className="text-tron-silver-200">{item}</p>
+                        )) : (
+                          <p className="text-tron-silver-400">No stable keep signal yet.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Change now</p>
+                      <div className="mt-2 space-y-1">
+                        {sessionRecap.changeNow.length > 0 ? sessionRecap.changeNow.map((item) => (
+                          <p key={item} className="text-tron-silver-200">{item}</p>
+                        )) : (
+                          <p className="text-tron-silver-400">No urgent change was recorded.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Watch next</p>
+                      <div className="mt-2 space-y-1">
+                        {sessionRecap.watchNext.length > 0 ? sessionRecap.watchNext.map((item) => (
+                          <p key={item} className="text-tron-silver-200">{item}</p>
+                        )) : (
+                          <p className="text-tron-silver-400">No watch item recorded yet.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Next night start call</p>
+                      <p className="text-wow-gold font-medium">{sessionRecap.nextNightStartCall}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {sessionCommandCenter && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-cyan-500/20">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Clock4 className="h-5 w-5 text-cyan-400" /> Session Command Center
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <Badge className="bg-cyan-500/20 text-cyan-300">
+                      {sessionCommandCenter.verdict.replaceAll('_', ' ')}
+                    </Badge>
+                  </div>
+                  <p className="text-sm font-semibold text-tron-silver-100">{sessionCommandCenter.headline}</p>
+                  <p className="mt-2 text-sm text-tron-silver-300">{sessionCommandCenter.rationale}</p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Tonight calls</p>
+                      <div className="mt-2 space-y-1">
+                        {sessionCommandCenter.tonightCalls.map((call) => (
+                          <p key={call} className="text-tron-silver-200">{call}</p>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Coaching targets</p>
+                      <div className="mt-2 space-y-1">
+                        {sessionCommandCenter.coachingTargets.length > 0 ? sessionCommandCenter.coachingTargets.map((target) => (
+                          <p key={target.name} className="text-tron-silver-200">
+                            {target.name} <span className="text-tron-silver-500">({target.role})</span> - {target.reason}
+                          </p>
+                        )) : (
+                          <p className="text-tron-silver-400">No urgent coaching target recorded.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Escalation risk</p>
+                      <p className="text-wow-gold font-medium">{sessionCommandCenter.escalationRisk}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {nightComparison && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-sky-500/20">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <GitBranch className="h-5 w-5 text-sky-400" /> Night Comparison
+                    <InlineHelp text="Compares this report against the best stored previous night for the same boss." />
+                  </h3>
+                  <p className="text-sm text-tron-silver-200 font-semibold">{nightComparison.summary}</p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Progress delta</p>
+                      <p className="text-tron-silver-200">{nightComparison.progressDelta}</p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Recommendation</p>
+                      <p className="text-wow-gold font-medium">{nightComparison.recommendation}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {sessionReview && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Clock className="h-5 w-5 text-sky-400" /> Session Review
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <Badge className={
+                      sessionReview.trend === 'improving'
+                        ? 'bg-emerald-500/20 text-emerald-300'
+                        : sessionReview.trend === 'regressing'
+                          ? 'bg-red-500/20 text-red-300'
+                          : 'bg-amber-500/20 text-amber-300'
+                    }>
+                      {sessionReview.trend}
+                    </Badge>
+                    <Badge className="bg-dark-700 text-tron-silver-300">
+                      {sessionReview.totalPulls} pulls
+                    </Badge>
+                    <Badge className="bg-dark-700 text-tron-silver-300">
+                      {sessionReview.kills} kill / {sessionReview.wipes} wipes
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-tron-silver-300">{sessionReview.summary}</p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Best pull this session</p>
+                      <p className="text-tron-silver-200 font-medium">
+                        {sessionReview.bestPull
+                          ? `Pull #${sessionReview.bestPull.fightId} ${sessionReview.bestPull.kill ? 'Kill' : `@ ${sessionReview.bestPull.bossHP}%`}`
+                          : 'No best pull found.'}
+                      </p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Repeated failure</p>
+                      <p className="text-tron-silver-200 font-medium">{sessionReview.repeatedFailure || 'No repeated failure flagged yet.'}</p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Next focus</p>
+                      <p className="text-wow-gold font-medium">{sessionReview.nextFocus}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {guildBossKnowledge && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-violet-500/20">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Crown className="h-5 w-5 text-violet-400" /> Guild Boss Knowledge
+                    <InlineHelp text="What this guild keeps repeating on this boss across stored nights, not just in the current report." />
+                  </h3>
+                  <p className="text-sm text-tron-silver-300">{guildBossKnowledge.summary}</p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Stable kill pattern</p>
+                      <p className="text-tron-silver-200">{guildBossKnowledge.stableKillPattern}</p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Known blockers</p>
+                      <div className="mt-2 space-y-1">
+                        {guildBossKnowledge.knownBlockers.length > 0 ? guildBossKnowledge.knownBlockers.map((blocker) => (
+                          <p key={blocker} className="text-tron-silver-200">{blocker}</p>
+                        )) : (
+                          <p className="text-tron-silver-400">No stable blocker is recorded yet.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Known pressure point</p>
+                      <p className="text-wow-gold font-medium">
+                        {(guildBossKnowledge.knownFailurePhase || 'No failure phase yet')} / {(guildBossKnowledge.knownOwnerPressure || 'No repeated owner yet')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {bossMemory && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <RefreshCw className="h-5 w-5 text-violet-400" /> Boss Memory
+                  </h3>
+                  <p className="text-sm text-tron-silver-300">{bossMemory.summary}</p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Recurring blocker</p>
+                      <p className="text-tron-silver-200 font-medium">{bossMemory.recurringBlocker || 'No recurring blocker recorded yet.'}</p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Recurring wipe phase</p>
+                      <p className="text-tron-silver-200 font-medium">{bossMemory.recurringWipePhase || 'No recurring phase recorded yet.'}</p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-3">
+                      <p className="text-xs text-tron-silver-500">Owner that keeps showing up</p>
+                      <p className="text-tron-silver-200 font-medium">{bossMemory.recurringOwner || 'No repeated owner flagged yet.'}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {(buildSignificance || isLoadingBuildSignificance) && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-fuchsia-500/20">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Medal className="h-5 w-5 text-fuchsia-400" /> Build Significance <span className="text-xs text-tron-silver-500">(Beta)</span>
+                    <InlineHelp text="Compares current builds against stored boss history. When talent data is missing, WoWtron falls back to spec-level kill baselines instead of pretending certainty." />
+                  </h3>
+                  {isLoadingBuildSignificance ? (
+                    <div className="flex items-center gap-2 text-sm text-tron-silver-400">
+                      <Loader2 className="h-4 w-4 animate-spin" /> Building boss-level build comparison...
+                    </div>
+                  ) : buildSignificance ? (
+                    <>
+                      <p className="text-sm text-tron-silver-300">{buildSignificance.datasetSummary.summary}</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.totalRecords} records</Badge>
+                        <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.killRecords} kill records</Badge>
+                        <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.talentCoverageRecords} talent-tagged</Badge>
+                        <Badge className={buildSignificance.datasetSummary.scope === 'same_difficulty' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}>
+                          {buildSignificance.datasetSummary.scope === 'same_difficulty' ? 'same difficulty' : 'cross-difficulty fallback'}
+                        </Badge>
+                        {buildSignificance.datasetSummary.requestedDifficulty ? (
+                          <Badge className="bg-dark-700 text-tron-silver-300">
+                            target: {buildSignificance.datasetSummary.requestedDifficulty}
+                          </Badge>
+                        ) : null}
+                      </div>
+                      {buildSignificance.datasetSummary.comparedDifficulties.length > 0 ? (
+                        <p className="mt-2 text-xs text-tron-silver-500">
+                          Compared difficulties: {buildSignificance.datasetSummary.comparedDifficulties.join(', ')}
+                        </p>
+                      ) : null}
+                      <div className="mt-3 space-y-2 text-sm">
+                        {buildSignificance.insights.length > 0 ? buildSignificance.insights.map((insight) => (
+                          <div key={`${insight.playerName}-${insight.spec}`} className="rounded-md bg-dark-700/40 p-3">
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="font-semibold text-tron-silver-200">{insight.playerName}</p>
+                              <div className="flex gap-2">
+                                <Badge className="bg-dark-700 text-tron-silver-300">{insight.spec}</Badge>
+                                <Badge className={insight.comparisonMode === 'talent' ? 'bg-fuchsia-500/20 text-fuchsia-300' : 'bg-amber-500/20 text-amber-300'}>
+                                  {insight.comparisonMode === 'talent' ? 'talent mode' : 'spec fallback'}
+                                </Badge>
+                                <Badge className={insight.confidence === 'high' ? 'bg-emerald-500/20 text-emerald-300' : insight.confidence === 'medium' ? 'bg-sky-500/20 text-sky-300' : 'bg-amber-500/20 text-amber-300'}>
+                                  {insight.confidence}
+                                </Badge>
+                              </div>
+                            </div>
+                            <p className="mt-2 text-tron-silver-300">{insight.summary}</p>
+                            <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-tron-silver-400">
+                              <span>Current: <span className="text-tron-silver-200">{insight.currentBuildLabel}</span></span>
+                              <span>Better build: <span className="text-tron-silver-200">{insight.betterBuildLabel || 'No forced swap'}</span></span>
+                              <span>Sample: <span className="text-tron-silver-200">{insight.sampleSize}</span></span>
+                              <span>Impact: <span className="text-wow-gold">{insight.significancePercent}%</span></span>
+                            </div>
+                            <p className="mt-2 text-xs text-wow-gold">{insight.recommendation}</p>
+                            {insight.note ? <p className="mt-1 text-xs text-tron-silver-500">{insight.note}</p> : null}
+                          </div>
+                        )) : (
+                          <p className="text-tron-silver-400">No build comparison was generated for this boss yet.</p>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-sm text-tron-silver-400">Build significance is not available yet.</p>
+                  )}
+                </div>
+              )}
+
+              {reliabilityTrends.length > 0 && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <BarChart3 className="h-5 w-5 text-amber-400" /> Reliability Trends
+                  </h3>
+                  <div className="space-y-2">
+                    {reliabilityTrends.map((player) => (
+                      <div key={player.name} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-semibold text-tron-silver-200">{player.name}</p>
+                          <div className="flex gap-2">
+                            <Badge className="bg-dark-700 text-tron-silver-300">{player.role}</Badge>
+                            <Badge className={
+                              player.trend === 'up'
+                                ? 'bg-emerald-500/20 text-emerald-300'
+                                : player.trend === 'down'
+                                  ? 'bg-red-500/20 text-red-300'
+                                  : 'bg-amber-500/20 text-amber-300'
+                            }>
+                              {player.trend}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="mt-2 grid grid-cols-3 gap-2 text-xs text-tron-silver-400">
+                          <span>Reliability <span className="text-tron-silver-200">{player.averageReliability}</span></span>
+                          <span>Active <span className="text-tron-silver-200">{player.averageActiveTime}%</span></span>
+                          <span>Deaths <span className="text-tron-silver-200">{player.totalDeaths}</span></span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {playerBossCoachingMemory.length > 0 && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-amber-500/20">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
+                    <Star className="h-5 w-5 text-amber-400" /> Coaching Memory
+                    <InlineHelp text="Shows which players keep repeating the same reliability problem on this boss across stored nights." />
+                  </h3>
+                  <div className="space-y-2">
+                    {playerBossCoachingMemory.map((player) => (
+                      <div key={player.name} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-semibold text-tron-silver-200">{player.name}</p>
+                          <div className="flex gap-2">
+                            <Badge className="bg-dark-700 text-tron-silver-300">{player.role}</Badge>
+                            <Badge className="bg-amber-500/20 text-amber-300">{player.sessions} sessions</Badge>
+                          </div>
+                        </div>
+                        <p className="mt-2 text-tron-silver-300">{player.repeatedReason}</p>
+                        <p className="mt-1 text-xs text-wow-gold">Average reliability: {player.averageReliability}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-wow-gold/80">
+            <Crown className="h-3.5 w-3.5" />
+            Pull Brief
           </div>
 
           {/* RAID CALL QUICK PLAN */}
-          {analysis.nextPullActions && analysis.nextPullActions.length > 0 && (
+          {(analysis.briefInsights && analysis.briefInsights.length > 0) && (
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
               <div className="xl:col-span-2 bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <Crown className="h-5 w-5 text-wow-gold" /> Plano do próximo pull (objetivo + dono)
+                  <Crown className="h-5 w-5 text-wow-gold" /> Prioritized Insights
                 </h3>
                 <div className="space-y-2">
-                  {analysis.nextPullActions.map((action) => (
-                    <div key={action.priority} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="text-sm font-semibold text-tron-silver-200">
-                          #{action.priority} {action.title}
-                        </p>
-                        <Badge className="bg-wow-gold/20 text-wow-gold text-xs whitespace-nowrap">{action.owner}</Badge>
+                  {analysis.briefInsights.slice(0, showAdvanced ? analysis.briefInsights.length : 3).map((insight, index) => (
+                    <div key={insight.id} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-xs uppercase tracking-[0.22em] text-tron-silver-500">#{index + 1}</p>
+                          <p className="text-sm font-semibold text-tron-silver-200 mt-1">
+                            {insight.summary}
+                          </p>
+                        </div>
+                        <div className="flex gap-2 shrink-0">
+                          <Badge className={
+                            insight.severity === 'critical'
+                              ? 'bg-red-500/20 text-red-300'
+                              : insight.severity === 'warning'
+                                ? 'bg-amber-500/20 text-amber-300'
+                                : 'bg-sky-500/20 text-sky-300'
+                          }>
+                            {insight.severity}
+                          </Badge>
+                          <Badge className="bg-wow-gold/20 text-wow-gold text-xs whitespace-nowrap">{insight.confidence}</Badge>
+                        </div>
                       </div>
-                      <p className="text-xs text-tron-silver-400 mt-1">{action.reason}</p>
+                      <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-tron-silver-400">
+                        <span>Priority: <span className="text-tron-silver-200">{insight.priorityScore}</span></span>
+                        <span>Type: <span className="text-tron-silver-200">{insight.kind}</span></span>
+                        <span>Owner: <span className="text-tron-silver-200">{insight.owner}</span></span>
+                        <span>Phase: <span className="text-tron-silver-200">{insight.phase}</span></span>
+                        <span>Category: <span className="text-tron-silver-200">{insight.category}</span></span>
+                      </div>
+                      <p className="text-xs text-tron-silver-400 mt-2">{insight.evidence}</p>
+                      {insight.confidenceReasons && insight.confidenceReasons.length > 0 && (
+                        <div className="mt-2 rounded-md bg-dark-900/60 border border-dark-600 p-2">
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Why this confidence</p>
+                          <div className="mt-1 space-y-1">
+                            {insight.confidenceReasons.slice(0, 3).map((reason) => (
+                              <p key={reason} className="text-xs text-tron-silver-400">{reason}</p>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      <p className="text-xs text-wow-gold mt-1">{insight.recommendation}</p>
                     </div>
                   ))}
                 </div>
@@ -1647,36 +1802,53 @@ export default function LogAnalysis() {
 
               <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-cyan-400" /> Resumo executivo
+                  <Info className="h-5 w-5 text-cyan-400" /> Pull Summary <InlineHelp text="A short read of what happened in this pull and what most likely mattered." />
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Causa principal</p>
-                    <p className="text-tron-silver-200 font-medium">{analysis.wipeCause?.details || 'Sem causa dominante detectada.'}</p>
+                    <p className="text-tron-silver-400 text-xs">Primary Cause</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.wipeCause?.details || 'No dominant cause detected.'}</p>
                   </div>
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Mortes evitáveis</p>
-                    <p className="text-tron-silver-200 font-medium">{analysis.deaths.avoidable.length} no pull atual</p>
+                    <p className="text-tron-silver-400 text-xs">Avoidable Deaths</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.deaths.avoidable.length} on this pull</p>
                   </div>
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Gap de DPS estimado</p>
+                    <p className="text-tron-silver-400 text-xs">Estimated DPS Gap</p>
                     <p className="text-tron-silver-200 font-medium">{formatNumber(analysis.performance.dpsGap)} total</p>
+                  </div>
+                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                    <p className="text-tron-silver-400 text-xs">Highest Priority Owner</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.owner || 'Raid'}</p>
+                  </div>
+                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                    <p className="text-tron-silver-400 text-xs">Top Issue Type</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.kind || 'N/A'}</p>
+                  </div>
+                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                    <p className="text-tron-silver-400 text-xs">Top Priority Score</p>
+                    <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.priorityScore ?? 'N/A'}</p>
                   </div>
                 </div>
               </div>
             </div>
           )}
 
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">
+            <Target className="h-3.5 w-3.5" />
+            Evidence
+          </div>
+
           {analysis.repeatedMistakes && analysis.repeatedMistakes.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Flame className="h-5 w-5 text-red-400" /> Erros repetidos (prioridade de correção)
+                <Flame className="h-5 w-5 text-red-400" /> Repeated Mistakes
               </h3>
               <div className="space-y-2">
                 {analysis.repeatedMistakes.map((mistake, index) => (
                   <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
                     <p className="text-sm text-tron-silver-200">
-                      <span className="font-semibold">{mistake.player}</span> morreu para <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
+                      <span className="font-semibold">{mistake.player}</span> died to <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
                     </p>
                   </div>
                 ))}
@@ -1689,7 +1861,7 @@ export default function LogAnalysis() {
             {analysis.wipeCause && (
               <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-amber-400" /> Causa raiz do pull
+                  <AlertCircle className="h-5 w-5 text-amber-400" /> Pull Root Cause
                 </h3>
                 <Badge className="mb-2 bg-amber-500/20 text-amber-400">
                   {analysis.wipeCause.primary}
@@ -1703,6 +1875,18 @@ export default function LogAnalysis() {
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
                 </h3>
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {analysis.pullDelta.scope ? (
+                    <Badge className={analysis.pullDelta.scope === 'same_difficulty' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}>
+                      {analysis.pullDelta.scope === 'same_difficulty' ? 'same difficulty' : 'mixed difficulty'}
+                    </Badge>
+                  ) : null}
+                  {analysis.pullDelta.comparedDifficulty ? (
+                    <Badge className="bg-dark-700 text-tron-silver-300">
+                      vs {analysis.pullDelta.comparedDifficulty}
+                    </Badge>
+                  ) : null}
+                </div>
                 <div className="grid grid-cols-3 gap-3 text-sm">
                   <div>
                     <p className="text-tron-silver-500">HP Delta</p>
@@ -1711,7 +1895,7 @@ export default function LogAnalysis() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-tron-silver-500">Tempo</p>
+                    <p className="text-tron-silver-500">Time</p>
                     <p className="text-tron-silver-200 font-semibold">{analysis.pullDelta.durationDelta > 0 ? '+' : ''}{analysis.pullDelta.durationDelta}s</p>
                   </div>
                   <div>
@@ -1719,7 +1903,7 @@ export default function LogAnalysis() {
                     <p className="text-tron-silver-200 font-semibold">
                       {typeof analysis.pullDelta.deathsDelta === 'number'
                         ? `${analysis.pullDelta.deathsDelta > 0 ? '+' : ''}${analysis.pullDelta.deathsDelta}`
-                        : 'N/D'}
+                        : 'N/A'}
                     </p>
                   </div>
                 </div>
@@ -1727,12 +1911,140 @@ export default function LogAnalysis() {
             )}
           </div>
 
-          {(analysis.phaseCausality || analysis.pullTrend || analysis.roleScores) && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {analysis.deltaInsights && analysis.deltaInsights.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
+                <GitBranch className="h-5 w-5 text-cyan-400" /> Pull Delta Insight
+              </h3>
+              <div className="space-y-2">
+                {analysis.deltaInsights.map((insight) => (
+                  <div key={insight.id} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-semibold text-tron-silver-200">{insight.summary}</p>
+                      <Badge className="bg-cyan-500/20 text-cyan-300">{insight.kind}</Badge>
+                    </div>
+                    <p className="text-tron-silver-400 mt-1">{insight.evidence}</p>
+                    <p className="text-wow-gold text-xs mt-1">{insight.recommendation}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {showAdvanced && recentSnapshots.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2">
+                  <RefreshCw className="h-5 w-5 text-sky-400" /> Saved analysis snapshots
+                </h3>
+                <Button type="button" variant="outline" size="sm" onClick={handleExportSnapshots}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Export snapshots
+                </Button>
+              </div>
+              <div className="space-y-2">
+                {recentSnapshots.map((snapshot) => (
+                  <div key={snapshot.key} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-semibold text-tron-silver-200">
+                        Pull #{snapshot.fightId} {snapshot.kill ? 'Kill' : snapshot.bossHP !== undefined ? `(${snapshot.bossHP}% boss HP)` : ''}
+                      </p>
+                      <span className="text-xs text-tron-silver-500">{new Date(snapshot.recordedAt).toLocaleString()}</span>
+                    </div>
+                    <p className="text-tron-silver-400 mt-1">
+                      {snapshot.briefInsights[0]?.summary || 'No saved brief insight.'}
+                    </p>
+                    <p className="text-wow-gold text-xs mt-1">
+                      {snapshot.phaseSuccessCriteria[0]?.summary || snapshot.causeChains[0] || 'No saved phase criteria.'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(analysis.causeChainDetails && analysis.causeChainDetails.length > 0) && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
+                <GitBranch className="h-5 w-5 text-rose-400" /> Cause Chain v2
+              </h3>
+              <div className="space-y-3">
+                {analysis.causeChainDetails.map((chain) => (
+                  <div key={chain.id} className="rounded-lg border border-dark-600 bg-dark-700/30 p-3">
+                    <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
+                      <Badge className="bg-rose-500/20 text-rose-300">{chain.phase}</Badge>
+                      <Badge className="bg-dark-700 text-tron-silver-300">{chain.owner}</Badge>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
+                      {chain.steps.map((step) => (
+                        <div key={`${chain.id}-${step.label}`} className="rounded-md bg-dark-900/60 border border-dark-600 p-3">
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">
+                            {step.label.replace('_', ' ')}
+                          </p>
+                          <p className="text-sm text-tron-silver-300 mt-2">{step.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {analysis.causeChains && analysis.causeChains.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
+                <GitBranch className="h-5 w-5 text-rose-400" /> Cause Chain Summary
+              </h3>
+              <div className="space-y-2">
+                {analysis.causeChains.map((chain, index) => (
+                  <div key={`${chain}-${index}`} className="rounded-md bg-dark-700/40 p-3 text-sm text-tron-silver-300">
+                    {chain}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-tron-silver-400/80">
+            <Users className="h-3.5 w-3.5" />
+            Detail
+          </div>
+
+          {showAdvanced && (analysis.phaseSuccessCriteria || analysis.phaseCausality || analysis.pullTrend || analysis.roleScores) && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+              {analysis.phaseSuccessCriteria && analysis.phaseSuccessCriteria.length > 0 && (
+                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                  <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
+                    <Award className="h-5 w-5 text-emerald-400" /> Phase success criteria <InlineHelp text="A quick check for whether each phase looked good enough to keep progressing." />
+                  </h3>
+                  <div className="space-y-2">
+                    {analysis.phaseSuccessCriteria.map((phase) => (
+                      <div key={phase.phase} className="rounded-md bg-dark-700/40 p-2 text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-semibold text-tron-silver-200">{phase.phase}</p>
+                          <Badge className={
+                            phase.status === 'met'
+                              ? 'bg-emerald-500/20 text-emerald-300'
+                              : phase.status === 'at_risk'
+                                ? 'bg-amber-500/20 text-amber-300'
+                                : 'bg-red-500/20 text-red-300'
+                          }>
+                            {phase.status}
+                          </Badge>
+                        </div>
+                        <p className="text-tron-silver-300 mt-1">{phase.summary}</p>
+                        <p className="text-tron-silver-500 mt-1">{phase.evidence}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {analysis.phaseCausality && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <Clock4 className="h-5 w-5 text-indigo-400" /> Causalidade por fase
+                    <Clock4 className="h-5 w-5 text-indigo-400" /> Phase Causality
                   </h3>
                   <div className="space-y-2">
                     {analysis.phaseCausality.map((phase) => (
@@ -1742,7 +2054,7 @@ export default function LogAnalysis() {
                           <Badge className="bg-indigo-500/20 text-indigo-300">{phase.dominantCause}</Badge>
                         </div>
                         <p className="text-tron-silver-400 mt-1">
-                          Deaths: {phase.deaths} • Avoidable: {phase.avoidableDeaths}
+                          Deaths: {phase.deaths} / Avoidable: {phase.avoidableDeaths}
                         </p>
                       </div>
                     ))}
@@ -1753,18 +2065,18 @@ export default function LogAnalysis() {
               {analysis.pullTrend && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-cyan-400" /> Delta últimos pulls
+                    <BarChart3 className="h-5 w-5 text-cyan-400" /> Recent Pull Delta
                   </h3>
-                  <p className="text-xs text-tron-silver-400 mb-2">Base: últimos {analysis.pullTrend.sampleSize} pulls do mesmo boss</p>
+                  <p className="text-xs text-tron-silver-400 mb-2">Based on the last {analysis.pullTrend.sampleSize} pulls on this boss</p>
                   {analysis.pullTrend.currentDeaths === 0 && analysis.pullTrend.avgDeathsPrev === 0 && analysis.pullTrend.currentAvoidableDeaths === 0 && analysis.pullTrend.avgAvoidablePrev === 0 ? (
                     <p className="text-sm text-tron-silver-300">
-                      Sem sinal útil de morte/erro mecânico no histórico recente (dados de deaths muito baixos ou ausentes).
+                      No useful mechanic or death signal in recent pull history.
                     </p>
                   ) : (
                     <div className="space-y-1 text-sm">
-                      <p className="text-tron-silver-300">Deaths: <span className="font-semibold">{analysis.pullTrend.currentDeaths}</span> vs média <span className="font-semibold">{analysis.pullTrend.avgDeathsPrev}</span></p>
-                      <p className="text-tron-silver-300">Avoidable: <span className="font-semibold">{analysis.pullTrend.currentAvoidableDeaths}</span> vs média <span className="font-semibold">{analysis.pullTrend.avgAvoidablePrev}</span></p>
-                      <p className="text-tron-silver-300">Tempo: <span className="font-semibold">{analysis.pullTrend.currentDuration}s</span> vs média <span className="font-semibold">{analysis.pullTrend.avgDurationPrev}s</span></p>
+                      <p className="text-tron-silver-300">Deaths: <span className="font-semibold">{analysis.pullTrend.currentDeaths}</span> vs avg <span className="font-semibold">{analysis.pullTrend.avgDeathsPrev}</span></p>
+                      <p className="text-tron-silver-300">Avoidable: <span className="font-semibold">{analysis.pullTrend.currentAvoidableDeaths}</span> vs avg <span className="font-semibold">{analysis.pullTrend.avgAvoidablePrev}</span></p>
+                      <p className="text-tron-silver-300">Time: <span className="font-semibold">{analysis.pullTrend.currentDuration}s</span> vs avg <span className="font-semibold">{analysis.pullTrend.avgDurationPrev}s</span></p>
                     </div>
                   )}
                 </div>
@@ -1773,7 +2085,7 @@ export default function LogAnalysis() {
               {analysis.roleScores && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5 text-emerald-400" /> Score por role
+                    <ShieldCheck className="h-5 w-5 text-emerald-400" /> Role score
                   </h3>
                   <div className="space-y-2 text-sm">
                     <p className="text-tron-silver-300">Tanks: <span className="font-semibold text-blue-400">{analysis.roleScores.tanks}</span></p>
@@ -1790,14 +2102,14 @@ export default function LogAnalysis() {
               {analysis.mechanicScores && analysis.mechanicScores.length > 0 && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <Target className="h-5 w-5 text-rose-400" /> Score por mecânica crítica
+                    <Target className="h-5 w-5 text-rose-400" /> Critical mechanic score
                   </h3>
                   <div className="space-y-2">
                     {analysis.mechanicScores.map((m) => (
                       <div key={m.mechanic} className="rounded-md bg-dark-700/40 p-2 text-sm flex items-center justify-between">
                         <div>
                           <p className="text-tron-silver-200 font-medium">{m.mechanic}</p>
-                          <p className="text-xs text-tron-silver-400">{m.events} ocorrência(s)</p>
+                          <p className="text-xs text-tron-silver-400">{m.events} occurrence(s)</p>
                         </div>
                         <div className="text-right">
                           <Badge className={m.severity === 'critical' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'}>
@@ -1814,7 +2126,7 @@ export default function LogAnalysis() {
               {analysis.regressionAlerts && analysis.regressionAlerts.length > 0 && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5 text-orange-400" /> Alertas de regressão (P2)
+                    <AlertTriangle className="h-5 w-5 text-orange-400" /> Regression alerts (P2)
                   </h3>
                   <div className="space-y-2">
                     {analysis.regressionAlerts.map((alert, idx) => (
@@ -1843,28 +2155,36 @@ export default function LogAnalysis() {
             </div>
           )}
 
-          {showAdvanced && ((analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0) || (analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0) || typeof analysis.killProbability === 'number' || analysis.internalBenchmark) ? (
+          {showAdvanced && ((analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0) || (analysis.assignmentAssessments && analysis.assignmentAssessments.length > 0) || (analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0) || typeof analysis.killProbability === 'number' || analysis.internalBenchmark) ? (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               {typeof analysis.killProbability === 'number' && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <Trophy className="h-5 w-5 text-lime-400" /> Kill Probability
+                    <Trophy className="h-5 w-5 text-lime-400" /> Kill Probability <InlineHelp text="A rough guess, not a promise. It estimates how close this pull looked to a kill." />
                   </h3>
                   <p className="text-3xl font-bold text-lime-400">{analysis.killProbability}%</p>
-                  <p className="text-xs text-tron-silver-400 mt-1">Estimativa baseada em HP, mortes, mecânicas evitáveis e gaps de CD.</p>
+                  <p className="text-xs text-tron-silver-400 mt-1">Estimate based on boss HP, deaths, avoidable mechanics, and raid-cooldown gaps.</p>
                 </div>
               )}
 
               {analysis.internalBenchmark && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <Medal className="h-5 w-5 text-yellow-400" /> Benchmark interno
+                    <Medal className="h-5 w-5 text-yellow-400" /> Internal benchmark
                   </h3>
+                  <div className="mb-2 flex flex-wrap gap-2">
+                    <Badge className={analysis.internalBenchmark.scope === 'same_difficulty' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}>
+                      {analysis.internalBenchmark.scope === 'same_difficulty' ? 'same difficulty' : 'mixed difficulty'}
+                    </Badge>
+                    {analysis.internalBenchmark.difficulty ? (
+                      <Badge className="bg-dark-700 text-tron-silver-300">{analysis.internalBenchmark.difficulty}</Badge>
+                    ) : null}
+                  </div>
                   <p className="text-2xl font-bold text-yellow-400">
                     #{analysis.internalBenchmark.rank}/{analysis.internalBenchmark.total}
                   </p>
                   <p className="text-xs text-tron-silver-400 mt-1">
-                    Percentil interno: {analysis.internalBenchmark.percentile}
+                    Internal percentile: {analysis.internalBenchmark.percentile}
                   </p>
                 </div>
               )}
@@ -1872,29 +2192,41 @@ export default function LogAnalysis() {
               {analysis.cooldownPlanner && analysis.cooldownPlanner.length > 0 && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-violet-400" /> CD Planner por fase
+                    <Clock className="h-5 w-5 text-violet-400" /> Raid cooldown planner
                   </h3>
                   <div className="space-y-2">
                     {analysis.cooldownPlanner.slice(0, 5).map((item, idx) => (
                       <div key={`${item.at}-${idx}`} className="rounded-md bg-violet-500/10 border border-violet-500/20 p-2 text-xs">
                         <p className="text-tron-silver-200 font-medium">{formatTime(item.at)} [{item.phase}] {item.action}</p>
-                        <p className="text-tron-silver-400">{item.owner} • {item.reason}</p>
+                        <p className="text-tron-silver-400">{item.owner} / {item.reason}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {analysis.assignmentBreaks && analysis.assignmentBreaks.length > 0 && (
+              {analysis.assignmentAssessments && analysis.assignmentAssessments.length > 0 && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                   <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                    <ShieldAlert className="h-5 w-5 text-fuchsia-400" /> Assignment breaks
+                    <ShieldAlert className="h-5 w-5 text-fuchsia-400" /> Assignment coverage <InlineHelp text="Checks whether the planned jobs like kicks, soaks, and raid CDs were actually covered." />
                   </h3>
                   <div className="space-y-2">
-                    {analysis.assignmentBreaks.slice(0, 6).map((item, idx) => (
-                      <div key={`${item.owner}-${idx}`} className="rounded-md bg-fuchsia-500/10 border border-fuchsia-500/20 p-2 text-xs">
-                        <p className="text-tron-silver-200 font-medium">{item.owner}</p>
-                        <p className="text-tron-silver-400">{item.failure} • {item.count}x</p>
+                    {analysis.assignmentAssessments.slice(0, 6).map((item) => (
+                      <div key={item.id} className="rounded-md bg-fuchsia-500/10 border border-fuchsia-500/20 p-2 text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-tron-silver-200 font-medium">{item.mechanic}</p>
+                          <Badge className={
+                            item.status === 'failing'
+                              ? 'bg-red-500/20 text-red-300'
+                              : item.status === 'at_risk'
+                                ? 'bg-amber-500/20 text-amber-300'
+                                : 'bg-emerald-500/20 text-emerald-300'
+                          }>
+                            {item.status}
+                          </Badge>
+                        </div>
+                        <p className="text-tron-silver-400 mt-1">{item.owner} / {item.phase}</p>
+                        <p className="text-tron-silver-500 mt-1">{item.evidence}</p>
                       </div>
                     ))}
                   </div>
@@ -1906,7 +2238,7 @@ export default function LogAnalysis() {
           {showAdvanced && analysis.bossProgression && analysis.bossProgression.length > 1 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-cyan-400" /> Histórico longitudinal do boss
+                <TrendingUp className="h-5 w-5 text-cyan-400" /> Boss progression history
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
                 {analysis.bossProgression.slice(-8).map((p) => (
@@ -1930,13 +2262,13 @@ export default function LogAnalysis() {
                   <GitBranch className="h-6 w-6 text-red-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-red-400 mb-1">Cadeia de Mortes Identificada</h3>
-                  <p className="text-sm text-tron-silver-400 mb-4">A morte raiz que causou o wipe</p>
+                  <h3 className="text-lg font-bold text-red-400 mb-1">Death chain detected</h3>
+                  <p className="text-sm text-tron-silver-400 mb-4">The first death that converted into a wipe</p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Root Death */}
                     <div className="bg-dark-800/50 rounded-lg p-4 border border-red-500/20">
-                      <div className="text-xs text-red-400 uppercase tracking-wide mb-2 font-semibold">Morte Raiz</div>
+                      <div className="text-xs text-red-400 uppercase tracking-wide mb-2 font-semibold">Root Death</div>
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                           analysis.deathCascade.rootDeath.role === 'tank' ? 'bg-blue-500/20 text-blue-400' :
@@ -1967,7 +2299,7 @@ export default function LogAnalysis() {
                     {/* Chain Deaths */}
                     {analysis.deathCascade.chainDeaths.length > 0 && (
                       <div className="bg-dark-800/50 rounded-lg p-4 border border-orange-500/20">
-                        <div className="text-xs text-orange-400 uppercase tracking-wide mb-2 font-semibold">Mortes em Cadeia</div>
+                        <div className="text-xs text-orange-400 uppercase tracking-wide mb-2 font-semibold">Chain Deaths</div>
                         <div className="space-y-2">
                           {analysis.deathCascade.chainDeaths.slice(0, 3).map((death, i) => (
                             <div key={i} className="flex items-center gap-2 text-sm">
@@ -2002,7 +2334,7 @@ export default function LogAnalysis() {
                 <CollapsibleTrigger className="w-full">
                   <div className="flex items-center justify-between">
                     <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2">
-                      <ShieldCheck className="h-5 w-5 text-wow-gold" /> Gaps de Cooldown
+                      <ShieldCheck className="h-5 w-5 text-wow-gold" /> Raid cooldown gaps
                       <Badge className="bg-orange-500/20 text-orange-400 text-xs ml-2">
                         {analysis.cooldownGaps.length} gap(s)
                       </Badge>
@@ -2011,7 +2343,7 @@ export default function LogAnalysis() {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <p className="text-sm text-tron-silver-400 mt-2 mb-3">Momentos de alto dano sem cooldown de raid ativo</p>
+                  <p className="text-sm text-tron-silver-400 mt-2 mb-3">High-damage moments that landed without an active raid cooldown.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                     {analysis.cooldownGaps.map((gap, i) => (
                       <div key={i} className={`p-3 rounded-lg border ${
@@ -2024,10 +2356,10 @@ export default function LogAnalysis() {
                           </Badge>
                         </div>
                         <div className="text-xs text-tron-silver-400 space-y-1">
-                          <p>Duração: {gap.duration}s sem CD</p>
-                          <p>Dano tomado: {formatNumber(gap.damageTaken)}</p>
+                          <p>Duration: {gap.duration}s without coverage</p>
+                          <p>Damage taken: {formatNumber(gap.damageTaken)}</p>
                           {gap.availableCds.length > 0 && (
-                            <p className="text-wow-gold">Disponível: {gap.availableCds.join(', ')}</p>
+                            <p className="text-wow-gold">Available: {gap.availableCds.join(', ')}</p>
                           )}
                         </div>
                       </div>
@@ -2042,7 +2374,7 @@ export default function LogAnalysis() {
           {showAdvanced && analysis.burstWindows && analysis.burstWindows.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Zap className="h-5 w-5 text-wow-gold" /> Eficiência de Burst Window
+                <Zap className="h-5 w-5 text-wow-gold" /> Burst window efficiency
               </h3>
               <div className="space-y-3">
                 {analysis.burstWindows.map((window, i) => (
@@ -2058,7 +2390,7 @@ export default function LogAnalysis() {
                     </div>
                     {window.playersWithoutCDs.length > 0 && (
                       <div className="text-xs">
-                        <span className="text-orange-400">Sem CD durante burst: </span>
+                        <span className="text-orange-400">Missing CDs during burst: </span>
                         <span className="text-tron-silver-300">{window.playersWithoutCDs.join(', ')}</span>
                       </div>
                     )}
@@ -2091,6 +2423,7 @@ export default function LogAnalysis() {
           )}
 
           {/* Players Section - Collapsible */}
+          {showAdvanced && (
           <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
             <Collapsible open={expandedSections.players} onOpenChange={() => toggleSection('players')}>
               <CollapsibleTrigger className="w-full">
@@ -2139,21 +2472,53 @@ export default function LogAnalysis() {
               </CollapsibleContent>
             </Collapsible>
           </div>
+          )}
+
+          {analysis.playerCoaching && analysis.playerCoaching.length > 0 && (
+            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
+                <Star className="h-5 w-5 text-amber-400" /> Player Coaching
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                {analysis.playerCoaching.map((insight) => (
+                  <div key={insight.id} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-semibold text-tron-silver-200">{insight.owner}</p>
+                      <div className="flex gap-2">
+                        <Badge className="bg-amber-500/20 text-amber-300">{insight.category}</Badge>
+                        <Badge className={
+                          insight.severity === 'critical'
+                            ? 'bg-red-500/20 text-red-300'
+                            : insight.severity === 'warning'
+                              ? 'bg-amber-500/20 text-amber-300'
+                              : 'bg-sky-500/20 text-sky-300'
+                        }>
+                          {insight.severity}
+                        </Badge>
+                      </div>
+                    </div>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500 mt-2">
+                      {insight.phase} • {insight.confidence} confidence
+                    </p>
+                    <p className="text-tron-silver-300 mt-1">{insight.summary}</p>
+                    <p className="text-tron-silver-400 text-xs mt-1">{insight.evidence}</p>
+                    <p className="text-wow-gold text-xs mt-1">{insight.recommendation}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* PHASE 2 ANALYSIS - Advanced Insights */}
           {showAdvanced && currentFight && (
             <Phase2Analysis fight={currentFight} report={report} />
           )}
 
-          {/* PHASE 3 - PROGRESSION TRACKING */}
-          {showAdvanced && currentFight && (
-            <ProgressionTracking bossName={fightData.bossName} report={report} />
-          )}
-
           {/* Quick Tips - Based on Analysis */}
+          {showAdvanced && (
           <div className="bg-dark-800/50 rounded-lg p-4 border border-wow-gold/30">
             <h3 className="text-base font-semibold text-wow-gold flex items-center gap-2 mb-3">
-              <Target className="h-5 w-5" /> Ações Recomendadas
+              <Target className="h-5 w-5" /> Recommended actions
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* Death Cascade Recommendation */}
@@ -2161,7 +2526,7 @@ export default function LogAnalysis() {
                 <div className="flex items-start gap-2 p-3 bg-dark-700/50 rounded-lg">
                   <AlertCircle className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-tron-silver-200">Foco na Morte Raiz</p>
+                    <p className="text-sm font-medium text-tron-silver-200">Fix the root death first</p>
                     <p className="text-xs text-tron-silver-400">{analysis.deathCascade.recommendation}</p>
                   </div>
                 </div>
@@ -2172,8 +2537,8 @@ export default function LogAnalysis() {
                 <div className="flex items-start gap-2 p-3 bg-dark-700/50 rounded-lg">
                   <Clock4 className="h-4 w-4 text-orange-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-tron-silver-200">Ajuste CD Timing</p>
-                    <p className="text-xs text-tron-silver-400">Alinhe raid CDs com os momentos de dano em {formatTime(analysis.cooldownGaps[0].time)}</p>
+                    <p className="text-sm font-medium text-tron-silver-200">Adjust cooldown timing</p>
+                    <p className="text-xs text-tron-silver-400">Align raid cooldowns with the main damage event at {formatTime(analysis.cooldownGaps[0].time)}</p>
                   </div>
                 </div>
               )}
@@ -2184,7 +2549,7 @@ export default function LogAnalysis() {
                   <Zap className="h-4 w-4 text-purple-400 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-tron-silver-200">Burst Timing</p>
-                    <p className="text-xs text-tron-silver-400">{analysis.burstWindows.find(w => w.playersWithoutCDs.length > 0)?.playersWithoutCDs.slice(0, 3).join(', ')} sem CDs durante burst</p>
+                    <p className="text-xs text-tron-silver-400">{analysis.burstWindows.find(w => w.playersWithoutCDs.length > 0)?.playersWithoutCDs.slice(0, 3).join(', ')} missed cooldown usage during the burst window</p>
                   </div>
                 </div>
               )}
@@ -2195,7 +2560,7 @@ export default function LogAnalysis() {
                   <Flame className="h-4 w-4 text-amber-400 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-tron-silver-200">Potions</p>
-                    <p className="text-xs text-tron-silver-400">{analysis.consumables.missingPotion.length} players sem potion (~80K DPS cada)</p>
+                    <p className="text-xs text-tron-silver-400">{analysis.consumables.missingPotion.length} players missed potions, costing roughly 80K DPS each</p>
                   </div>
                 </div>
               )}
@@ -2206,7 +2571,7 @@ export default function LogAnalysis() {
                   <TrendingUp className="h-4 w-4 text-blue-400 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-tron-silver-200">Flasks</p>
-                    <p className="text-xs text-tron-silver-400">{analysis.consumables.missingFlask.length} players sem flask (~50K DPS cada)</p>
+                    <p className="text-xs text-tron-silver-400">{analysis.consumables.missingFlask.length} players missed flasks, costing roughly 50K DPS each</p>
                   </div>
                 </div>
               )}
@@ -2227,7 +2592,7 @@ export default function LogAnalysis() {
                 <div key={i} className="flex items-start gap-2 p-3 bg-dark-700/50 rounded-lg">
                   <AlertTriangle className="h-4 w-4 text-yellow-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-tron-silver-200">Raid Buff Faltando</p>
+                    <p className="text-sm font-medium text-tron-silver-200">Missing raid buff</p>
                     <p className="text-xs text-tron-silver-400">{buff.name}: {buff.missingImpact}</p>
                   </div>
                 </div>
@@ -2239,20 +2604,21 @@ export default function LogAnalysis() {
                   <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-green-400">Boss Kill!</p>
-                    <p className="text-xs text-tron-silver-400">Duração: {formatTime(fightData.duration)} | DPS: {formatNumber(analysis.performance.raidDPS)}</p>
+                    <p className="text-xs text-tron-silver-400">Duration: {formatTime(fightData.duration)} | DPS: {formatNumber(analysis.performance.raidDPS)}</p>
                   </div>
                 </div>
               ) : analysis.summary.killPotential && (
                 <div className="flex items-start gap-2 p-3 bg-green-500/10 rounded-lg border border-green-500/30">
                   <Trophy className="h-4 w-4 text-green-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-green-400">Kill Iminente!</p>
-                    <p className="text-xs text-tron-silver-400">Boss em {fightData.bossHP}% - próximos pulls devem ser o kill</p>
+                    <p className="text-sm font-medium text-green-400">Kill is close</p>
+                    <p className="text-xs text-tron-silver-400">Boss reached {fightData.bossHP}% - the next clean pulls should convert.</p>
                   </div>
                 </div>
               )}
             </div>
           </div>
+          )}
         </div>
       )}
     </div>
@@ -2260,11 +2626,26 @@ export default function LogAnalysis() {
 }
 
 // Stat Card Component
-function StatCard({ icon, label, value, valueClass = '' }: { icon: React.ReactNode; label: string; value: string; valueClass?: string }) {
+function InlineHelp({ text }: { text: string }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button type="button" className="text-tron-silver-500 hover:text-cyan-400 transition-colors">
+          <Info className="h-3 w-3" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-[220px] bg-dark-900 text-tron-silver-200 border border-dark-700">
+        {text}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function StatCard({ icon, label, value, valueClass = '', helpText }: { icon: React.ReactNode; label: string; value: string; valueClass?: string; helpText?: string }) {
   return (
     <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700 text-center">
       <div className="flex items-center justify-center gap-1.5 text-tron-silver-400 text-sm mb-1.5">
-        {icon} {label}
+        {icon} {label} {helpText ? <InlineHelp text={helpText} /> : null}
       </div>
       <div className={`text-xl font-bold ${valueClass || 'text-tron-silver-200'}`}>{value}</div>
     </div>
@@ -2291,6 +2672,21 @@ function PlayerCard({ player }: { player: PlayerStats }) {
           <p className="text-[10px] text-tron-silver-400 truncate mt-0.5">
             Focus: {player.improvementFocus}
           </p>
+        )}
+        {!hasNoData && (
+          <div className="mt-1 flex items-center gap-1 text-[10px] text-tron-silver-500">
+            <span>Active time {player.activeTime}%</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button type="button" className="text-tron-silver-500 hover:text-cyan-400 transition-colors">
+                  <Info className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-[220px] bg-dark-900 text-tron-silver-200 border border-dark-700">
+                How much of the fight the player was really attacking or healing. Ideal is usually 90% or more.
+              </TooltipContent>
+            </Tooltip>
+          </div>
         )}
       </div>
       <div className="text-right shrink-0">
@@ -2319,49 +2715,6 @@ function PlayerCard({ player }: { player: PlayerStats }) {
   );
 }
 
-// Helper functions
-function guessIfAvoidable(abilityName: string): boolean {
-  const avoidableKeywords = ['pool', 'ground', 'void', 'zone', 'circle', 'beam', 'wave', 'spray', 'spew', 'eruption', 'explosion', 'torrent', 'rain', 'fire', 'flame', 'ice', 'frost', 'poison', 'acid', 'shadow', 'cudgel', 'smash', 'slam', 'swipe', 'cleave'];
-  const lower = abilityName.toLowerCase();
-  return avoidableKeywords.some(kw => lower.includes(kw));
-}
 
-function getPhaseAtTime(time: number, duration: number): string {
-  const percent = (time / duration) * 100;
-  if (percent < 25) return 'Early';
-  if (percent < 50) return 'Mid';
-  if (percent < 75) return 'Late';
-  return 'Final';
-}
 
-function getTipForAbility(abilityName: string): string {
-  const tips: Record<string, string> = {
-    'Void Eruption': 'Move away from the raid before the explosion',
-    'Acid Rain': 'Spread to avoid splash damage',
-    'Shadow Cleave': 'Boss frontal - stay behind the boss',
-    'Fire Breath': 'Side-step the cone attack',
-    'Ground Slam': 'Move away from ground effects',
-  };
-  return tips[abilityName] || 'Review positioning and timing';
-}
 
-function getExpectedDPS(spec: string): number {
-  const dps: Record<string, number> = {
-    'Fury': 180000, 'Arms': 175000, 'Frost': 170000, 'Unholy': 175000,
-    'Retribution': 165000, 'Enhancement': 170000, 'Outlaw': 175000,
-    'Fire': 180000, 'Frost Mage': 170000, 'Arcane': 175000,
-    'Beast Mastery': 160000, 'Marksmanship': 170000, 'Survival': 165000,
-    'Balance': 165000, 'Feral': 170000, 'Shadow': 165000,
-    'Affliction': 160000, 'Destruction': 170000, 'Demonology': 165000,
-    'Havoc': 175000, 'Windwalker': 170000,
-  };
-  return dps[spec] || 150000;
-}
-
-function diagnoseLowDPS(player: any): string {
-  if (player.activeTime < 90) return `Low activity: ${player.activeTime}%`;
-  if (!player.potionUsed) return 'No potion used';
-  if (!player.flaskUsed) return 'No flask';
-  if (player.deaths > 0) return 'Died during fight';
-  return 'Check rotation/gear';
-}

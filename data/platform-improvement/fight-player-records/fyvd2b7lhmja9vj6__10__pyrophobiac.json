@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:destruction",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__pyrophobiac",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 25,
+  "name": "Pyrophobiac",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Destruction",
+  "talents": [],
+  "itemLevel": 268,
+  "server": "Gul'dan",
+  "dps": 0,
+  "hps": 1387,
+  "dtps": 0,
+  "activeTime": 87,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

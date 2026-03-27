@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devastation",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__jormungandr",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 366,
+  "name": "Jormungandr",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Devastation",
+  "talents": [],
+  "itemLevel": 232,
+  "server": "Gnomeregan",
+  "dps": 41375,
+  "hps": 1300,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 33,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,39 @@
+{
+  "key": "r3xjWwKB6X7F8ALT__65__vorasius",
+  "bossName": "Vorasius",
+  "reportCode": "r3xjWwKB6X7F8ALT",
+  "fightId": 65,
+  "fixtureType": "wipe_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Void Scream",
+      "interrupt",
+      "Consume Essence",
+      "soak"
+    ],
+    "expectedCauseChainIncludes": [
+      "missed kick",
+      "Void Scream",
+      "missed soak",
+      "orb coverage"
+    ],
+    "expectedOwners": [
+      "Assigned kickers",
+      "Assigned soakers",
+      "Raid"
+    ],
+    "bannedSummaryIncludes": [
+      "healing issue only",
+      "pure DPS wall",
+      "random deaths"
+    ],
+    "reviewerNotes": "Vorasius should be calibrated as an assignment fight first. The analyzer should prioritize kick order and orb soak execution over generic healing or throughput blame."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

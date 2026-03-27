@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__vevino",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 17,
+  "name": "Vevino",
+  "role": "dps",
+  "className": "Druid",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 253,
+  "server": "Tichondrius",
+  "dps": 56088,
+  "hps": 3960,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 53,
+  "avoidableDamageTaken": 0
+}

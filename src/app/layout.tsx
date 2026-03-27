@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { LocaleProvider } from "@/components/providers/locale-provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://wowtron.gg"),
-  title: "WoWtron - World of Warcraft Guild Management & Mythic+ Tracker",
-  description: "The ultimate all-in-one platform for World of Warcraft guild management, raid planning, Mythic+ tracking, log analysis, and player recruitment. Join thousands of guilds already using WoWtron.",
-  keywords: ["WoW", "World of Warcraft", "Guild Management", "Mythic+", "Raid Planning", "Warcraft Logs", "Raider.IO", "M+ Score", "Guild Roster", "WoW Tools"],
+  title: "WoWtron - Raid Analysis For World of Warcraft Progression",
+  description: "WoWtron turns Warcraft Logs into clear next-pull decisions for raid leaders, with deeper guild, Mythic+, and player-reliability workflows planned next.",
+  keywords: ["WoW", "World of Warcraft", "Raid Analysis", "Warcraft Logs", "Raid Leader", "Progression", "Guild Tools", "Mythic+"],
   authors: [{ name: "WoWtron Team" }],
   icons: {
     icon: "/wowtron-logo.png",
     apple: "/wowtron-logo.png",
   },
   openGraph: {
-    title: "WoWtron - Ultimate WoW Guild Management Platform",
-    description: "All-in-one platform for WoW guilds. Raid planning, M+ tracking, log analysis, and recruitment.",
+    title: "WoWtron - Raid Analysis For WoW Progression",
+    description: "Turn Warcraft Logs into clear next-pull decisions for raid leaders.",
     url: "https://wowtron.gg",
     siteName: "WoWtron",
     type: "website",
@@ -23,14 +24,14 @@ export const metadata: Metadata = {
         url: "/wowtron-logo.png",
         width: 1200,
         height: 630,
-        alt: "WoWtron - WoW Guild Management",
+        alt: "WoWtron - WoW Raid Analysis",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WoWtron - Ultimate WoW Guild Management Platform",
-    description: "All-in-one platform for WoW guilds. Raid planning, M+ tracking, log analysis, and recruitment.",
+    title: "WoWtron - Raid Analysis For WoW Progression",
+    description: "Turn Warcraft Logs into clear next-pull decisions for raid leaders.",
     images: ["/wowtron-logo.png"],
   },
 };
@@ -48,8 +49,10 @@ export default function RootLayout({
           fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
         }}
       >
-        {children}
-        <Toaster />
+        <LocaleProvider>
+          {children}
+          <Toaster />
+        </LocaleProvider>
       </body>
     </html>
   );

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:elemental",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__phoen_xs",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 20,
+  "name": "Phoenìxs",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Elemental",
+  "talents": [],
+  "itemLevel": 253,
+  "server": "Sargeras",
+  "dps": 62735,
+  "hps": 3491,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 75,
+  "avoidableDamageTaken": 0
+}

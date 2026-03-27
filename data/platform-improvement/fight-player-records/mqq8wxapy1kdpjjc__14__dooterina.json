@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__dooterina",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 4,
+  "name": "Dooterina",
+  "role": "healer",
+  "className": "Priest",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 248,
+  "server": "Zul'jin",
+  "dps": 0,
+  "hps": 28888,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:enhancement",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__reilin",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 774,
+  "name": "Reilin",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Enhancement",
+  "talents": [],
+  "itemLevel": 239,
+  "server": "Kael'thas",
+  "dps": 28200,
+  "hps": 6616,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 2,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

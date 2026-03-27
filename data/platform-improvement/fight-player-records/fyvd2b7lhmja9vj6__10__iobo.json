@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devourer",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__iobo",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 13,
+  "name": "Iobo",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Devourer",
+  "talents": [],
+  "itemLevel": 261,
+  "server": "Moonrunner",
+  "dps": 0,
+  "hps": 10790,
+  "dtps": 0,
+  "activeTime": 66,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

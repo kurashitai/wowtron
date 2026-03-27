@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,6 +15,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
+import { useLocale } from '@/components/providers/locale-provider';
 import { 
   Sword, Shield, Users, Calendar, Target, Trophy, Clock, MapPin, Zap, 
   TrendingUp, Award, Star, Bell, Search, Settings, LogOut, User, 
@@ -38,6 +40,7 @@ type View = 'landing' | 'dashboard' | 'guild' | 'raids' | 'mplus' | 'recruitment
 type AuthState = 'guest' | 'login' | 'authenticated';
 
 export default function WoWtronApp() {
+  const { locale, setLocale, t } = useLocale();
   const [currentView, setCurrentView] = useState<View>('landing');
   const [authState, setAuthState] = useState<AuthState>('guest');
   const [userName] = useState('GuildLeader');
@@ -51,9 +54,9 @@ export default function WoWtronApp() {
   // Handlers
   const handleLogin = () => {
     setAuthState('authenticated');
-    setCurrentView('dashboard');
+    setCurrentView('logs');
     setLoginOpen(false);
-    toast({ title: 'Welcome to WoWtron!', description: 'Successfully logged in as GuildLeader' });
+    toast({ title: 'Welcome to WoWtron', description: 'Opening the raid analysis workspace.' });
   };
 
   const handleLogout = () => {
@@ -80,35 +83,44 @@ export default function WoWtronApp() {
           {/* Navigation */}
           <nav className="relative z-10 flex items-center justify-between p-4 lg:px-8">
             <div className="flex items-center gap-3">
-              <img src="/wowtron-logo.png" alt="WoWtron" className="h-12 w-auto" />
+              <Image src="/wowtron-logo.png" alt="WoWtron" width={192} height={48} className="h-12 w-auto" />
               <span className="font-display text-2xl font-bold text-wow-gold hidden sm:block" style={{ fontFamily: 'Cinzel, serif' }}>
                 WoWtron
               </span>
             </div>
             <div className="hidden md:flex items-center gap-6">
-              <button onClick={() => navigateTo('dashboard')} className="text-tron-silver-300 hover:text-wow-gold transition-colors font-medium">
-                Features
-              </button>
-              <button onClick={() => navigateTo('recruitment')} className="text-tron-silver-300 hover:text-wow-gold transition-colors font-medium">
-                Recruitment
+              <button onClick={() => navigateTo('logs')} className="text-tron-silver-300 hover:text-wow-gold transition-colors font-medium">
+                {t('nav.raidAnalysis')}
               </button>
               <button className="text-tron-silver-300 hover:text-wow-gold transition-colors font-medium">
-                Pricing
+                {t('nav.roadmap')}
+              </button>
+              <button className="text-tron-silver-300 hover:text-wow-gold transition-colors font-medium">
+                {t('nav.guildsMplus')}
               </button>
             </div>
             <div className="flex items-center gap-3">
+              <Select value={locale} onValueChange={(value) => setLocale(value as 'en' | 'pt-BR')}>
+                <SelectTrigger className="w-[92px] border-dark-700 bg-dark-900/70 text-tron-silver-300">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-dark-900 border-dark-700">
+                  <SelectItem value="en">{t('locale.en')}</SelectItem>
+                  <SelectItem value="pt-BR">{t('locale.pt-BR')}</SelectItem>
+                </SelectContent>
+              </Select>
               <Button 
                 onClick={() => setLoginOpen(true)} 
                 variant="outline"
                 className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10 font-medium"
               >
-                Login
+                {t('auth.login')}
               </Button>
               <Button 
                 onClick={() => setLoginOpen(true)}
                 className="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold shadow-lg shadow-amber-500/20"
               >
-                Get Started Free
+                {t('auth.getStarted')}
               </Button>
             </div>
           </nav>
@@ -117,15 +129,14 @@ export default function WoWtronApp() {
           <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 lg:py-32">
             <div className="text-center">
               <Badge className="mb-6 bg-shadow-purple/20 text-shadow-purple border-shadow-purple">
-                ✨ The #1 WoW Guild Management Platform
+                {t('hero.badge')}
               </Badge>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
                 <span className="text-wow-gold text-shadow-gold">WoW</span>
                 <span className="text-tron-silver">tron</span>
               </h1>
               <p className="text-xl sm:text-2xl text-tron-silver-300 mb-8 max-w-3xl mx-auto">
-                The ultimate all-in-one platform for World of Warcraft guild management, 
-                raid planning, Mythic+ tracking, and player recruitment.
+                {t('hero.title')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
@@ -134,15 +145,15 @@ export default function WoWtronApp() {
                   className="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-lg px-8 py-6 shadow-lg shadow-amber-500/30"
                 >
                   <Play className="mr-2 h-5 w-5" />
-                  Get Started Free
+                  {t('hero.primary')}
                 </Button>
                 <Button 
                   size="lg"
                   variant="outline"
-                  onClick={() => navigateTo('dashboard')}
+                  onClick={() => setLoginOpen(true)}
                   className="border-slate-500 text-slate-300 hover:bg-slate-800 hover:border-amber-500 hover:text-amber-400 text-lg px-8 py-6"
                 >
-                  View Demo
+                  {t('hero.secondary')}
                 </Button>
               </div>
             </div>
@@ -150,10 +161,10 @@ export default function WoWtronApp() {
             {/* Stats */}
             <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { value: '10,000+', label: 'Active Guilds' },
-                { value: '250K+', label: 'Characters Tracked' },
-                { value: '5M+', label: 'Raids Scheduled' },
-                { value: '99.9%', label: 'Uptime' },
+                { value: '<30s', label: 'Time To First Insight' },
+                { value: 'Top 3', label: 'Next Pull Actions' },
+                { value: 'Phase-aware', label: 'Wipe Diagnosis' },
+                { value: 'WCL+', label: 'Decision Layer' },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-6 rounded-lg bg-dark-900/50 border border-dark-700 backdrop-blur">
                   <div className="text-3xl font-bold text-wow-gold">{stat.value}</div>
@@ -173,21 +184,21 @@ export default function WoWtronApp() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
-                <span className="text-wow-gold">Everything</span> You Need
+                <span className="text-wow-gold">Start Narrow.</span> Scale Intentionally.
               </h2>
               <p className="text-tron-silver-400 text-lg max-w-2xl mx-auto">
-                Stop juggling multiple tools. WoWtron brings everything together in one powerful platform.
+                WoWtron can grow into a broader PvE platform, but the wedge is raid leaders who need fast, useful answers from logs.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { icon: Castle, title: 'Guild Management', desc: 'Manage your roster, ranks, and settings all in one place. Sync with Blizzard API automatically.', color: 'text-wow-gold' },
-                { icon: Calendar, title: 'Raid Planning', desc: 'Schedule raids, track signups, and manage attendance with our intuitive calendar system.', color: 'text-shadow-purple' },
-                { icon: Target, title: 'M+ Tracker', desc: 'Track Mythic+ scores, weekly affixes, and dungeon progress for your entire roster.', color: 'text-sapphire-blue' },
-                { icon: BarChart3, title: 'Log Analysis', desc: 'Upload Warcraft Logs and get AI-powered insights and recommendations for improvement.', color: 'text-tron-silver' },
-                { icon: Briefcase, title: 'Recruitment', desc: 'Find the perfect players with our smart matching system and anti-booster detection.', color: 'text-green-500' },
-                { icon: Users, title: 'Player Cards', desc: 'Detailed player profiles with performance metrics and AI-generated summaries.', color: 'text-red-500' },
+                { icon: BarChart3, title: 'Raid Log Briefs', desc: 'Turn a wipe into a root cause, top 3 actions, and a clear next-pull briefing.', color: 'text-wow-gold' },
+                { icon: Timer, title: 'Progression Reviews', desc: 'Compare pulls, phase failures, and repeated mistakes without digging through WCL for hours.', color: 'text-shadow-purple' },
+                { icon: Shield, title: 'Responsibility Mapping', desc: 'Separate player execution problems from raid strategy and cooldown coverage issues.', color: 'text-sapphire-blue' },
+                { icon: Castle, title: 'Guild Hub Later', desc: 'Roster, recruiting, scheduling, and operations stay in the product vision, but not ahead of the wedge.', color: 'text-tron-silver' },
+                { icon: Target, title: 'M+ Reliability Later', desc: 'Long term, score players by execution quality instead of only public rating systems.', color: 'text-green-500' },
+                { icon: Users, title: 'Global Audience', desc: 'English-first product, with secondary localization for Portuguese and other regions later.', color: 'text-red-500' },
               ].map((feature, i) => (
                 <Card key={i} className="card-wow card-wow-gold group cursor-pointer hover:scale-[1.02] transition-all">
                   <CardHeader>
@@ -208,16 +219,16 @@ export default function WoWtronApp() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
-                Simple <span className="text-wow-gold">Pricing</span>
+                Product <span className="text-wow-gold">Phases</span>
               </h2>
-              <p className="text-tron-silver-400 text-lg">Start free, upgrade when you need more.</p>
+              <p className="text-tron-silver-400 text-lg">The platform can grow wide later, but it needs a sharp wedge first.</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { name: 'Free', price: '$0', features: ['Up to 30 members', 'Basic raid scheduling', 'M+ tracking', 'Discord integration'], popular: false },
-                { name: 'Pro', price: '$9', period: '/month', features: ['Unlimited members', 'Advanced analytics', 'Log analysis', 'Priority support', 'Custom branding'], popular: true },
-                { name: 'Enterprise', price: '$29', period: '/month', features: ['Everything in Pro', 'Multiple guilds', 'API access', 'Dedicated support', 'Custom integrations'], popular: false },
+                { name: 'Now', price: '1', features: ['Raid log analysis', 'Wipe diagnosis', 'Next-pull actions', 'Discord-ready briefings'], popular: true },
+                { name: 'Next', price: '2', features: ['Guild workflow', 'Player reliability', 'Recruiting context', 'Progress tracking'], popular: false },
+                { name: 'Later', price: '3', features: ['M+ execution model', 'Broader PvE hub', 'Cross-mode reputation', 'Deeper automation'], popular: false },
               ].map((plan, i) => (
                 <Card key={i} className={`relative ${plan.popular ? 'border-wow-gold shadow-epic' : 'border-dark-700'} bg-dark-900/50`}>
                   {plan.popular && (
@@ -229,7 +240,7 @@ export default function WoWtronApp() {
                     <CardTitle className="text-tron-silver-200">{plan.name}</CardTitle>
                     <div className="mt-4">
                       <span className="text-4xl font-bold text-wow-gold">{plan.price}</span>
-                      {plan.period && <span className="text-tron-silver-400">{plan.period}</span>}
+                      <span className="text-tron-silver-400"> / phase</span>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -245,7 +256,7 @@ export default function WoWtronApp() {
                       className={`w-full ${plan.popular ? 'bg-gradient-to-r from-wow-gold to-yellow-500 text-dark-900 font-bold hover:shadow-epic' : 'bg-dark-800 text-tron-silver-300 hover:bg-dark-700'}`}
                       onClick={() => setLoginOpen(true)}
                     >
-                      Get Started
+                      Open Workspace
                     </Button>
                   </CardFooter>
                 </Card>
@@ -258,17 +269,17 @@ export default function WoWtronApp() {
         <section className="py-20 px-4 bg-gradient-to-r from-void-purple-dark via-void-purple to-void-purple-dark">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
-              Ready to <span className="text-wow-gold">Level Up</span> Your Guild?
+              Build the <span className="text-wow-gold">Raid Wedge</span> First
             </h2>
             <p className="text-tron-silver-300 text-lg mb-8">
-              Join thousands of guilds already using WoWtron to manage their teams and track progress.
+              If the raid product becomes indispensable, the broader platform becomes much easier to earn.
             </p>
             <Button 
               size="lg"
               onClick={() => setLoginOpen(true)}
               className="bg-gradient-to-r from-wow-gold to-yellow-500 text-dark-900 font-bold text-lg px-10 py-6 hover:shadow-epic transition-all"
             >
-              Start Your Free Trial
+              Open Raid Analysis
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -280,11 +291,11 @@ export default function WoWtronApp() {
             <div className="grid md:grid-cols-4 gap-8">
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <img src="/wowtron-logo.png" alt="WoWtron" className="h-8 w-auto" />
+                  <Image src="/wowtron-logo.png" alt="WoWtron" width={128} height={32} className="h-8 w-auto" />
                   <span className="font-display text-xl font-bold text-wow-gold" style={{ fontFamily: 'Cinzel, serif' }}>WoWtron</span>
                 </div>
                 <p className="text-tron-silver-400 text-sm">
-                  The ultimate platform for World of Warcraft guild management and progression tracking.
+                  Raid-first analysis for World of Warcraft progression teams.
                 </p>
               </div>
               {[
@@ -305,7 +316,7 @@ export default function WoWtronApp() {
               ))}
             </div>
             <div className="mt-12 pt-8 border-t border-dark-800 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-tron-silver-500 text-sm">© 2026 WoWtron. All rights reserved.</p>
+              <p className="text-tron-silver-500 text-sm">{t('footer.rights')}</p>
               <div className="flex gap-4">
                 <a href="#" className="text-tron-silver-400 hover:text-wow-gold transition-colors"><MessageSquare className="h-5 w-5" /></a>
                 <a href="#" className="text-tron-silver-400 hover:text-wow-gold transition-colors"><Globe className="h-5 w-5" /></a>
@@ -320,17 +331,17 @@ export default function WoWtronApp() {
           <DialogContent className="bg-slate-900 border-slate-700 max-w-md">
             <DialogHeader>
               <DialogTitle className="text-amber-400 text-2xl font-bold text-center" style={{ fontFamily: 'Cinzel, serif' }}>
-                Welcome to WoWtron
+                {t('auth.welcome')}
               </DialogTitle>
               <DialogDescription className="text-slate-400 text-center">
-                Sign in to manage your guild and track your progress.
+                {t('auth.subtitle')}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               {/* Demo Access Info */}
               <div className="bg-violet-900/30 border border-violet-500/50 rounded-lg p-4 text-center">
-                <p className="text-violet-300 text-sm font-medium mb-2">🎮 Demo Mode</p>
-                <p className="text-slate-400 text-xs">Click any button below to explore WoWtron with demo data</p>
+                <p className="text-violet-300 text-sm font-medium mb-2">{t('auth.demoMode')}</p>
+                <p className="text-slate-400 text-xs">{t('auth.demoDescription')}</p>
               </div>
 
               <Button 
@@ -374,11 +385,11 @@ export default function WoWtronApp() {
                 className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-6 text-lg"
                 onClick={handleLogin}
               >
-                Sign In to Demo
+                {t('auth.signInDemo')}
               </Button>
               
               <p className="text-center text-slate-500 text-sm">
-                No account needed • Demo access is <span className="text-amber-400 font-medium">FREE</span>
+                {t('auth.freeAccess')}
               </p>
             </div>
           </DialogContent>
@@ -399,7 +410,7 @@ export default function WoWtronApp() {
             {/* Logo & Nav */}
             <div className="flex items-center gap-8">
               <button onClick={() => navigateTo('dashboard')} className="flex items-center gap-2">
-                <img src="/wowtron-logo.png" alt="WoWtron" className="h-8 w-auto" />
+                <Image src="/wowtron-logo.png" alt="WoWtron" width={128} height={32} className="h-8 w-auto" />
                 <span className="font-display text-xl font-bold text-wow-gold hidden sm:block" style={{ fontFamily: 'Cinzel, serif' }}>WoWtron</span>
               </button>
               
@@ -428,6 +439,15 @@ export default function WoWtronApp() {
 
             {/* Right Side */}
             <div className="flex items-center gap-3">
+              <Select value={locale} onValueChange={(value) => setLocale(value as 'en' | 'pt-BR')}>
+                <SelectTrigger className="hidden md:flex w-[92px] border-dark-700 bg-dark-800 text-tron-silver-300">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-dark-900 border-dark-700">
+                  <SelectItem value="en">{t('locale.en')}</SelectItem>
+                  <SelectItem value="pt-BR">{t('locale.pt-BR')}</SelectItem>
+                </SelectContent>
+              </Select>
               {/* Search */}
               <div className="hidden md:flex items-center relative">
                 <Search className="absolute left-3 h-4 w-4 text-tron-silver-500" />
@@ -711,7 +731,7 @@ export default function WoWtronApp() {
               </div>
               <CardContent className="relative pt-0">
                 <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-10 relative z-10">
-                  <img src={mockGuild.logo} alt={mockGuild.name} className="w-20 h-20 rounded-lg border-4 border-dark-900 bg-dark-900" />
+                  <Image src={mockGuild.logo} alt={mockGuild.name} width={80} height={80} className="w-20 h-20 rounded-lg border-4 border-dark-900 bg-dark-900" />
                   <div className="flex-1">
                     <h1 className="text-2xl font-bold text-wow-gold" style={{ fontFamily: 'Cinzel, serif' }}>{mockGuild.name}</h1>
                     <p className="text-tron-silver-400">{mockGuild.realm} • {mockGuild.faction} • {mockGuild.progress}</p>
@@ -1506,8 +1526,9 @@ export default function WoWtronApp() {
       <footer className="py-6 px-4 border-t border-dark-800 bg-dark-950">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <img src="/wowtron-logo.png" alt="WoWtron" className="h-6 w-auto" />
-            <span className="text-tron-silver-400 text-sm">© 2026 WoWtron. All rights reserved.</span>
+            <Image src="/wowtron-logo.png" alt="WoWtron" width={96} height={24} className="h-6 w-auto" />
+            <span className="text-tron-silver-400 text-sm">{t('footer.rights')}</span>
+            
           </div>
           <div className="flex items-center gap-4">
             <a href="#" className="text-tron-silver-400 hover:text-wow-gold text-sm transition-colors">Privacy</a>
@@ -1521,3 +1542,6 @@ export default function WoWtronApp() {
     </div>
   );
 }
+
+
+

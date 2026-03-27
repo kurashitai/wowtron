@@ -1,0 +1,32 @@
+{
+  "key": "fallen_king_salhadaar",
+  "bossName": "Fallen-King Salhadaar",
+  "status": "ready_for_rules",
+  "payload": {
+    "coverage": {
+      "totalPulls": 144,
+      "kills": 38,
+      "wipes": 106,
+      "bestWipeHP": 0,
+      "goodAssignmentSignal": 60,
+      "poorDataQuality": 76
+    },
+    "reviewedFixtureCount": 1,
+    "expectedMechanics": [
+      "Royal Collapse",
+      "Tank handling",
+      "Raid movement"
+    ],
+    "expectedAssignmentTypes": [
+      "tank_swap",
+      "raid_cd"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Improve public coverage quality before adding deeper rules."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

@@ -1,0 +1,44 @@
+{
+  "key": "mQq8WxapY1KDPjJc__56",
+  "reportCode": "mQq8WxapY1KDPjJc",
+  "fightId": 56,
+  "bossName": "Chimaerus the Undreamt God",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Unknown",
+  "kill": false,
+  "bossHPPercent": 100,
+  "durationSec": 0,
+  "startTime": 11385102,
+  "endTime": 11385103,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:08:17.159Z",
+  "composition": {
+    "tanks": 0,
+    "healers": 0,
+    "dps": 0,
+    "total": 0,
+    "bloodlust": false,
+    "brez": 0
+  },
+  "summary": {
+    "raidDPS": 0,
+    "raidHPS": 0,
+    "raidDTPS": 0,
+    "totalDamage": 0,
+    "totalHealing": 0,
+    "totalDamageTaken": 0,
+    "deaths": 0,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 0,
+    "deaths": 0,
+    "timelineEvents": 0,
+    "combatEvents": 0,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

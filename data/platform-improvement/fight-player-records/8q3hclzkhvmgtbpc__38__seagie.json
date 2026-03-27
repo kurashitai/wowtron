@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__seagie",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 10,
+  "name": "Seagie",
+  "role": "healer",
+  "className": "Paladin",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 257,
+  "server": "Sargeras",
+  "dps": 15485,
+  "hps": 83453,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 0,
+  "rankPercent": 69,
+  "avoidableDamageTaken": 0
+}

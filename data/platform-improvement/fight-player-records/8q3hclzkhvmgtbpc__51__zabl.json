@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__zabl",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 25,
+  "name": "Zabl",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 265,
+  "server": "Sargeras",
+  "dps": 94593,
+  "hps": 7899,
+  "dtps": 0,
+  "activeTime": 97,
+  "deaths": 0,
+  "rankPercent": 39,
+  "avoidableDamageTaken": 0
+}

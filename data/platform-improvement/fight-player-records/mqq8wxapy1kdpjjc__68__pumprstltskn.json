@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__68__pumprstltskn",
+  "fightKey": "mQq8WxapY1KDPjJc__68",
+  "actorId": 472,
+  "name": "Pumprstltskn",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "Area52",
+  "dps": 2,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 87,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

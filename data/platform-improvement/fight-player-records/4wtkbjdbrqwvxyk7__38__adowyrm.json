@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:preservation",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__adowyrm",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 177,
+  "name": "Adowyrm",
+  "role": "healer",
+  "className": "Evoker",
+  "spec": "Preservation",
+  "talents": [],
+  "itemLevel": 238,
+  "server": "Kael'thas",
+  "dps": 14428,
+  "hps": 51126,
+  "dtps": 0,
+  "activeTime": 17,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

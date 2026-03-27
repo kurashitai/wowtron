@@ -1,0 +1,371 @@
+{
+  "generatedAt": "2026-03-27T04:47:44.448Z",
+  "count": 11,
+  "fixtures": [
+    {
+      "id": "imperator-averzian-8q3hcLzkHVmGtbpC-61",
+      "bossName": "Imperator Averzian",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 61,
+      "guildName": "comma",
+      "type": "wipe_reference",
+      "reviewPriority": 1,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Void Blast",
+        "raid-CD",
+        "Imperial Decree",
+        "positioning"
+      ],
+      "expectedCauseChainIncludes": [
+        "Void Blast",
+        "raid damage",
+        "Decree",
+        "positioning collapse"
+      ],
+      "expectedOwners": [
+        "Healers + RL",
+        "Raid",
+        "Healers"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "only throughput",
+        "gear issue"
+      ],
+      "reviewerNotes": "This is a near-kill wipe, so the analyzer should avoid lazy throughput blame. The fight should read more like a late execution or cooldown-map collapse around Void Blast and Decree handling than a raw DPS failure."
+    },
+    {
+      "id": "imperator-averzian-cFVb6faqnN2kMrQ9-63",
+      "bossName": "Imperator Averzian",
+      "code": "cFVb6faqnN2kMrQ9",
+      "fightId": 63,
+      "guildName": "comma",
+      "type": "kill_reference",
+      "reviewPriority": 2,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Void Blast",
+        "Imperial Decree",
+        "Phase 2",
+        "clean positioning"
+      ],
+      "expectedCauseChainIncludes": [
+        "raid-CD map",
+        "Void Blast",
+        "Decree handling",
+        "clean push"
+      ],
+      "expectedOwners": [
+        "Healers + RL",
+        "Raid",
+        "Tanks"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "gear issue",
+        "random deaths"
+      ],
+      "reviewerNotes": "Averzian kill should be framed as successful raid-CD coverage on Void Blast, controlled positioning for Imperial Decree, and stable tank handling through the dangerous middle phase rather than raw throughput alone."
+    },
+    {
+      "id": "vorasius-r3xjWwKB6X7F8ALT-65",
+      "bossName": "Vorasius",
+      "code": "r3xjWwKB6X7F8ALT",
+      "fightId": 65,
+      "guildName": "comma",
+      "type": "wipe_reference",
+      "reviewPriority": 3,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Void Scream",
+        "interrupt",
+        "Consume Essence",
+        "soak"
+      ],
+      "expectedCauseChainIncludes": [
+        "missed kick",
+        "Void Scream",
+        "missed soak",
+        "orb coverage"
+      ],
+      "expectedOwners": [
+        "Assigned kickers",
+        "Assigned soakers",
+        "Raid"
+      ],
+      "bannedSummaryIncludes": [
+        "healing issue only",
+        "pure DPS wall",
+        "random deaths"
+      ],
+      "reviewerNotes": "Vorasius should be calibrated as an assignment fight first. The analyzer should prioritize kick order and orb soak execution over generic healing or throughput blame."
+    },
+    {
+      "id": "vorasius-4wtkBjDbRQWvxYK7-28",
+      "bossName": "Vorasius",
+      "code": "4wtkBjDbRQWvxYK7",
+      "fightId": 28,
+      "guildName": "Internet Explorers",
+      "type": "kill_reference",
+      "reviewPriority": 4,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Void Scream",
+        "interrupt",
+        "Consume Essence",
+        "Shadow Feast"
+      ],
+      "expectedCauseChainIncludes": [
+        "kick rotation",
+        "orb soaks",
+        "Shadow Feast",
+        "stable assignments"
+      ],
+      "expectedOwners": [
+        "Assigned kickers",
+        "Assigned soakers",
+        "Healers + RL"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "random deaths",
+        "healing issue only"
+      ],
+      "reviewerNotes": "This is a kill reference. The analyzer should read it as a fight won through stable interrupt coverage, clean orb soak execution, and controlled healing throughput during Shadow Feast rather than generic damage racing."
+    },
+    {
+      "id": "fallen-king-salhadaar-8q3hcLzkHVmGtbpC-38",
+      "bossName": "Fallen-King Salhadaar",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 38,
+      "guildName": "comma",
+      "type": "kill_reference",
+      "reviewPriority": 5,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "King's Decree",
+        "Void Shockwave",
+        "Royal Guardian",
+        "Shadow Realm"
+      ],
+      "expectedCauseChainIncludes": [
+        "Decree reactions",
+        "Shockwave timing",
+        "Guardian interrupts",
+        "realm coordination"
+      ],
+      "expectedOwners": [
+        "Raid",
+        "Assigned kickers",
+        "Tanks"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "healing issue only",
+        "luck"
+      ],
+      "reviewerNotes": "Salhadaar kill should read as clean decree reactions, stable shockwave movement, controlled shadow-realm coordination, and reliable Guardian interrupts. The analyzer should not flatten this into generic throughput language."
+    },
+    {
+      "id": "vaelgor-ezzorak-4wtkBjDbRQWvxYK7-38",
+      "bossName": "Vaelgor & Ezzorak",
+      "code": "4wtkBjDbRQWvxYK7",
+      "fightId": 38,
+      "guildName": "Internet Explorers",
+      "type": "wipe_reference",
+      "reviewPriority": 6,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Twisted Fusion",
+        "Shadow Nova",
+        "Duplicate",
+        "coordination"
+      ],
+      "expectedCauseChainIncludes": [
+        "beam",
+        "Twisted Fusion",
+        "Shadow Nova",
+        "duplicate pressure"
+      ],
+      "expectedOwners": [
+        "Raid",
+        "Healers + RL",
+        "Tanks"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "gear issue",
+        "single-player blame"
+      ],
+      "reviewerNotes": "The twins wipe should be framed as coordination failure around beam handling, duplicate control, and raid damage stabilization. It should not collapse into generic throughput blame."
+    },
+    {
+      "id": "vaelgor-ezzorak-4wtkBjDbRQWvxYK7-39",
+      "bossName": "Vaelgor & Ezzorak",
+      "code": "4wtkBjDbRQWvxYK7",
+      "fightId": 39,
+      "guildName": "Internet Explorers",
+      "type": "kill_reference",
+      "reviewPriority": 7,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Duplicate",
+        "Twisted Fusion",
+        "Shadow Nova",
+        "Phase 2"
+      ],
+      "expectedCauseChainIncludes": [
+        "duplicate control",
+        "beam discipline",
+        "raid-CD",
+        "clean sync"
+      ],
+      "expectedOwners": [
+        "Raid",
+        "Healers + RL",
+        "Tanks"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "unavoidable deaths",
+        "luck"
+      ],
+      "reviewerNotes": "This kill should read as successful duplicate control, beam discipline, and planned raid-CD coverage into the synchronized second phase."
+    },
+    {
+      "id": "lightblinded-vanguard-8q3hcLzkHVmGtbpC-49",
+      "bossName": "Lightblinded Vanguard",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 49,
+      "guildName": "comma",
+      "type": "kill_reference",
+      "reviewPriority": 8,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Void Touched",
+        "soak",
+        "Righteous Flame",
+        "beam"
+      ],
+      "expectedCauseChainIncludes": [
+        "soak coverage",
+        "Righteous Flame",
+        "beam pattern",
+        "Phase 3"
+      ],
+      "expectedOwners": [
+        "Assigned soakers",
+        "Healers + RL",
+        "Raid"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "lust too early",
+        "random deaths"
+      ],
+      "reviewerNotes": "Vanguard kill should be framed as clean soak ownership, beam pattern discipline, and raid-CD stability through Righteous Flame, especially into the final phase."
+    },
+    {
+      "id": "crown-of-the-cosmos-8q3hcLzkHVmGtbpC-51",
+      "bossName": "Crown of the Cosmos",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 51,
+      "guildName": "comma",
+      "type": "kill_reference",
+      "reviewPriority": 9,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "Devouring Cosmos",
+        "raid-CD",
+        "final platform",
+        "movement",
+        "spacing"
+      ],
+      "expectedCauseChainIncludes": [
+        "Devouring Cosmos",
+        "platform pressure",
+        "final phase",
+        "movement discipline"
+      ],
+      "expectedOwners": [
+        "Healers + RL",
+        "Raid",
+        "Healers"
+      ],
+      "bannedSummaryIncludes": [
+        "lust too early",
+        "throughput wall",
+        "greed damage first"
+      ],
+      "reviewerNotes": "This is a kill reference, so the analyzer should frame it as successful control of movement, spacing, and raid-CD coverage into the final platform phase. It should not overblame throughput or recommend using Hero/Lust earlier."
+    },
+    {
+      "id": "alleria-windrunner-mQq8WxapY1KDPjJc-53",
+      "bossName": "Alleria Windrunner",
+      "code": "mQq8WxapY1KDPjJc",
+      "fightId": 53,
+      "guildName": "local-fight-record",
+      "type": "wipe_reference",
+      "reviewPriority": 10,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "movement",
+        "add control",
+        "Barrage",
+        "Void Collapse"
+      ],
+      "expectedCauseChainIncludes": [
+        "movement",
+        "add control",
+        "Void Collapse",
+        "raid instability"
+      ],
+      "expectedOwners": [
+        "Assigned kickers",
+        "Healers + RL",
+        "Raid"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "gear issue",
+        "hard throughput wall"
+      ],
+      "reviewerNotes": "Early MQD draft. Keep the analyzer conservative. The best current read is movement discipline, add control, Barrage ownership, and healer coverage, not raw throughput blame."
+    },
+    {
+      "id": "chimaerus-the-undreamt-god-tvkgC7cVPTAQdGBh-16",
+      "bossName": "Chimaerus the Undreamt God",
+      "code": "tvkgC7cVPTAQdGBh",
+      "fightId": 16,
+      "guildName": "local-fight-record",
+      "type": "wipe_reference",
+      "reviewPriority": 11,
+      "status": "draft_reviewed",
+      "expectedTopSummaryIncludes": [
+        "add control",
+        "Cosmic Rupture",
+        "soak",
+        "tank stability"
+      ],
+      "expectedCauseChainIncludes": [
+        "add control",
+        "Cosmic Rupture",
+        "soak ownership",
+        "control loss"
+      ],
+      "expectedOwners": [
+        "Assigned kickers",
+        "Healers + RL",
+        "Raid",
+        "Tanks"
+      ],
+      "bannedSummaryIncludes": [
+        "pure DPS wall",
+        "gear issue",
+        "healing issue only"
+      ],
+      "reviewerNotes": "Early MQD draft. Keep the analyzer broad and conservative. The current useful read is coordination-first: add control, healer coverage, soak ownership, and tank stability."
+    }
+  ]
+}

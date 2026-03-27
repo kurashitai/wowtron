@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__dramonk",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 18,
+  "name": "Dramonk",
+  "role": "dps",
+  "className": "Monk",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 267,
+  "server": "Ghostlands",
+  "dps": 1,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 97,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

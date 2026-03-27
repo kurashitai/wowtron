@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devastation",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__aqv",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 359,
+  "name": "Aqv",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Devastation",
+  "talents": [],
+  "itemLevel": 258,
+  "server": "Sargeras",
+  "dps": 70454,
+  "hps": 3940,
+  "dtps": 0,
+  "activeTime": 88,
+  "deaths": 0,
+  "rankPercent": 5,
+  "avoidableDamageTaken": 0
+}

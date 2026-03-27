@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:blood",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__ardorius",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 57,
+  "name": "Ardorius",
+  "role": "tank",
+  "className": "DeathKnight",
+  "spec": "Blood",
+  "talents": [],
+  "itemLevel": 255,
+  "server": "Stormrage",
+  "dps": 18948,
+  "hps": 22000,
+  "dtps": 0,
+  "activeTime": 82,
+  "deaths": 3,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

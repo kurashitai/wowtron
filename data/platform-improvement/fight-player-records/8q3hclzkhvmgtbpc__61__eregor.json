@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:fury",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__61__eregor",
+  "fightKey": "8q3hcLzkHVmGtbpC__61",
+  "actorId": 7,
+  "name": "Eregor",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Fury",
+  "talents": [],
+  "itemLevel": 264,
+  "server": "Sargeras",
+  "dps": 84765,
+  "hps": 8627,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -802,6 +802,137 @@ export const VOIDSPIRE_BOSSES: BossData[] = [
       good: ["Add burst", "Healing absorb breakers", "Tank externals"],
       bad: ["Pure single-target trinkets", "No mobility trinkets"]
     }
+  },
+
+  {
+    id: 3007,
+    name: "Crown of the Cosmos",
+    nickname: "crown",
+    zone: "voidspire",
+    order: 7,
+    icon: "crown_of_the_cosmos",
+
+    enrageTimer: 540,
+    requiredDPS: 18500000,
+    requiredHPS: 4300000,
+
+    mechanics: [
+      {
+        id: "void_barrage",
+        name: "Void Barrage",
+        type: "avoidable",
+        description: "Repeated void volleys that punish poor movement and lane discipline",
+        damage: 420000,
+        frequency: 18,
+        targets: "everyone",
+        tip: "Keep moving cleanly and do not overlap Barrage lines with other players",
+        warning: "Repeated Barrage hits quickly turn a stable pull into a wipe"
+      },
+      {
+        id: "void_expulsion",
+        name: "Void Expulsion",
+        type: "avoidable",
+        description: "Explosive void burst that punishes players who are late moving out",
+        damage: 500000,
+        frequency: 28,
+        targets: "everyone",
+        tip: "Move early and leave safe space for the raid before Expulsion finishes"
+      },
+      {
+        id: "silverstrike_ricochet",
+        name: "Silverstrike Ricochet",
+        type: "positioning",
+        description: "Ricochet damage that punishes bad spacing and platform positioning",
+        damage: 380000,
+        frequency: 22,
+        targets: "random",
+        tip: "Hold clean spacing and avoid bouncing the hit through the group"
+      },
+      {
+        id: "voidstalker_sting",
+        name: "Voidstalker Sting",
+        type: "avoidable",
+        description: "High-pressure damage from add control failures or bad movement",
+        damage: 350000,
+        frequency: 24,
+        targets: "random",
+        tip: "Clean up add pressure quickly and do not drift into unsafe platform lanes"
+      },
+      {
+        id: "grasp_of_emptiness",
+        name: "Grasp of Emptiness",
+        type: "tank_swap",
+        description: "Tank pressure mechanic that escalates if swaps or externals are late",
+        damage: 800000,
+        frequency: 16,
+        targets: "tank",
+        tip: "Swap cleanly and plan externals before dangerous overlap windows"
+      },
+      {
+        id: "devouring_cosmos",
+        name: "Devouring Cosmos",
+        type: "raid_cd",
+        description: "Heavy raid damage event that needs a real healing plan",
+        damage: 520000,
+        frequency: 45,
+        targets: "everyone",
+        tip: "Map raid cooldowns here and protect the raid before platform pressure stacks up"
+      }
+    ],
+
+    phases: [
+      {
+        name: "Phase 1: Crown Ascent",
+        hpRange: [100, 70],
+        mechanics: ["void_barrage", "void_expulsion", "silverstrike_ricochet"],
+        tips: ["Stabilize movement first", "Do not waste Hero/Lust here"]
+      },
+      {
+        name: "Phase 2: Celestial Fracture",
+        hpRange: [70, 35],
+        mechanics: ["void_barrage", "voidstalker_sting", "grasp_of_emptiness", "devouring_cosmos"],
+        tips: ["Keep tank swaps and raid CDs planned", "Hold Hero/Lust for the final platform phase"]
+      },
+      {
+        name: "Phase 3: Three Platforms",
+        hpRange: [35, 0],
+        mechanics: ["void_expulsion", "silverstrike_ricochet", "devouring_cosmos"],
+        tips: ["Use Hero/Lust here", "Survival and clean movement matter more than greed"]
+      }
+    ],
+
+    deathCauses: {
+      "void_barrage": 26,
+      "void_expulsion": 26,
+      "silverstrike_ricochet": 18,
+      "voidstalker_sting": 14,
+      "grasp_of_emptiness": 10,
+      "other": 6
+    },
+
+    commonMistakes: [
+      "Using Hero/Lust before the final platform phase",
+      "Losing players to repeatable movement mechanics before the real burn",
+      "Poor spacing causing Silverstrike chains",
+      "Late tank stabilization during Grasp overlap windows"
+    ],
+
+    positioning: [
+      "Keep platform spacing clean and predictable",
+      "Leave movement lanes open before Barrage and Expulsion windows",
+      "Do not collapse the raid unless the mechanic calls for it"
+    ],
+
+    compSuggestions: [
+      "Keep strong raid-CD coverage for Devouring Cosmos",
+      "Prioritize mobile DPS and clean personal defensive usage",
+      "Treat Phase 3 as the real kill phase and plan Hero/Lust there"
+    ],
+
+    trinketSuggestions: {
+      good: ["Mobility", "Burst for Phase 3", "Defensive value for overlap windows"],
+      bad: ["Greedy stationary throughput", "Cooldown plans that peak too early"]
+    }
   }
 ];
 
@@ -952,17 +1083,285 @@ export const DREAMRIFT_BOSSES: BossData[] = [
 ];
 
 // ============================================
+// QUEL'DANAS RAID - Current MQD Coverage
+// ============================================
+
+export const QUELDANAS_BOSSES: BossData[] = [
+  {
+    id: 3201,
+    name: "Alleria Windrunner",
+    nickname: "alleria",
+    zone: "queldanas",
+    order: 1,
+    icon: "alleria_windrunner",
+
+    enrageTimer: 720,
+    requiredDPS: 23500000,
+    requiredHPS: 5400000,
+
+    mechanics: [
+      {
+        id: "dark_arrow_volley",
+        name: "Dark Arrow Volley",
+        type: "avoidable",
+        description: "Repeated volleys that punish bad movement lanes and stacked positioning.",
+        damage: 480000,
+        frequency: 16,
+        targets: "everyone",
+        tip: "Keep movement lanes clean and sidestep volleys early instead of reacting late.",
+        warning: "Repeated hits quickly drain healer stability before the real burn."
+      },
+      {
+        id: "ranger_mark",
+        name: "Ranger's Mark",
+        type: "positioning",
+        description: "Marked players need clean spacing or the follow-up impact chains through the raid.",
+        damage: 410000,
+        frequency: 22,
+        targets: "random",
+        tip: "Pre-spread marked players and leave clear escape lanes for the follow-up hit."
+      },
+      {
+        id: "windrunner_adds",
+        name: "Windrunner Adds",
+        type: "interrupt",
+        description: "Dangerous adds that pressure the raid if casts are not controlled immediately.",
+        damage: 350000,
+        frequency: 45,
+        targets: "dps",
+        tip: "Assign kicks and swap to adds instantly before they stack pressure on the raid."
+      },
+      {
+        id: "void_collapse",
+        name: "Void Collapse",
+        type: "raid_cd",
+        description: "Heavy raid-wide burst that needs fixed healer coverage.",
+        damage: 560000,
+        frequency: 48,
+        targets: "everyone",
+        tip: "Map raid cooldowns here and protect the raid before movement overlap windows."
+      },
+      {
+        id: "shadowstep_pursuit",
+        name: "Shadowstep Pursuit",
+        type: "positioning",
+        description: "Targeted chase sequence that breaks the pull if pathing is sloppy.",
+        damage: 390000,
+        frequency: 26,
+        targets: "random",
+        tip: "Drag the pursuit away from the raid and do not cut through other players."
+      },
+      {
+        id: "windrunner_barrage",
+        name: "Windrunner Barrage",
+        type: "soak",
+        description: "Split-damage impact that needs the right number of players to cover it.",
+        damage: 440000,
+        frequency: 34,
+        targets: "everyone",
+        tip: "Pre-assign soak groups and use personals when barrage overlaps with movement."
+      }
+    ],
+
+    phases: [
+      {
+        name: "Phase 1: Hunter's Pressure",
+        hpRange: [100, 70],
+        mechanics: ["dark_arrow_volley", "ranger_mark", "shadowstep_pursuit"],
+        tips: ["Stabilize movement before chasing throughput", "Do not lose players to early spacing mistakes"]
+      },
+      {
+        name: "Phase 2: Windrunner Reinforcements",
+        hpRange: [70, 40],
+        mechanics: ["windrunner_adds", "void_collapse", "windrunner_barrage"],
+        tips: ["Add control and healer coverage are the real gate here", "Do not let barrage ownership become improvisation"]
+      },
+      {
+        name: "Phase 3: Final Hunt",
+        hpRange: [40, 0],
+        mechanics: ["dark_arrow_volley", "void_collapse", "shadowstep_pursuit", "windrunner_barrage"],
+        tips: ["Treat this as the real kill phase", "Only greed damage after movement and soak ownership are stable"]
+      }
+    ],
+
+    deathCauses: {
+      "dark_arrow_volley": 24,
+      "ranger_mark": 18,
+      "windrunner_adds": 17,
+      "void_collapse": 16,
+      "shadowstep_pursuit": 15,
+      "windrunner_barrage": 8,
+      "other": 2
+    },
+
+    commonMistakes: [
+      "Taking repeated Volley hits before the dangerous phase even starts",
+      "Breaking spacing on Ranger's Mark and chaining raid damage",
+      "Late add control causing healer overload",
+      "Unclear Barrage ownership during movement overlaps"
+    ],
+
+    positioning: [
+      "Keep ranged arcs loose enough for Mark and Pursuit pathing",
+      "Leave a safe movement lane through the room at all times",
+      "Pre-assign soak sides before Barrage windows"
+    ],
+
+    compSuggestions: [
+      "Reliable add kicks matter more than greedy throughput",
+      "Mobile players are valuable for Pursuit and Barrage overlap",
+      "Healer cooldown planning is mandatory for Void Collapse"
+    ],
+
+    trinketSuggestions: {
+      good: ["Mobility", "Defensive value", "Controlled burst for add waves"],
+      bad: ["Greedy stationary throughput", "Long setups that punish movement"]
+    }
+  },
+  {
+    id: 3202,
+    name: "Chimaerus the Undreamt God",
+    nickname: "chimaerus",
+    zone: "queldanas",
+    order: 2,
+    icon: "chimaerus_undreamt_god",
+
+    enrageTimer: 780,
+    requiredDPS: 24800000,
+    requiredHPS: 5900000,
+
+    mechanics: [
+      {
+        id: "dream_devour",
+        name: "Dream Devour",
+        type: "tank_swap",
+        description: "Massive tank hit that becomes lethal without clean swaps and externals.",
+        damage: 1350000,
+        frequency: 11,
+        targets: "tank",
+        tip: "Swap early and line externals up for overlap windows instead of recovering late."
+      },
+      {
+        id: "nightmare_breath",
+        name: "Nightmare Breath",
+        type: "avoidable",
+        description: "Wide frontal that punishes sloppy boss control and melee greed.",
+        damage: 620000,
+        frequency: 18,
+        targets: "everyone",
+        tip: "Keep the frontal fixed and clear the lane before every breath cast."
+      },
+      {
+        id: "fractured_mind",
+        name: "Fractured Mind",
+        type: "dispel",
+        description: "Dangerous debuff that needs fast dispel timing or the raid loses stability.",
+        damage: 280000,
+        frequency: 24,
+        targets: "random",
+        tip: "Assign primary and backup dispellers and do not let the debuff drift into overlap windows."
+      },
+      {
+        id: "aberrant_spawn",
+        name: "Aberrant Spawn",
+        type: "interrupt",
+        description: "Priority adds with dangerous casts that quickly snowball if control slips.",
+        damage: 330000,
+        frequency: 42,
+        targets: "dps",
+        tip: "Lock kick ownership per spawn and kill the add before the second cast cycle."
+      },
+      {
+        id: "cosmic_rupture",
+        name: "Cosmic Rupture",
+        type: "raid_cd",
+        description: "Heavy raid-wide burst that becomes the main healer checkpoint of the fight.",
+        damage: 610000,
+        frequency: 50,
+        targets: "everyone",
+        tip: "Map your healer cooldowns here and do not arrive to this event with avoidable damage already taken."
+      },
+      {
+        id: "shattered_heads",
+        name: "Shattered Heads",
+        type: "soak",
+        description: "Split raid mechanic that requires disciplined group coverage.",
+        damage: 470000,
+        frequency: 36,
+        targets: "everyone",
+        tip: "Pre-assign soak groups and rotate personals for repeated coverage."
+      }
+    ],
+
+    phases: [
+      {
+        name: "Phase 1: Monstrous Awakening",
+        hpRange: [100, 75],
+        mechanics: ["dream_devour", "nightmare_breath", "fractured_mind"],
+        tips: ["Tank control and breath discipline are the first gate", "Do not leak deaths before the add phase"]
+      },
+      {
+        name: "Phase 2: Aberrant Convergence",
+        hpRange: [75, 45],
+        mechanics: ["aberrant_spawn", "cosmic_rupture", "shattered_heads"],
+        tips: ["This phase is mostly assignment execution", "Adds and healer CDs decide whether the pull lives"]
+      },
+      {
+        name: "Phase 3: Undreamt Collapse",
+        hpRange: [45, 0],
+        mechanics: ["nightmare_breath", "cosmic_rupture", "shattered_heads", "dream_devour"],
+        tips: ["Treat the final phase as a control check before a throughput check", "Do not trade movement discipline for short-term damage greed"]
+      }
+    ],
+
+    deathCauses: {
+      "nightmare_breath": 23,
+      "cosmic_rupture": 21,
+      "aberrant_spawn": 18,
+      "shattered_heads": 16,
+      "dream_devour": 14,
+      "fractured_mind": 6,
+      "other": 2
+    },
+
+    commonMistakes: [
+      "Losing control of add kicks in Phase 2",
+      "Reaching Cosmic Rupture already damaged and unplanned",
+      "Bad soak coverage on Shattered Heads",
+      "Late tank swaps causing recovery chaos"
+    ],
+
+    positioning: [
+      "Fix the frontal lane for every Breath cast",
+      "Set predictable add collapse points",
+      "Keep soak groups on named sides to avoid improvisation"
+    ],
+
+    compSuggestions: [
+      "Kick reliability matters more than greed",
+      "Strong healer-CD planning is mandatory for Rupture",
+      "Tank externals should be planned, not reactive"
+    ],
+
+    trinketSuggestions: {
+      good: ["Defensive value", "Controlled burst for adds", "Mobility during soak overlaps"],
+      bad: ["Greedy stationary throughput", "Delayed burst that misses add windows"]
+    }
+  }
+];
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
 export function getBossByNickname(nickname: string): BossData | undefined {
-  return [...VOIDSPIRE_BOSSES, ...DREAMRIFT_BOSSES].find(
+  return [...VOIDSPIRE_BOSSES, ...DREAMRIFT_BOSSES, ...QUELDANAS_BOSSES].find(
     b => b.nickname.toLowerCase() === nickname.toLowerCase()
   );
 }
 
 export function getBossById(id: number): BossData | undefined {
-  return [...VOIDSPIRE_BOSSES, ...DREAMRIFT_BOSSES].find(b => b.id === id);
+  return [...VOIDSPIRE_BOSSES, ...DREAMRIFT_BOSSES, ...QUELDANAS_BOSSES].find(b => b.id === id);
 }
 
 export function getMechanicByAbility(abilityName: string, bossData: BossData): BossMechanic | undefined {
@@ -1032,6 +1431,8 @@ export function getBossesByZone(zone: 'voidspire' | 'dreamrift' | 'queldanas'): 
       return VOIDSPIRE_BOSSES;
     case 'dreamrift':
       return DREAMRIFT_BOSSES;
+    case 'queldanas':
+      return QUELDANAS_BOSSES;
     default:
       return [];
   }

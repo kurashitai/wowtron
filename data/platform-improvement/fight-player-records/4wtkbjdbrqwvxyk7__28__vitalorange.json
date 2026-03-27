@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:balance",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__vitalorange",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 871,
+  "name": "Vitalorange",
+  "role": "dps",
+  "className": "Druid",
+  "spec": "Balance",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Area52",
+  "dps": 49076,
+  "hps": 2509,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 71,
+  "avoidableDamageTaken": 0
+}

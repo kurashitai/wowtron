@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__53__kmandeathk",
+  "fightKey": "mQq8WxapY1KDPjJc__53",
+  "actorId": 493,
+  "name": "Kmandeathk",
+  "role": "healer",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "Illidan",
+  "dps": 2,
+  "hps": 702,
+  "dtps": 0,
+  "activeTime": 90,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

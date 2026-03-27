@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:windwalker",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__dramonk",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 367,
+  "name": "Dramonk",
+  "role": "dps",
+  "className": "Monk",
+  "spec": "Windwalker",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Ghostlands",
+  "dps": 54615,
+  "hps": 1311,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 63,
+  "avoidableDamageTaken": 0
+}

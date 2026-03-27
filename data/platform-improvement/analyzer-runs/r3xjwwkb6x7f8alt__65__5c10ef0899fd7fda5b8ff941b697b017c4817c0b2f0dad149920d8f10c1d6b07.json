@@ -1,0 +1,1890 @@
+{
+  "key": "r3xjWwKB6X7F8ALT__65__5c10ef0899fd7fda5b8ff941b697b017c4817c0b2f0dad149920d8f10c1d6b07",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "reportCode": "r3xjWwKB6X7F8ALT",
+  "fightId": 65,
+  "bossName": "Vorasius",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T14:12:46.243Z",
+  "summaryText": "Phase 3: Unending Hunger is the progression breakpoint for this pull.",
+  "topOwner": "Raid",
+  "topPhase": "Phase 3: Unending Hunger",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "vorasius::65",
+    "fightId": 65,
+    "bossName": "Vorasius",
+    "difficulty": "Mythic",
+    "reportCode": "r3xjWwKB6X7F8ALT",
+    "recordedAt": "2026-03-27T14:12:46.003Z",
+    "kill": false,
+    "bossHP": 0,
+    "duration": 380,
+    "briefInsights": [
+      {
+        "id": "phase-Phase 3: Unending Hunger",
+        "kind": "raid_strategy",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 213,
+        "owner": "Raid",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Phase 3: Unending Hunger is the progression breakpoint for this pull.",
+        "evidence": "16 death(s), 0 avoidable death(s), dominant cause: throughput.",
+        "confidenceReasons": [
+          "16 deaths occurred in Phase 3: Unending Hunger.",
+          "0 of those deaths were avoidable.",
+          "The dominant cause for the phase is throughput."
+        ],
+        "recommendation": "Execute phase - push hard",
+        "category": "strategy"
+      },
+      {
+        "id": "bossrule-vorasius-baseline",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 164,
+        "owner": "Assigned kickers, Assigned soakers",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Void Scream interrupts and Consume Essence soaks are the main wipe gate on Vorasius.",
+        "evidence": "Vorasius is an assignment fight first, especially on kicks and soaks.",
+        "confidenceReasons": [
+          "Vorasius is defined by kick order and soak execution.",
+          "The reviewed fixtures expect assignment-first diagnosis on this boss."
+        ],
+        "recommendation": "Lock kick order, soak ownership, and healer coverage before changing throughput goals.",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Eregor, Rybackrn",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "207K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "207K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 3: Unending Hunger."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 132,
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull.",
+          "2 tank death(s) were recorded.",
+          "Brewforlife reliability score: 15."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-interrupt",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Delights, Bjormani, Zimydh",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Utility players are still losing control of key casts.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Bokkievoker, Sariphena",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Sariphena was at 67% active time with 1 death(s).",
+        "confidenceReasons": [
+          "Sariphena active time: 67%.",
+          "Sariphena died 1 time(s)."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-melee-Delights",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Delights",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Delights needs cleaner melee uptime without greedy deaths.",
+        "evidence": "97% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Delights active time is 97%.",
+          "Delights died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Bjormani",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Bjormani",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Bjormani needs cleaner movement and uptime discipline.",
+        "evidence": "99% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Bjormani active time is 99%.",
+          "Bjormani died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Eregor",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 60,
+        "owner": "Eregor",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Eregor needs a throughput cleanup.",
+        "evidence": "104K below the expected DPS target.",
+        "confidenceReasons": [
+          "104K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-voracious_bite",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Voracious Bite",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Jumbobear, Brewforlife."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-interrupt-void_scream",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Delights, Bjormani, Zimydh",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Void Scream",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-shadow_feast",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Shadow Feast",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Big healing needed, use healing CDs",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-soak-consume_essence",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Consume Essence",
+        "evidence": "The soak plan is incomplete for Consume Essence.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign soakers per orb, use personals",
+        "confidence": "medium"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "met",
+        "summary": "Phase 1: The Hunger is stable enough to reach the soak phase cleanly.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Void Scream. Deaths 1, avoidable 0."
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "at_risk",
+        "summary": "Phase 2: Feast of Shadows is close, but orb soaks or feast damage are still leaking pulls.",
+        "evidence": "Key checks: Voracious Bite, Consume Essence, Void Scream, Shadow Feast. Deaths 1, avoidable 1, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "met",
+        "summary": "Phase 3: Unending Hunger is stable enough to reach the soak phase cleanly.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Consume Essence, Shadow Feast. Deaths 16, avoidable 0."
+      }
+    ],
+    "causeChains": [
+      "Kick rotation or orb soaks slipped -> Vorasius pressure snowballed -> the raid failed before recovery.",
+      "Voracious Bite assignment slipped in Phase 3: Unending Hunger. -> Groovey died to Aftershock at 1:29. -> The raid did not recover the failed assignment cleanly. -> Phase 2: Feast of Shadows stayed close, so the pull converted into a wipe there."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "ready",
+        "summary": "Phase 1: The Hunger is stable enough to reach the soak phase cleanly.",
+        "blocker": "Kick order and tank swaps look stable enough here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "close",
+        "summary": "Phase 2: Feast of Shadows is close, but orb soaks or feast damage are still leaking pulls.",
+        "blocker": "The fight is still unstable at the main soak checkpoint.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "ready",
+        "summary": "Phase 3: Unending Hunger is stable enough to reach the soak phase cleanly.",
+        "blocker": "Kick order and tank swaps look stable enough here.",
+        "owner": "DPS Core"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Phase 3: Unending Hunger is the progression breakpoint for this pull.",
+        "owner": "Raid",
+        "phase": "Phase 3: Unending Hunger",
+        "reason": "16 death(s), 0 avoidable death(s), dominant cause: throughput."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Voracious Bite is the most likely repeat wipe point.",
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 4,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/4 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Raid CDs, Tank swaps before the next pull."
+    },
+    "avgReliability": 56,
+    "killProbability": 85,
+    "totalDeaths": 22,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Liaisa",
+        "role": "dps",
+        "className": "Priest",
+        "spec": "Shadow",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Zimydh",
+        "role": "dps",
+        "className": "DemonHunter",
+        "spec": "Devourer",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Lethkar",
+        "role": "healer",
+        "className": "DeathKnight",
+        "spec": "Unholy",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Zabl",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Destruction",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Rybackrn",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Fury",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Eregor",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Fury",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Bjormani",
+        "role": "dps",
+        "className": "Shaman",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Phoenìxr",
+        "role": "dps",
+        "className": "Rogue",
+        "spec": "Subtlety",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 96,
+        "deaths": 1
+      },
+      {
+        "name": "Delights",
+        "role": "dps",
+        "className": "Rogue",
+        "spec": "Subtlety",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 97,
+        "deaths": 1
+      },
+      {
+        "name": "Ghwost",
+        "role": "dps",
+        "className": "Mage",
+        "spec": "Frost",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Apoctaliptic",
+        "role": "dps",
+        "className": "Paladin",
+        "spec": "Retribution",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Frostrend",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Marksmanship",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Foresvoker",
+        "role": "dps",
+        "className": "Evoker",
+        "spec": "Augmentation",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Aqv",
+        "role": "dps",
+        "className": "Evoker",
+        "spec": "Devastation",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Jumbobear",
+        "role": "tank",
+        "className": "Druid",
+        "spec": "Guardian",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Brewforlife",
+        "role": "tank",
+        "className": "Monk",
+        "spec": "Brewmaster",
+        "talents": [],
+        "reliabilityScore": 15,
+        "activeTime": 68,
+        "deaths": 2
+      },
+      {
+        "name": "Groovey",
+        "role": "healer",
+        "className": "Priest",
+        "spec": "Discipline",
+        "talents": [],
+        "reliabilityScore": 42,
+        "activeTime": 99,
+        "deaths": 2
+      },
+      {
+        "name": "Yaennah",
+        "role": "healer",
+        "className": "Monk",
+        "spec": "Mistweaver",
+        "talents": [],
+        "reliabilityScore": 59,
+        "activeTime": 92,
+        "deaths": 1
+      },
+      {
+        "name": "Bokkievoker",
+        "role": "healer",
+        "className": "Evoker",
+        "spec": "Preservation",
+        "talents": [],
+        "reliabilityScore": 58,
+        "activeTime": 91,
+        "deaths": 1
+      },
+      {
+        "name": "Sariphena",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 34,
+        "activeTime": 67,
+        "deaths": 1
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": 0,
+      "whyWiped": [
+        "Groovey died early at 1:29, starting the collapse.",
+        "Roughly 3.7M DPS was lost to prep gaps.",
+        "13 players were below the expected output."
+      ],
+      "keyIssues": []
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": [
+        {
+          "player": "Groovey",
+          "ability": "Aftershock",
+          "time": 89,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Brewforlife",
+          "ability": "Shadowclaw Slam",
+          "time": 151,
+          "avoidable": false,
+          "phase": "Mid",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Jumbobear",
+          "ability": "Focused Aggression",
+          "time": 372,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Delights",
+          "ability": "Focused Aggression",
+          "time": 372,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Bokkievoker",
+          "ability": "Focused Aggression",
+          "time": 372,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Sariphena",
+          "ability": "Focused Aggression",
+          "time": 372,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Brewforlife",
+          "ability": "Focused Aggression",
+          "time": 372,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Zabl",
+          "ability": "Focused Aggression",
+          "time": 372,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Rybackrn",
+          "ability": "Focused Aggression",
+          "time": 374,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Foresvoker",
+          "ability": "Focused Aggression",
+          "time": 374,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Eregor",
+          "ability": "Focused Aggression",
+          "time": 375,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Zimydh",
+          "ability": "Focused Aggression",
+          "time": 376,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Apoctaliptic",
+          "ability": "Focused Aggression",
+          "time": 376,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Phoenìxr",
+          "ability": "Focused Aggression",
+          "time": 376,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Lethkar",
+          "ability": "Focused Aggression",
+          "time": 376,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Bjormani",
+          "ability": "Focused Aggression",
+          "time": 377,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Aqv",
+          "ability": "Focused Aggression",
+          "time": 377,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Frostrend",
+          "ability": "Focused Aggression",
+          "time": 379,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Yaennah",
+          "ability": "Focused Aggression",
+          "time": 380,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Liaisa",
+          "ability": "Focused Aggression",
+          "time": 380,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Ghwost",
+          "ability": "Focused Aggression",
+          "time": 380,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Groovey",
+          "ability": "Focused Aggression",
+          "time": 380,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        }
+      ]
+    },
+    "performance": {
+      "raidDPS": 1195258,
+      "raidHPS": 702203,
+      "requiredDPS": 2100000,
+      "dpsGap": 1125284,
+      "lowPerformers": [
+        {
+          "player": "Eregor",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 75779,
+          "gap": 104221,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Rybackrn",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 77339,
+          "gap": 102661,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Frostrend",
+          "class": "Hunter",
+          "expectedDPS": 170000,
+          "actualDPS": 69564,
+          "gap": 100436,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Ghwost",
+          "class": "Mage",
+          "expectedDPS": 170000,
+          "actualDPS": 73139,
+          "gap": 96861,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Apoctaliptic",
+          "class": "Paladin",
+          "expectedDPS": 165000,
+          "actualDPS": 71407,
+          "gap": 93593,
+          "reason": "No potion used"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Liaisa",
+        "class": "Priest",
+        "spec": "Shadow",
+        "role": "dps",
+        "dps": 90482,
+        "hps": 14992,
+        "rankPercent": 100,
+        "itemLevel": 270,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Zimydh",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 86832,
+        "hps": 16604,
+        "rankPercent": 92,
+        "itemLevel": 268,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Lethkar",
+        "class": "DeathKnight",
+        "spec": "Unholy",
+        "role": "healer",
+        "dps": 81060,
+        "hps": 8461,
+        "rankPercent": 0,
+        "itemLevel": 267,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Zabl",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "role": "dps",
+        "dps": 78626,
+        "hps": 11189,
+        "rankPercent": 83,
+        "itemLevel": 267,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Rybackrn",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 77339,
+        "hps": 9293,
+        "rankPercent": 75,
+        "itemLevel": 266,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Eregor",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 75779,
+        "hps": 10438,
+        "rankPercent": 67,
+        "itemLevel": 268,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Bjormani",
+        "class": "Shaman",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 75764,
+        "hps": 8271,
+        "rankPercent": 58,
+        "itemLevel": 267,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Phoenìxr",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 74952,
+        "hps": 7098,
+        "rankPercent": 50,
+        "itemLevel": 267,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 96,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Delights",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 73525,
+        "hps": 6961,
+        "rankPercent": 42,
+        "itemLevel": 265,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 97,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Ghwost",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 73139,
+        "hps": 9437,
+        "rankPercent": 33,
+        "itemLevel": 264,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Apoctaliptic",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 71407,
+        "hps": 9314,
+        "rankPercent": 25,
+        "itemLevel": 263,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Frostrend",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "role": "dps",
+        "dps": 69564,
+        "hps": 9055,
+        "rankPercent": 17,
+        "itemLevel": 263,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Foresvoker",
+        "class": "Evoker",
+        "spec": "Augmentation",
+        "role": "dps",
+        "dps": 66439,
+        "hps": 10489,
+        "rankPercent": 8,
+        "itemLevel": 259,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Aqv",
+        "class": "Evoker",
+        "spec": "Devastation",
+        "role": "dps",
+        "dps": 60868,
+        "hps": 5613,
+        "rankPercent": 0,
+        "itemLevel": 259,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Jumbobear",
+        "class": "Druid",
+        "spec": "Guardian",
+        "role": "tank",
+        "dps": 55325,
+        "hps": 21812,
+        "rankPercent": 0,
+        "itemLevel": 261,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Brewforlife",
+        "class": "Monk",
+        "spec": "Brewmaster",
+        "role": "tank",
+        "dps": 40621,
+        "hps": 39444,
+        "rankPercent": 0,
+        "itemLevel": 266,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 68,
+        "deaths": 2,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 15,
+        "improvementFocus": "Low activity: 68%"
+      },
+      {
+        "name": "Groovey",
+        "class": "Priest",
+        "spec": "Discipline",
+        "role": "healer",
+        "dps": 22604,
+        "hps": 147882,
+        "rankPercent": 0,
+        "itemLevel": 267,
+        "server": "Thrall",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 2,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 42,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Yaennah",
+        "class": "Monk",
+        "spec": "Mistweaver",
+        "role": "healer",
+        "dps": 9068,
+        "hps": 121615,
+        "rankPercent": 0,
+        "itemLevel": 263,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 92,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 59,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Bokkievoker",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 7893,
+        "hps": 129263,
+        "rankPercent": 0,
+        "itemLevel": 265,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 91,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 58,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Sariphena",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 3971,
+        "hps": 104972,
+        "rankPercent": 0,
+        "itemLevel": 268,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 67,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 34,
+        "improvementFocus": "Low activity: 67%"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Jumbobear",
+        "Delights",
+        "Bjormani",
+        "Zimydh",
+        "Bokkievoker",
+        "Sariphena",
+        "Frostrend",
+        "Eregor",
+        "Rybackrn",
+        "Brewforlife",
+        "Aqv",
+        "Yaennah",
+        "Liaisa",
+        "Apoctaliptic",
+        "Phoenìxr",
+        "Ghwost",
+        "Lethkar",
+        "Groovey",
+        "Foresvoker",
+        "Zabl"
+      ],
+      "missingFood": [
+        "Jumbobear",
+        "Delights",
+        "Bjormani",
+        "Zimydh",
+        "Bokkievoker",
+        "Sariphena",
+        "Frostrend",
+        "Eregor",
+        "Rybackrn",
+        "Brewforlife",
+        "Aqv",
+        "Yaennah",
+        "Liaisa",
+        "Apoctaliptic",
+        "Phoenìxr",
+        "Ghwost",
+        "Lethkar",
+        "Groovey",
+        "Foresvoker",
+        "Zabl"
+      ],
+      "missingPotion": [
+        "Jumbobear",
+        "Delights",
+        "Bjormani",
+        "Zimydh",
+        "Bokkievoker",
+        "Sariphena",
+        "Frostrend",
+        "Eregor",
+        "Rybackrn",
+        "Brewforlife",
+        "Aqv",
+        "Yaennah",
+        "Liaisa",
+        "Apoctaliptic",
+        "Phoenìxr",
+        "Ghwost",
+        "Lethkar",
+        "Groovey",
+        "Foresvoker",
+        "Zabl"
+      ],
+      "missingRune": [
+        "Jumbobear",
+        "Delights",
+        "Bjormani",
+        "Zimydh",
+        "Bokkievoker",
+        "Sariphena",
+        "Frostrend",
+        "Eregor",
+        "Rybackrn",
+        "Brewforlife",
+        "Aqv",
+        "Yaennah",
+        "Liaisa",
+        "Apoctaliptic",
+        "Phoenìxr",
+        "Ghwost",
+        "Lethkar",
+        "Groovey",
+        "Foresvoker",
+        "Zabl"
+      ],
+      "estimatedDPSLoss": 3700000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": true,
+        "source": "Bjormani",
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": true,
+        "source": "Liaisa",
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": true,
+        "source": "Eregor",
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": true,
+        "source": "Ghwost",
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": true,
+        "source": "Jumbobear",
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": true,
+        "source": "Brewforlife",
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 44,
+      "dps": 56,
+      "survival": 0,
+      "mechanics": 100,
+      "consumables": 0,
+      "grade": "D"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "deathCascade": {
+      "rootDeath": {
+        "player": "Groovey",
+        "role": "healer",
+        "ability": "Aftershock",
+        "time": 89,
+        "impact": "critical"
+      },
+      "chainDeaths": [],
+      "timeToWipe": 291,
+      "recoveryPossible": true,
+      "recommendation": "A healer died early. Positioning or defensive usage likely broke down."
+    },
+    "causeChains": [
+      "Kick rotation or orb soaks slipped -> Vorasius pressure snowballed -> the raid failed before recovery.",
+      "Voracious Bite assignment slipped in Phase 3: Unending Hunger. -> Groovey died to Aftershock at 1:29. -> The raid did not recover the failed assignment cleanly. -> Phase 2: Feast of Shadows stayed close, so the pull converted into a wipe there."
+    ],
+    "causeChainDetails": [
+      {
+        "id": "chain-assignment-assignment-tanks-voracious_bite",
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Voracious Bite assignment slipped in Phase 3: Unending Hunger."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "Groovey died to Aftershock at 1:29."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "The raid did not recover the failed assignment cleanly."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "Phase 2: Feast of Shadows stayed close, so the pull converted into a wipe there."
+          }
+        ]
+      }
+    ],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Phase 3: Unending Hunger is the progression breakpoint for this pull.",
+        "owner": "Raid",
+        "reason": "16 death(s), 0 avoidable death(s), dominant cause: throughput. Execute phase - push hard"
+      },
+      {
+        "priority": 2,
+        "title": "Void Scream interrupts and Consume Essence soaks are the main wipe gate on Vorasius.",
+        "owner": "Assigned kickers, Assigned soakers",
+        "reason": "Vorasius is an assignment fight first, especially on kicks and soaks. Lock kick order, soak ownership, and healer coverage before changing throughput goals."
+      },
+      {
+        "priority": 3,
+        "title": "Throughput is below the level needed for a clean progression pull.",
+        "owner": "Eregor, Rybackrn",
+        "reason": "207K estimated DPS gap across the biggest underperformers. Review uptime, potion usage, and burst alignment before the next pull."
+      }
+    ],
+    "wipeCause": {
+      "primary": "throughput",
+      "details": "Effective damage and healing stayed below what the checkpoint required."
+    },
+    "repeatedMistakes": [],
+    "phaseCausality": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "start": 0,
+        "end": 126,
+        "deaths": 1,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "start": 126,
+        "end": 253,
+        "deaths": 1,
+        "avoidableDeaths": 1,
+        "dominantCause": "throughput"
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "start": 253,
+        "end": 380,
+        "deaths": 16,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "met",
+        "summary": "Phase 1: The Hunger is stable enough to reach the soak phase cleanly.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Void Scream. Deaths 1, avoidable 0."
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "at_risk",
+        "summary": "Phase 2: Feast of Shadows is close, but orb soaks or feast damage are still leaking pulls.",
+        "evidence": "Key checks: Voracious Bite, Consume Essence, Void Scream, Shadow Feast. Deaths 1, avoidable 1, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "met",
+        "summary": "Phase 3: Unending Hunger is stable enough to reach the soak phase cleanly.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Consume Essence, Shadow Feast. Deaths 16, avoidable 0."
+      }
+    ],
+    "roleScores": {
+      "tanks": 21,
+      "healers": 15,
+      "dps": 0
+    },
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-voracious_bite",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Voracious Bite",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Jumbobear, Brewforlife."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-interrupt-void_scream",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Delights, Bjormani, Zimydh",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Void Scream",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-shadow_feast",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Shadow Feast",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Big healing needed, use healing CDs",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-soak-consume_essence",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 3: Unending Hunger",
+        "mechanic": "Consume Essence",
+        "evidence": "The soak plan is incomplete for Consume Essence.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign soakers per orb, use personals",
+        "confidence": "medium"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 4,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/4 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Raid CDs, Tank swaps before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Delights",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Bjormani",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Zimydh",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Frostrend",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Eregor",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Rybackrn",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      }
+    ],
+    "killProbability": 85,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "phase-Phase 3: Unending Hunger",
+        "kind": "raid_strategy",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 213,
+        "owner": "Raid",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Phase 3: Unending Hunger is the progression breakpoint for this pull.",
+        "evidence": "16 death(s), 0 avoidable death(s), dominant cause: throughput.",
+        "confidenceReasons": [
+          "16 deaths occurred in Phase 3: Unending Hunger.",
+          "0 of those deaths were avoidable.",
+          "The dominant cause for the phase is throughput."
+        ],
+        "recommendation": "Execute phase - push hard",
+        "category": "strategy"
+      },
+      {
+        "id": "bossrule-vorasius-baseline",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 164,
+        "owner": "Assigned kickers, Assigned soakers",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Void Scream interrupts and Consume Essence soaks are the main wipe gate on Vorasius.",
+        "evidence": "Vorasius is an assignment fight first, especially on kicks and soaks.",
+        "confidenceReasons": [
+          "Vorasius is defined by kick order and soak execution.",
+          "The reviewed fixtures expect assignment-first diagnosis on this boss."
+        ],
+        "recommendation": "Lock kick order, soak ownership, and healer coverage before changing throughput goals.",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Eregor, Rybackrn",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "207K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "207K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 3: Unending Hunger."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 132,
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull.",
+          "2 tank death(s) were recorded.",
+          "Brewforlife reliability score: 15."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-interrupt",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Delights, Bjormani, Zimydh",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Utility players are still losing control of key casts.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Bokkievoker, Sariphena",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Sariphena was at 67% active time with 1 death(s).",
+        "confidenceReasons": [
+          "Sariphena active time: 67%.",
+          "Sariphena died 1 time(s)."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-melee-Delights",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Delights",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Delights needs cleaner melee uptime without greedy deaths.",
+        "evidence": "97% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Delights active time is 97%.",
+          "Delights died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Bjormani",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Bjormani",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Bjormani needs cleaner movement and uptime discipline.",
+        "evidence": "99% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Bjormani active time is 99%.",
+          "Bjormani died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Eregor",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 60,
+        "owner": "Eregor",
+        "phase": "Phase 3: Unending Hunger",
+        "summary": "Eregor needs a throughput cleanup.",
+        "evidence": "104K below the expected DPS target.",
+        "confidenceReasons": [
+          "104K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "ready",
+        "summary": "Phase 1: The Hunger is stable enough to reach the soak phase cleanly.",
+        "blocker": "Kick order and tank swaps look stable enough here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "close",
+        "summary": "Phase 2: Feast of Shadows is close, but orb soaks or feast damage are still leaking pulls.",
+        "blocker": "The fight is still unstable at the main soak checkpoint.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "ready",
+        "summary": "Phase 3: Unending Hunger is stable enough to reach the soak phase cleanly.",
+        "blocker": "Kick order and tank swaps look stable enough here.",
+        "owner": "DPS Core"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Phase 3: Unending Hunger is the progression breakpoint for this pull.",
+        "owner": "Raid",
+        "phase": "Phase 3: Unending Hunger",
+        "reason": "16 death(s), 0 avoidable death(s), dominant cause: throughput."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Voracious Bite is the most likely repeat wipe point.",
+        "owner": "Jumbobear, Brewforlife",
+        "phase": "Phase 3: Unending Hunger",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    }
+  }
+}

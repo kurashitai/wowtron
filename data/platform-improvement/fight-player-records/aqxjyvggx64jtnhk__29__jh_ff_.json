@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__jh_ff_",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 258,
+  "name": "Jhëffë",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 255,
+  "server": "Azralon",
+  "dps": 76383,
+  "hps": 8506,
+  "dtps": 0,
+  "activeTime": 84,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

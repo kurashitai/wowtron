@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__pyrophobiac",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 875,
+  "name": "Pyrophobiac",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 241,
+  "server": "Gul'dan",
+  "dps": 40159,
+  "hps": 6397,
+  "dtps": 0,
+  "activeTime": 77,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

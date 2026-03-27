@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__84__arvana",
+  "fightKey": "mQq8WxapY1KDPjJc__84",
+  "actorId": 469,
+  "name": "Arvana",
+  "role": "healer",
+  "className": "Paladin",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "Tichondrius",
+  "dps": 0,
+  "hps": 18490,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

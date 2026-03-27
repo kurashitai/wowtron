@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__urtag",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 244,
+  "name": "Urtag",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 224,
+  "server": "Kael'thas",
+  "dps": 37587,
+  "hps": 3762,
+  "dtps": 0,
+  "activeTime": 89,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,44 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__51",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 51,
+  "bossName": "Crown of the Cosmos",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Heroic",
+  "kill": true,
+  "bossHPPercent": 0,
+  "durationSec": 537,
+  "startTime": 8760155,
+  "endTime": 9297753,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:13:33.853Z",
+  "composition": {
+    "tanks": 2,
+    "healers": 6,
+    "dps": 17,
+    "total": 25,
+    "bloodlust": false,
+    "brez": 4
+  },
+  "summary": {
+    "raidDPS": 1623078,
+    "raidHPS": 689954,
+    "raidDTPS": 0,
+    "totalDamage": 871593015,
+    "totalHealing": 370505639,
+    "totalDamageTaken": 333187876,
+    "deaths": 1,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 25,
+    "deaths": 1,
+    "timelineEvents": 1,
+    "combatEvents": 5000,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

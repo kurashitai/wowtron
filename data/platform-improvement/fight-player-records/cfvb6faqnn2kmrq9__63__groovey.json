@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:discipline",
+  "buildSource": "spec_fallback",
+  "key": "cFVb6faqnN2kMrQ9__63__groovey",
+  "fightKey": "cFVb6faqnN2kMrQ9__63",
+  "actorId": 366,
+  "name": "Groovey",
+  "role": "healer",
+  "className": "Priest",
+  "spec": "Discipline",
+  "talents": [],
+  "itemLevel": 267,
+  "server": "Thrall",
+  "dps": 21694,
+  "hps": 139045,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 83,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__redname",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 4,
+  "name": "Redname",
+  "role": "dps",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 254,
+  "server": "Stormrage",
+  "dps": 51553,
+  "hps": 4805,
+  "dtps": 0,
+  "activeTime": 88,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

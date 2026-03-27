@@ -1,0 +1,43 @@
+{
+  "key": "midnight_public__lightblinded_vanguard",
+  "scope": "midnight_public",
+  "bossName": "Lightblinded Vanguard",
+  "zone": "Midnight",
+  "payload": {
+    "bossName": "Lightblinded Vanguard",
+    "zone": "Midnight",
+    "totalReports": 19,
+    "totalPulls": 79,
+    "wipes": 46,
+    "kills": 33,
+    "firstPhaseWipes": 26,
+    "latePhaseWipes": 0,
+    "finalPhaseWipes": 20,
+    "goodAssignmentSignal": 45,
+    "poorDataQuality": 27,
+    "bestWipeHP": 0,
+    "longestPullSec": 361,
+    "reportCodes": [
+      "mQq8WxapY1KDPjJc",
+      "FyVd2B7LhMjA9vJ6",
+      "LCNYzTVZXPpmagr8",
+      "vRFfW91GMDQ7pLNH",
+      "wjaFJxTbPcNGgW3Y",
+      "rgYH7cLnZwxtQNCJ",
+      "TBMjVfX61hJHzy3Z",
+      "4wtkBjDbRQWvxYK7",
+      "r3xjWwKB6X7F8ALT",
+      "cFVb6faqnN2kMrQ9",
+      "8q3hcLzkHVmGtbpC",
+      "RCHty67paNVgLjhv",
+      "ABfKXjM3x72pbPDr",
+      "Qz9pXhf4TnAbtZ2Y",
+      "GwcjYN3DB2mvFhtW",
+      "jaJXqpF9DRTyc2kz",
+      "bTK8YtW1kgDJmcX3",
+      "MXmQ1VaTWbPYkF9c",
+      "f46adXpmzJtDHynT"
+    ]
+  },
+  "generatedAt": "2026-03-27T14:17:11.569Z"
+}

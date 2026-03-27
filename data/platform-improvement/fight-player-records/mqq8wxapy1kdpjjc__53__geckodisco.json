@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__53__geckodisco",
+  "fightKey": "mQq8WxapY1KDPjJc__53",
+  "actorId": 478,
+  "name": "Geckodisco",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 240,
+  "server": "Illidan",
+  "dps": 0,
+  "hps": 6780,
+  "dtps": 0,
+  "activeTime": 82,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

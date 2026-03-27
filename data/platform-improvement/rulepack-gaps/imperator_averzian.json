@@ -1,0 +1,32 @@
+{
+  "key": "imperator_averzian",
+  "bossName": "Imperator Averzian",
+  "status": "stable",
+  "payload": {
+    "coverage": {
+      "totalPulls": 192,
+      "kills": 37,
+      "wipes": 155,
+      "bestWipeHP": 0,
+      "goodAssignmentSignal": 53,
+      "poorDataQuality": 131
+    },
+    "reviewedFixtureCount": 2,
+    "expectedMechanics": [
+      "Void Blast",
+      "Imperial Decree",
+      "Positioning"
+    ],
+    "expectedAssignmentTypes": [
+      "raid_cd",
+      "tank_swap"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Improve public coverage quality before adding deeper rules."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

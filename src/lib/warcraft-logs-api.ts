@@ -109,6 +109,32 @@ export interface WCLTableEntry {
   spec?: string;
 }
 
+export interface WCLPlayerDetailEntry {
+  id?: number;
+  name?: string;
+  type?: string;
+  class?: string;
+  spec?: string;
+  specs?: Array<{ spec?: string; count?: number }>;
+  server?: string;
+  talents?: unknown[];
+  combatantInfo?: {
+    talents?: unknown[];
+    pvpTalents?: unknown[];
+    gear?: unknown[];
+    covenantID?: number;
+    soulbindID?: number;
+  };
+  [key: string]: unknown;
+}
+
+export interface WCLPlayerDetails {
+  tanks?: WCLPlayerDetailEntry[];
+  healers?: WCLPlayerDetailEntry[];
+  dps?: WCLPlayerDetailEntry[];
+  [key: string]: unknown;
+}
+
 export interface WCLAbilityEntry {
   name: string;
   icon: string;
@@ -366,7 +392,7 @@ const QUERIES = {
     query($code: String!, $fightIds: [Int]!) {
       reportData {
         report(code: $code) {
-          playerDetails(fightIDs: $fightIds)
+          playerDetails(fightIDs: $fightIds, includeCombatantInfo: true)
         }
       }
     }
@@ -949,6 +975,47 @@ export async function fetchWCLPlayerDetails(
   accessToken: string
 ): Promise<any> {
   try {
+    const normalizePlayerDetailsPayload = (input: unknown): any => {
+      let current = input;
+      let guard = 0;
+
+      while (current && typeof current === 'object' && guard < 5) {
+        guard += 1;
+
+        if (
+          typeof current === 'object' &&
+          current !== null &&
+          ('tanks' in current || 'healers' in current || 'dps' in current)
+        ) {
+          return current;
+        }
+
+        if (
+          typeof current === 'object' &&
+          current !== null &&
+          'playerDetails' in current &&
+          (current as Record<string, unknown>).playerDetails
+        ) {
+          current = (current as Record<string, unknown>).playerDetails;
+          continue;
+        }
+
+        if (
+          typeof current === 'object' &&
+          current !== null &&
+          'data' in current &&
+          (current as Record<string, unknown>).data
+        ) {
+          current = (current as Record<string, unknown>).data;
+          continue;
+        }
+
+        break;
+      }
+
+      return current;
+    };
+
     const data = await wclQuery<{ reportData: { report: { playerDetails: any } } }>(
       accessToken,
       QUERIES.playerDetails,
@@ -978,26 +1045,18 @@ export async function fetchWCLPlayerDetails(
       }
     }
     
-    // Case 3: playerDetails has nested 'data' property
-    if (playerDetails?.data) {
-      // data might also be a string
-      if (typeof playerDetails.data === 'string') {
-        try {
-          const parsed = JSON.parse(playerDetails.data);
-          console.log('[WCL API] fetchWCLPlayerDetails - Parsed nested data string, tanks:', parsed?.tanks?.length || 0, 'healers:', parsed?.healers?.length || 0, 'dps:', parsed?.dps?.length || 0);
-          return parsed;
-        } catch (e) {
-          console.error('[WCL API] fetchWCLPlayerDetails - Failed to parse data as JSON:', e);
-        }
-      }
-      // data is already an object
-      console.log('[WCL API] fetchWCLPlayerDetails - Using nested data object, tanks:', playerDetails.data?.tanks?.length || 0, 'healers:', playerDetails.data?.healers?.length || 0, 'dps:', playerDetails.data?.dps?.length || 0);
-      return playerDetails.data;
-    }
-    
-    // Case 4: playerDetails directly contains tanks/healers/dps arrays
+    playerDetails = normalizePlayerDetailsPayload(playerDetails);
+
+    // Case 3/4: normalized payload contains direct arrays
     if (playerDetails?.tanks || playerDetails?.healers || playerDetails?.dps) {
-      console.log('[WCL API] fetchWCLPlayerDetails - Direct arrays, tanks:', playerDetails?.tanks?.length || 0, 'healers:', playerDetails?.healers?.length || 0, 'dps:', playerDetails?.dps?.length || 0);
+      console.log(
+        '[WCL API] fetchWCLPlayerDetails - Normalized arrays, tanks:',
+        playerDetails?.tanks?.length || 0,
+        'healers:',
+        playerDetails?.healers?.length || 0,
+        'dps:',
+        playerDetails?.dps?.length || 0
+      );
       return playerDetails;
     }
     

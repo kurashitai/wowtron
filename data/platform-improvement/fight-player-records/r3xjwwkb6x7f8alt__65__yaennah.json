@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:mistweaver",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__yaennah",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 391,
+  "name": "Yaennah",
+  "role": "healer",
+  "className": "Monk",
+  "spec": "Mistweaver",
+  "talents": [],
+  "itemLevel": 263,
+  "server": "Sargeras",
+  "dps": 9068,
+  "hps": 121615,
+  "dtps": 0,
+  "activeTime": 92,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

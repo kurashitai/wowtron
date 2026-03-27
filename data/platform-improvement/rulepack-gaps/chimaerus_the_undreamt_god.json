@@ -1,0 +1,34 @@
+{
+  "key": "chimaerus_the_undreamt_god",
+  "bossName": "Chimaerus the Undreamt God",
+  "status": "needs_data",
+  "payload": {
+    "coverage": {
+      "totalPulls": 3,
+      "kills": 0,
+      "wipes": 3,
+      "bestWipeHP": 100,
+      "goodAssignmentSignal": 0,
+      "poorDataQuality": 3
+    },
+    "reviewedFixtureCount": 1,
+    "expectedMechanics": [
+      "Aberrant Spawn",
+      "Cosmic Rupture",
+      "Shattered Heads"
+    ],
+    "expectedAssignmentTypes": [
+      "interrupt",
+      "soak",
+      "raid_cd",
+      "tank_swap"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Improve public coverage quality before adding deeper rules."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

@@ -1,0 +1,39 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__49__lightblinded_vanguard",
+  "bossName": "Lightblinded Vanguard",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 49,
+  "fixtureType": "kill_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Void Touched",
+      "soak",
+      "Righteous Flame",
+      "beam"
+    ],
+    "expectedCauseChainIncludes": [
+      "soak coverage",
+      "Righteous Flame",
+      "beam pattern",
+      "Phase 3"
+    ],
+    "expectedOwners": [
+      "Assigned soakers",
+      "Healers + RL",
+      "Raid"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "lust too early",
+      "random deaths"
+    ],
+    "reviewerNotes": "Vanguard kill should be framed as clean soak ownership, beam pattern discipline, and raid-CD stability through Righteous Flame, especially into the final phase."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

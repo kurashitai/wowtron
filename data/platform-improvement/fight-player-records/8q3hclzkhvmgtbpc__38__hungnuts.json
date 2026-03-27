@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:enhancement",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__hungnuts",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 6,
+  "name": "Hungnuts",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Enhancement",
+  "talents": [],
+  "itemLevel": 262,
+  "server": "Sargeras",
+  "dps": 75829,
+  "hps": 2882,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 97,
+  "avoidableDamageTaken": 0
+}

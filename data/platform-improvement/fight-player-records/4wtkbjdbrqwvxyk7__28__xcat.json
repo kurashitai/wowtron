@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__xcat",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 214,
+  "name": "Xcat",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 242,
+  "server": "Ghostlands",
+  "dps": 51648,
+  "hps": 4930,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 54,
+  "avoidableDamageTaken": 0
+}

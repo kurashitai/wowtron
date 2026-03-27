@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "cFVb6faqnN2kMrQ9__63__roldyy",
+  "fightKey": "cFVb6faqnN2kMrQ9__63",
+  "actorId": 8,
+  "name": "Roldyy",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 269,
+  "server": "Illidan",
+  "dps": 105744,
+  "hps": 8099,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 86,
+  "avoidableDamageTaken": 0
+}

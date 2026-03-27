@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__priest_lity",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 1,
+  "name": "Priestálity",
+  "role": "healer",
+  "className": "Priest",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "Nemesis",
+  "dps": 18864,
+  "hps": 48728,
+  "dtps": 0,
+  "activeTime": 52,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

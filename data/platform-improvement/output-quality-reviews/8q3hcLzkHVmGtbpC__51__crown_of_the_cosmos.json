@@ -1,0 +1,20 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__51__crown_of_the_cosmos",
+  "bossName": "Crown of the Cosmos",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 51,
+  "source": "heuristic_review",
+  "payload": {
+    "biggestBlockerBelievable": true,
+    "nextWipeBelievable": true,
+    "topActionsActionable": true,
+    "causeChainUseful": true,
+    "bossMemoryReady": true,
+    "reliabilityHighlightsReady": true,
+    "calibrationPassed": true,
+    "calibrationScore": 100,
+    "findings": [],
+    "topInsightSummary": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase."
+  },
+  "reviewedAt": "2026-03-27T06:45:41.575Z"
+}

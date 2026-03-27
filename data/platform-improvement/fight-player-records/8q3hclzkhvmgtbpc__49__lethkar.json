@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__lethkar",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 12,
+  "name": "Lethkar",
+  "role": "healer",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 262,
+  "server": "Sargeras",
+  "dps": 118049,
+  "hps": 6244,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 56,
+  "avoidableDamageTaken": 0
+}

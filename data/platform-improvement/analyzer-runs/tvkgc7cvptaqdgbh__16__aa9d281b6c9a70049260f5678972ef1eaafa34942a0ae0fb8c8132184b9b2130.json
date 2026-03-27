@@ -1,0 +1,932 @@
+{
+  "key": "tvkgC7cVPTAQdGBh__16__aa9d281b6c9a70049260f5678972ef1eaafa34942a0ae0fb8c8132184b9b2130",
+  "fightKey": "tvkgC7cVPTAQdGBh__16",
+  "reportCode": "tvkgC7cVPTAQdGBh",
+  "fightId": 16,
+  "bossName": "Chimaerus the Undreamt God",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T14:13:46.544Z",
+  "summaryText": "Chimaerus is not ready until Cosmic Rupture coverage and Shattered Heads ownership are stable.",
+  "topOwner": "Healers + RL",
+  "topPhase": "Phase 3: Undreamt Collapse",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "chimaerus the undreamt god::16",
+    "fightId": 16,
+    "bossName": "Chimaerus the Undreamt God",
+    "difficulty": "Unknown",
+    "reportCode": "tvkgC7cVPTAQdGBh",
+    "recordedAt": "2026-03-27T14:13:46.307Z",
+    "kill": false,
+    "bossHP": 100,
+    "duration": 4,
+    "briefInsights": [
+      {
+        "id": "bossrule-chimaerus-coverage",
+        "kind": "raid_cooldown",
+        "severity": "critical",
+        "confidence": "medium",
+        "priorityScore": 148,
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Chimaerus is not ready until Cosmic Rupture coverage and Shattered Heads ownership are stable.",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "The current MQD dataset points to Rupture coverage and soak ownership as the most likely conversion gate.",
+          "The rulepack stays conservative because public Chimaerus data is still very early.",
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map healer CDs to every Rupture and pre-assign Shattered Heads groups before changing the overall plan.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "critical",
+        "confidence": "low",
+        "priorityScore": 102,
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "161K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "1 low performers are driving the gap.",
+          "161K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 3: Undreamt Collapse."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      },
+      {
+        "id": "assignment-assignment-tanks-dream_devour",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Dream Devour needs a clearer assignment plan.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved."
+        ],
+        "recommendation": "Swap early and line externals up for overlap windows instead of recovering late.",
+        "category": "strategy"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 112,
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull."
+        ],
+        "recommendation": "Swap early and line externals up for overlap windows instead of recovering late.",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-dispel",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Dispellers",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Dispel ownership is still too loose for this phase.",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign primary and backup dispellers and do not let the debuff drift into overlap windows.",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-ranged-Fitshin",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Fitshin needs cleaner movement and uptime discipline.",
+        "evidence": "2% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Fitshin active time is 2%.",
+          "Fitshin died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-dream_devour",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Dream Devour",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved."
+        ],
+        "recommendation": "Swap early and line externals up for overlap windows instead of recovering late.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-dispel-fractured_mind",
+        "category": "dispel",
+        "status": "at_risk",
+        "owner": "Dispellers",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Fractured Mind",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign primary and backup dispellers and do not let the debuff drift into overlap windows.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-interrupt-aberrant_spawn",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Aberrant Spawn",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Lock kick ownership per spawn and kill the add before the second cast cycle.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-cosmic_rupture",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Cosmic Rupture",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map your healer cooldowns here and do not arrive to this event with avoidable damage already taken.",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-soak-shattered_heads",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Shattered Heads",
+        "evidence": "The soak plan is incomplete for Shattered Heads.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Pre-assign soak groups and rotate personals for repeated coverage.",
+        "confidence": "medium"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Monstrous Awakening",
+        "status": "met",
+        "summary": "Phase 1: Monstrous Awakening met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Dream Devour, Nightmare Breath, Fractured Mind."
+      },
+      {
+        "phase": "Phase 2: Aberrant Convergence",
+        "status": "met",
+        "summary": "Phase 2: Aberrant Convergence is stable enough to keep progressing Chimaerus.",
+        "evidence": "Key checks: Aberrant Spawn, Cosmic Rupture, Shattered Heads. Deaths 0, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Undreamt Collapse",
+        "status": "at_risk",
+        "summary": "Phase 3: Undreamt Collapse is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Nightmare Breath, Cosmic Rupture, Shattered Heads."
+      }
+    ],
+    "causeChains": [
+      "Add control or soak ownership slipped -> Cosmic Rupture landed into chaos -> the pull failed before it became a pure burn check.",
+      "Dream Devour assignment slipped in Phase 3: Undreamt Collapse. -> Fitshin died to Melee at 0:03. -> The raid did not recover the failed assignment cleanly. -> Phase 3: Undreamt Collapse stayed close, so the pull converted into a wipe there.",
+      "Throughput missed by roughly 161K DPS across the main underperformers. -> The boss stayed above 100% and another dangerous cycle had to be played. -> The raid had to absorb extra mechanics and healing pressure instead of ending the phase. -> Phase 3: Undreamt Collapse broke before the raid could convert the pull."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Monstrous Awakening",
+        "status": "ready",
+        "summary": "Phase 1: Monstrous Awakening met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 2: Aberrant Convergence",
+        "status": "ready",
+        "summary": "Phase 2: Aberrant Convergence is stable enough to keep progressing Chimaerus.",
+        "blocker": "Assignments and healer coverage look stable enough here.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Undreamt Collapse",
+        "status": "close",
+        "summary": "Phase 3: Undreamt Collapse is close, but still leaks execution.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Chimaerus is not ready until Cosmic Rupture coverage and Shattered Heads ownership are stable.",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Undreamt Collapse",
+        "reason": "No raid-cooldown plan is defined for this boss."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Dream Devour is the most likely repeat wipe point.",
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 5,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Dispels",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/5 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Dispels, Raid CDs, Tank swaps before the next pull."
+    },
+    "avgReliability": 0,
+    "killProbability": 17,
+    "totalDeaths": 1,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Fitshin",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Marksmanship",
+        "talents": [],
+        "reliabilityScore": 0,
+        "activeTime": 2,
+        "deaths": 1
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": false,
+      "whyWiped": [
+        "Fitshin died early at 0:03, starting the collapse.",
+        "Boss still had 100% HP remaining."
+      ],
+      "keyIssues": []
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": [
+        {
+          "player": "Fitshin",
+          "ability": "Melee",
+          "time": 3,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        }
+      ]
+    },
+    "performance": {
+      "raidDPS": 8571,
+      "raidHPS": 0,
+      "requiredDPS": 170000,
+      "dpsGap": 161429,
+      "lowPerformers": [
+        {
+          "player": "Fitshin",
+          "class": "Hunter",
+          "expectedDPS": 170000,
+          "actualDPS": 8571,
+          "gap": 161429,
+          "reason": "Low activity: 2%"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Fitshin",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "role": "dps",
+        "dps": 8571,
+        "hps": 0,
+        "rankPercent": 100,
+        "itemLevel": 272,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 2,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 0,
+        "improvementFocus": "Low activity: 2%"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Fitshin"
+      ],
+      "missingFood": [
+        "Fitshin"
+      ],
+      "missingPotion": [
+        "Fitshin"
+      ],
+      "missingRune": [
+        "Fitshin"
+      ],
+      "estimatedDPSLoss": 185000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": false,
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": false,
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": false,
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": false,
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": false,
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": false,
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 62,
+      "dps": 5,
+      "survival": 90,
+      "mechanics": 100,
+      "consumables": 88,
+      "grade": "C"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "deathCascade": {
+      "rootDeath": {
+        "player": "Fitshin",
+        "role": "dps",
+        "ability": "Melee",
+        "time": 3,
+        "impact": "medium"
+      },
+      "chainDeaths": [],
+      "timeToWipe": 1,
+      "recoveryPossible": true,
+      "recommendation": "Fitshin died to Melee. Review positioning and timing"
+    },
+    "causeChains": [
+      "Add control or soak ownership slipped -> Cosmic Rupture landed into chaos -> the pull failed before it became a pure burn check.",
+      "Dream Devour assignment slipped in Phase 3: Undreamt Collapse. -> Fitshin died to Melee at 0:03. -> The raid did not recover the failed assignment cleanly. -> Phase 3: Undreamt Collapse stayed close, so the pull converted into a wipe there.",
+      "Throughput missed by roughly 161K DPS across the main underperformers. -> The boss stayed above 100% and another dangerous cycle had to be played. -> The raid had to absorb extra mechanics and healing pressure instead of ending the phase. -> Phase 3: Undreamt Collapse broke before the raid could convert the pull."
+    ],
+    "causeChainDetails": [
+      {
+        "id": "chain-assignment-assignment-tanks-dream_devour",
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Dream Devour assignment slipped in Phase 3: Undreamt Collapse."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "Fitshin died to Melee at 0:03."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "The raid did not recover the failed assignment cleanly."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "Phase 3: Undreamt Collapse stayed close, so the pull converted into a wipe there."
+          }
+        ]
+      },
+      {
+        "id": "chain-throughput",
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Throughput missed by roughly 161K DPS across the main underperformers."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "The boss stayed above 100% and another dangerous cycle had to be played."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "The raid had to absorb extra mechanics and healing pressure instead of ending the phase."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "Phase 3: Undreamt Collapse broke before the raid could convert the pull."
+          }
+        ]
+      }
+    ],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Chimaerus is not ready until Cosmic Rupture coverage and Shattered Heads ownership are stable.",
+        "owner": "Healers + RL",
+        "reason": "No raid-cooldown plan is defined for this boss. Map healer CDs to every Rupture and pre-assign Shattered Heads groups before changing the overall plan."
+      },
+      {
+        "priority": 2,
+        "title": "Throughput is below the level needed for a clean progression pull.",
+        "owner": "Fitshin",
+        "reason": "161K estimated DPS gap across the biggest underperformers. Review uptime, potion usage, and burst alignment before the next pull."
+      },
+      {
+        "priority": 3,
+        "title": "Dream Devour needs a clearer assignment plan.",
+        "owner": "Tanks",
+        "reason": "No explicit tank swap or external plan is defined. Swap early and line externals up for overlap windows instead of recovering late."
+      }
+    ],
+    "wipeCause": {
+      "primary": "throughput",
+      "details": "Effective damage and healing stayed below what the checkpoint required."
+    },
+    "repeatedMistakes": [],
+    "phaseCausality": [
+      {
+        "phase": "Phase 1: Monstrous Awakening",
+        "start": 0,
+        "end": 1,
+        "deaths": 0,
+        "avoidableDeaths": 0,
+        "dominantCause": "stable"
+      },
+      {
+        "phase": "Phase 2: Aberrant Convergence",
+        "start": 1,
+        "end": 2,
+        "deaths": 0,
+        "avoidableDeaths": 0,
+        "dominantCause": "stable"
+      },
+      {
+        "phase": "Phase 3: Undreamt Collapse",
+        "start": 2,
+        "end": 4,
+        "deaths": 1,
+        "avoidableDeaths": 0,
+        "dominantCause": "stable"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Monstrous Awakening",
+        "status": "met",
+        "summary": "Phase 1: Monstrous Awakening met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Dream Devour, Nightmare Breath, Fractured Mind."
+      },
+      {
+        "phase": "Phase 2: Aberrant Convergence",
+        "status": "met",
+        "summary": "Phase 2: Aberrant Convergence is stable enough to keep progressing Chimaerus.",
+        "evidence": "Key checks: Aberrant Spawn, Cosmic Rupture, Shattered Heads. Deaths 0, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Undreamt Collapse",
+        "status": "at_risk",
+        "summary": "Phase 3: Undreamt Collapse is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Nightmare Breath, Cosmic Rupture, Shattered Heads."
+      }
+    ],
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-dream_devour",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Dream Devour",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved."
+        ],
+        "recommendation": "Swap early and line externals up for overlap windows instead of recovering late.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-dispel-fractured_mind",
+        "category": "dispel",
+        "status": "at_risk",
+        "owner": "Dispellers",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Fractured Mind",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign primary and backup dispellers and do not let the debuff drift into overlap windows.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-interrupt-aberrant_spawn",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Aberrant Spawn",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Lock kick ownership per spawn and kill the add before the second cast cycle.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-cosmic_rupture",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Cosmic Rupture",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map your healer cooldowns here and do not arrive to this event with avoidable damage already taken.",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-soak-shattered_heads",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 3: Undreamt Collapse",
+        "mechanic": "Shattered Heads",
+        "evidence": "The soak plan is incomplete for Shattered Heads.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Pre-assign soak groups and rotate personals for repeated coverage.",
+        "confidence": "medium"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 5,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Dispels",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/5 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Dispels, Raid CDs, Tank swaps before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Fitshin",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Tanks",
+        "failure": "Dream Devour: No explicit tank swap or external plan is defined.",
+        "count": 1
+      },
+      {
+        "owner": "Dispellers",
+        "failure": "Fractured Mind: 0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "count": 1
+      },
+      {
+        "owner": "Fitshin",
+        "failure": "Aberrant Spawn: 0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "count": 1
+      },
+      {
+        "owner": "Healers + RL",
+        "failure": "Cosmic Rupture: No raid-cooldown plan is defined for this boss.",
+        "count": 1
+      }
+    ],
+    "killProbability": 17,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "bossrule-chimaerus-coverage",
+        "kind": "raid_cooldown",
+        "severity": "critical",
+        "confidence": "medium",
+        "priorityScore": 148,
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Chimaerus is not ready until Cosmic Rupture coverage and Shattered Heads ownership are stable.",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "The current MQD dataset points to Rupture coverage and soak ownership as the most likely conversion gate.",
+          "The rulepack stays conservative because public Chimaerus data is still very early.",
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map healer CDs to every Rupture and pre-assign Shattered Heads groups before changing the overall plan.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "critical",
+        "confidence": "low",
+        "priorityScore": 102,
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "161K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "1 low performers are driving the gap.",
+          "161K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 3: Undreamt Collapse."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      },
+      {
+        "id": "assignment-assignment-tanks-dream_devour",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Dream Devour needs a clearer assignment plan.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved."
+        ],
+        "recommendation": "Swap early and line externals up for overlap windows instead of recovering late.",
+        "category": "strategy"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 112,
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull."
+        ],
+        "recommendation": "Swap early and line externals up for overlap windows instead of recovering late.",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-dispel",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Dispellers",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Dispel ownership is still too loose for this phase.",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign primary and backup dispellers and do not let the debuff drift into overlap windows.",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-ranged-Fitshin",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Fitshin",
+        "phase": "Phase 3: Undreamt Collapse",
+        "summary": "Fitshin needs cleaner movement and uptime discipline.",
+        "evidence": "2% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Fitshin active time is 2%.",
+          "Fitshin died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Monstrous Awakening",
+        "status": "ready",
+        "summary": "Phase 1: Monstrous Awakening met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 2: Aberrant Convergence",
+        "status": "ready",
+        "summary": "Phase 2: Aberrant Convergence is stable enough to keep progressing Chimaerus.",
+        "blocker": "Assignments and healer coverage look stable enough here.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Undreamt Collapse",
+        "status": "close",
+        "summary": "Phase 3: Undreamt Collapse is close, but still leaks execution.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Chimaerus is not ready until Cosmic Rupture coverage and Shattered Heads ownership are stable.",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Undreamt Collapse",
+        "reason": "No raid-cooldown plan is defined for this boss."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Dream Devour is the most likely repeat wipe point.",
+        "owner": "Tanks",
+        "phase": "Phase 3: Undreamt Collapse",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    }
+  }
+}

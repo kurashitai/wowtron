@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devourer",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__cheryka",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 268,
+  "name": "Cheryka",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Devourer",
+  "talents": [],
+  "itemLevel": 251,
+  "server": "Tichondrius",
+  "dps": 66391,
+  "hps": 6263,
+  "dtps": 0,
+  "activeTime": 80,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

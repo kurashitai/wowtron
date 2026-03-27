@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:protection",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__mattank",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 39,
+  "name": "Mattank",
+  "role": "tank",
+  "className": "Paladin",
+  "spec": "Protection",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Malfurion",
+  "dps": 25679,
+  "hps": 9816,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 78,
+  "avoidableDamageTaken": 0
+}

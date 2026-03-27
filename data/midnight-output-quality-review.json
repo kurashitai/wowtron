@@ -1,0 +1,196 @@
+{
+  "generatedAt": "2026-03-27T06:45:41.575Z",
+  "summary": {
+    "total": 9,
+    "believableBlockerRate": 9,
+    "believableNextWipeRate": 9,
+    "actionableRate": 9,
+    "causeChainUsefulRate": 9,
+    "memoryReadyRate": 9,
+    "reliabilityReadyRate": 9
+  },
+  "reviews": [
+    {
+      "key": "8q3hcLzkHVmGtbpC__61__imperator_averzian",
+      "bossName": "Imperator Averzian",
+      "reportCode": "8q3hcLzkHVmGtbpC",
+      "fightId": 61,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Phase 3: Desperation is the progression breakpoint for this pull."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.574Z"
+    },
+    {
+      "key": "cFVb6faqnN2kMrQ9__63__imperator_averzian",
+      "bossName": "Imperator Averzian",
+      "reportCode": "cFVb6faqnN2kMrQ9",
+      "fightId": 63,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Void Blast coverage and Imperial Decree positioning stayed controlled through the kill."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "r3xjWwKB6X7F8ALT__65__vorasius",
+      "bossName": "Vorasius",
+      "reportCode": "r3xjWwKB6X7F8ALT",
+      "fightId": 65,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 75,
+        "findings": [
+          "Cause chain did not include the expected wipe story."
+        ],
+        "topInsightSummary": "Phase 3: Unending Hunger is the progression breakpoint for this pull."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "4wtkBjDbRQWvxYK7__28__vorasius",
+      "bossName": "Vorasius",
+      "reportCode": "4wtkBjDbRQWvxYK7",
+      "fightId": 28,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "8q3hcLzkHVmGtbpC__38__fallen_king_salhadaar",
+      "bossName": "Fallen-King Salhadaar",
+      "reportCode": "8q3hcLzkHVmGtbpC",
+      "fightId": 38,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "King's Decree, Void Shockwave, Shadow Realm, and Guardian interrupts stayed controlled on the kill."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "4wtkBjDbRQWvxYK7__38__vaelgor_ezzorak",
+      "bossName": "Vaelgor & Ezzorak",
+      "reportCode": "4wtkBjDbRQWvxYK7",
+      "fightId": 38,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Twisted Fusion, Duplicate control, and Shadow Nova stabilization are the wipe gate on the twins."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "4wtkBjDbRQWvxYK7__39__vaelgor_ezzorak",
+      "bossName": "Vaelgor & Ezzorak",
+      "reportCode": "4wtkBjDbRQWvxYK7",
+      "fightId": 39,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Duplicate control, Twisted Fusion movement, and Shadow Nova coverage stayed stable into Phase 2."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "8q3hcLzkHVmGtbpC__49__lightblinded_vanguard",
+      "bossName": "Lightblinded Vanguard",
+      "reportCode": "8q3hcLzkHVmGtbpC",
+      "fightId": 49,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Void Touched soaks, beam discipline, and Righteous Flame coverage stayed stable into the kill."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    },
+    {
+      "key": "8q3hcLzkHVmGtbpC__51__crown_of_the_cosmos",
+      "bossName": "Crown of the Cosmos",
+      "reportCode": "8q3hcLzkHVmGtbpC",
+      "fightId": 51,
+      "source": "heuristic_review",
+      "payload": {
+        "biggestBlockerBelievable": true,
+        "nextWipeBelievable": true,
+        "topActionsActionable": true,
+        "causeChainUseful": true,
+        "bossMemoryReady": true,
+        "reliabilityHighlightsReady": true,
+        "calibrationPassed": true,
+        "calibrationScore": 100,
+        "findings": [],
+        "topInsightSummary": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase."
+      },
+      "reviewedAt": "2026-03-27T06:45:41.575Z"
+    }
+  ]
+}

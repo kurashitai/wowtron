@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-03-27T14:08:19.013Z",
+  "bosses": [
+    "Alleria Windrunner",
+    "Chimaerus the Undreamt God"
+  ],
+  "requested": 7,
+  "hydrated": 7,
+  "failed": 0,
+  "results": [
+    {
+      "bossName": "Alleria Windrunner",
+      "code": "FyVd2B7LhMjA9vJ6",
+      "fightId": 10,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 6,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 22,
+      "timelineEvents": 0
+    },
+    {
+      "bossName": "Alleria Windrunner",
+      "code": "mQq8WxapY1KDPjJc",
+      "fightId": 53,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 6,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 25,
+      "timelineEvents": 0
+    },
+    {
+      "bossName": "Alleria Windrunner",
+      "code": "mQq8WxapY1KDPjJc",
+      "fightId": 68,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 6,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 25,
+      "timelineEvents": 0
+    },
+    {
+      "bossName": "Alleria Windrunner",
+      "code": "mQq8WxapY1KDPjJc",
+      "fightId": 84,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 6,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 25,
+      "timelineEvents": 0
+    },
+    {
+      "bossName": "Chimaerus the Undreamt God",
+      "code": "HQhjm9CZdAgLqbfp",
+      "fightId": 16,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 4,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 1,
+      "timelineEvents": 1
+    },
+    {
+      "bossName": "Chimaerus the Undreamt God",
+      "code": "tvkgC7cVPTAQdGBh",
+      "fightId": 16,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 4,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 1,
+      "timelineEvents": 1
+    },
+    {
+      "bossName": "Chimaerus the Undreamt God",
+      "code": "mQq8WxapY1KDPjJc",
+      "fightId": 56,
+      "status": "hydrated",
+      "difficulty": "Unknown",
+      "duration": 0,
+      "kill": false,
+      "bossHPPercent": 100,
+      "players": 0,
+      "timelineEvents": 0
+    }
+  ]
+}

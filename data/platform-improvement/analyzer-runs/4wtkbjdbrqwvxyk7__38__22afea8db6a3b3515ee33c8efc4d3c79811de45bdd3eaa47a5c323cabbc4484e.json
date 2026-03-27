@@ -1,0 +1,1980 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__38__22afea8db6a3b3515ee33c8efc4d3c79811de45bdd3eaa47a5c323cabbc4484e",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 38,
+  "bossName": "Vaelgor & Ezzorak",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T06:37:47.652Z",
+  "summaryText": "Twisted Fusion, Duplicate control, and Shadow Nova stabilization are the wipe gate on the twins.",
+  "topOwner": "Raid",
+  "topPhase": "Phase 2: Dark Synchronization",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "vaelgor & ezzorak::38",
+    "fightId": 38,
+    "bossName": "Vaelgor & Ezzorak",
+    "reportCode": "4wtkBjDbRQWvxYK7",
+    "recordedAt": "2026-03-27T06:37:47.422Z",
+    "kill": false,
+    "bossHP": 0,
+    "duration": 160,
+    "briefInsights": [
+      {
+        "id": "bossrule-twins-baseline",
+        "kind": "raid_strategy",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 430,
+        "owner": "Raid, Healers + RL, Tanks",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Twisted Fusion, Duplicate control, and Shadow Nova stabilization are the wipe gate on the twins.",
+        "evidence": "The twins are mainly a coordination fight around movement, duplicates, and stabilization.",
+        "confidenceReasons": [
+          "The twins encounter is defined by Duplicate control and Twisted Fusion movement.",
+          "The reviewed fixtures expect coordination-first language on this boss."
+        ],
+        "recommendation": "Fix beam discipline, duplicate control, and Shadow Nova coverage before changing throughput targets.",
+        "category": "strategy"
+      },
+      {
+        "id": "assignment-assignment-tanks-twin_strike",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Twin Strike needs a clearer assignment plan.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Mattank, Cutedwarfxd."
+        ],
+        "recommendation": "Never have same boss for more than 3 strikes",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 79,
+        "owner": "Reilin, Spacekraken",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "282K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "282K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 2: Dark Synchronization."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 132,
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull.",
+          "2 tank death(s) were recorded.",
+          "Mattank reliability score: 42."
+        ],
+        "recommendation": "Never have same boss for more than 3 strikes",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-dispel",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Wubers, Tanishalfelf",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Dispel ownership is still too loose for this phase.",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Dispel quickly, priority on healers/tanks",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-melee-Hiddenmight",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Hiddenmight",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Hiddenmight needs cleaner melee uptime without greedy deaths.",
+        "evidence": "50% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Hiddenmight active time is 50%.",
+          "Hiddenmight died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Boxiebrown",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Boxiebrown",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Boxiebrown needs cleaner movement and uptime discipline.",
+        "evidence": "49% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Boxiebrown active time is 49%.",
+          "Boxiebrown died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Reilin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 64,
+        "owner": "Reilin",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Reilin needs a throughput cleanup.",
+        "evidence": "142K below the expected DPS target.",
+        "confidenceReasons": [
+          "142K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Spacekraken",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 64,
+        "owner": "Spacekraken",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Spacekraken needs a throughput cleanup.",
+        "evidence": "140K below the expected DPS target.",
+        "confidenceReasons": [
+          "140K DPS below the expected target.",
+          "Current issue marker: Low activity: 61%."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: Low activity: 61%.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-twin_strike",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "mechanic": "Twin Strike",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Mattank, Cutedwarfxd."
+        ],
+        "recommendation": "Never have same boss for more than 3 strikes",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-shadow_nova",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 2: Dark Synchronization",
+        "mechanic": "Shadow Nova (Vaelgor)",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Use raid CDs, healers top off before",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-dispel-essence_drain",
+        "category": "dispel",
+        "status": "at_risk",
+        "owner": "Wubers, Tanishalfelf",
+        "phase": "Phase 2: Dark Synchronization",
+        "mechanic": "Essence Drain (Ezzorak)",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Dispel quickly, priority on healers/tanks",
+        "confidence": "medium"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Twin Assault",
+        "status": "at_risk",
+        "summary": "Phase 1: Twin Assault is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Twin Strike, Void Link, Shadow Nova (Vaelgor)."
+      },
+      {
+        "phase": "Phase 2: Dark Synchronization",
+        "status": "missed",
+        "summary": "Phase 2: Dark Synchronization is failing on duplicate control or beam movement.",
+        "evidence": "Key checks: Twin Strike, Twisted Fusion, Duplicate, Shadow Nova (Vaelgor). Deaths 24, avoidable 8."
+      }
+    ],
+    "causeChains": [
+      "Twisted Fusion or duplicate control slipped -> Shadow Nova pressure spiked -> the synchronized phase collapsed.",
+      "Twin Strike assignment slipped in Phase 2: Dark Synchronization. -> Boxiebrown died to Gloom at 1:09. -> 9 chain death(s) followed before the raid stabilized. -> Phase 2: Dark Synchronization stayed not ready, so the pull converted into a wipe there."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Twin Assault",
+        "status": "close",
+        "summary": "Phase 1: Twin Assault is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Dark Synchronization",
+        "status": "not_ready",
+        "summary": "Phase 2: Dark Synchronization is failing on duplicate control or beam movement.",
+        "blocker": "The synchronized phase is still breaking on movement and coordination.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Phase 2: Dark Synchronization is not ready yet.",
+        "owner": "Raid",
+        "phase": "Phase 2: Dark Synchronization",
+        "reason": "The synchronized phase is still breaking on movement and coordination."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Twin Strike is the most likely repeat wipe point.",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 3,
+      "missingCategories": [
+        "Dispels",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/3 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Dispels, Raid CDs, Tank swaps before the next pull."
+    },
+    "avgReliability": 34,
+    "killProbability": 85,
+    "totalDeaths": 25,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Hiddenmight",
+        "role": "dps",
+        "reliabilityScore": 17,
+        "activeTime": 50,
+        "deaths": 1
+      },
+      {
+        "name": "Dramonk",
+        "role": "dps",
+        "reliabilityScore": 22,
+        "activeTime": 55,
+        "deaths": 1
+      },
+      {
+        "name": "Xcat",
+        "role": "dps",
+        "reliabilityScore": 24,
+        "activeTime": 57,
+        "deaths": 1
+      },
+      {
+        "name": "Latrice",
+        "role": "dps",
+        "reliabilityScore": 38,
+        "activeTime": 71,
+        "deaths": 1
+      },
+      {
+        "name": "Demonnova",
+        "role": "dps",
+        "reliabilityScore": 38,
+        "activeTime": 71,
+        "deaths": 1
+      },
+      {
+        "name": "Jormungandr",
+        "role": "dps",
+        "reliabilityScore": 41,
+        "activeTime": 74,
+        "deaths": 1
+      },
+      {
+        "name": "Vitalorange",
+        "role": "dps",
+        "reliabilityScore": 34,
+        "activeTime": 67,
+        "deaths": 1
+      },
+      {
+        "name": "Flandri",
+        "role": "healer",
+        "reliabilityScore": 10,
+        "activeTime": 23,
+        "deaths": 0
+      },
+      {
+        "name": "Ando",
+        "role": "dps",
+        "reliabilityScore": 25,
+        "activeTime": 58,
+        "deaths": 1
+      },
+      {
+        "name": "Fabed",
+        "role": "dps",
+        "reliabilityScore": 21,
+        "activeTime": 54,
+        "deaths": 1
+      },
+      {
+        "name": "Brokuo",
+        "role": "healer",
+        "reliabilityScore": 29,
+        "activeTime": 62,
+        "deaths": 1
+      },
+      {
+        "name": "Pyrophobiac",
+        "role": "dps",
+        "reliabilityScore": 44,
+        "activeTime": 77,
+        "deaths": 1
+      },
+      {
+        "name": "Spacekraken",
+        "role": "dps",
+        "reliabilityScore": 28,
+        "activeTime": 61,
+        "deaths": 1
+      },
+      {
+        "name": "Urtag",
+        "role": "dps",
+        "reliabilityScore": 56,
+        "activeTime": 89,
+        "deaths": 1
+      },
+      {
+        "name": "Ioboma",
+        "role": "dps",
+        "reliabilityScore": 42,
+        "activeTime": 75,
+        "deaths": 1
+      },
+      {
+        "name": "Boxiebrown",
+        "role": "dps",
+        "reliabilityScore": 16,
+        "activeTime": 49,
+        "deaths": 1
+      },
+      {
+        "name": "Dotterparty",
+        "role": "dps",
+        "reliabilityScore": 57,
+        "activeTime": 90,
+        "deaths": 1
+      },
+      {
+        "name": "Reilin",
+        "role": "dps",
+        "reliabilityScore": 42,
+        "activeTime": 98,
+        "deaths": 2
+      },
+      {
+        "name": "Cutedwarfxd",
+        "role": "tank",
+        "reliabilityScore": 60,
+        "activeTime": 93,
+        "deaths": 1
+      },
+      {
+        "name": "Adowyrm",
+        "role": "healer",
+        "reliabilityScore": 0,
+        "activeTime": 17,
+        "deaths": 1
+      },
+      {
+        "name": "Mattank",
+        "role": "tank",
+        "reliabilityScore": 42,
+        "activeTime": 98,
+        "deaths": 2
+      },
+      {
+        "name": "Wubers",
+        "role": "healer",
+        "reliabilityScore": 48,
+        "activeTime": 81,
+        "deaths": 1
+      },
+      {
+        "name": "Implant",
+        "role": "healer",
+        "reliabilityScore": 61,
+        "activeTime": 94,
+        "deaths": 1
+      },
+      {
+        "name": "Tanishalfelf",
+        "role": "healer",
+        "reliabilityScore": 21,
+        "activeTime": 54,
+        "deaths": 1
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": 0,
+      "whyWiped": [
+        "Boxiebrown died early at 1:09, starting the collapse.",
+        "Roughly 4.4M DPS was lost to prep gaps.",
+        "16 players were below the expected output."
+      ],
+      "keyIssues": []
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": [
+        {
+          "player": "Boxiebrown",
+          "ability": "Gloom",
+          "time": 69,
+          "avoidable": false,
+          "phase": "Mid",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Fabed",
+          "ability": "Midnight Manifestation",
+          "time": 81,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Reilin",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Dramonk",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Ando",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Adowyrm",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Mattank",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Hiddenmight",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Brokuo",
+          "ability": "Void Howl",
+          "time": 82,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Spacekraken",
+          "ability": "Melee",
+          "time": 84,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Xcat",
+          "ability": "Melee",
+          "time": 87,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Latrice",
+          "ability": "Melee",
+          "time": 89,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Vitalorange",
+          "ability": "Dread Breath",
+          "time": 106,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Mattank",
+          "ability": "Vaelwing",
+          "time": 108,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Demonnova",
+          "ability": "Melee",
+          "time": 110,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Pyrophobiac",
+          "ability": "Melee",
+          "time": 112,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Jormungandr",
+          "ability": "Melee",
+          "time": 114,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Tanishalfelf",
+          "ability": "Midnight Flames",
+          "time": 123,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Cutedwarfxd",
+          "ability": "Rakfang",
+          "time": 148,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Dotterparty",
+          "ability": "Gloomfield",
+          "time": 149,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Implant",
+          "ability": "Gloomfield",
+          "time": 149,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Ioboma",
+          "ability": "Gloomfield",
+          "time": 149,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Wubers",
+          "ability": "Gloomfield",
+          "time": 150,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Reilin",
+          "ability": "Gloomfield",
+          "time": 152,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Urtag",
+          "ability": "Grappling Maw",
+          "time": 158,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        }
+      ]
+    },
+    "performance": {
+      "raidDPS": 868774,
+      "raidHPS": 361727,
+      "requiredDPS": 2570000,
+      "dpsGap": 1854981,
+      "lowPerformers": [
+        {
+          "player": "Reilin",
+          "class": "Shaman",
+          "expectedDPS": 170000,
+          "actualDPS": 28200,
+          "gap": 141800,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Spacekraken",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 39730,
+          "gap": 140270,
+          "reason": "Low activity: 61%"
+        },
+        {
+          "player": "Dotterparty",
+          "class": "Warlock",
+          "expectedDPS": 165000,
+          "actualDPS": 29947,
+          "gap": 135053,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Ioboma",
+          "class": "Mage",
+          "expectedDPS": 170000,
+          "actualDPS": 37054,
+          "gap": 132946,
+          "reason": "Low activity: 75%"
+        },
+        {
+          "player": "Fabed",
+          "class": "Paladin",
+          "expectedDPS": 165000,
+          "actualDPS": 46337,
+          "gap": 118663,
+          "reason": "Low activity: 54%"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Hiddenmight",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 63674,
+        "hps": 3820,
+        "rankPercent": 100,
+        "itemLevel": 239,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 50,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 17,
+        "improvementFocus": "Low activity: 50%"
+      },
+      {
+        "name": "Dramonk",
+        "class": "Monk",
+        "spec": "Windwalker",
+        "role": "dps",
+        "dps": 57701,
+        "hps": 4230,
+        "rankPercent": 93,
+        "itemLevel": 245,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 55,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 22,
+        "improvementFocus": "Low activity: 55%"
+      },
+      {
+        "name": "Xcat",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 53976,
+        "hps": 6459,
+        "rankPercent": 87,
+        "itemLevel": 242,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 57,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 24,
+        "improvementFocus": "Low activity: 57%"
+      },
+      {
+        "name": "Latrice",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 52971,
+        "hps": 8455,
+        "rankPercent": 80,
+        "itemLevel": 243,
+        "server": "GrizzlyHills",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 71,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 38,
+        "improvementFocus": "Low activity: 71%"
+      },
+      {
+        "name": "Demonnova",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 49546,
+        "hps": 5290,
+        "rankPercent": 73,
+        "itemLevel": 249,
+        "server": "Malfurion",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 71,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 38,
+        "improvementFocus": "Low activity: 71%"
+      },
+      {
+        "name": "Jormungandr",
+        "class": "Evoker",
+        "spec": "Devastation",
+        "role": "dps",
+        "dps": 49519,
+        "hps": 3004,
+        "rankPercent": 67,
+        "itemLevel": 232,
+        "server": "Gnomeregan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 74,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 41,
+        "improvementFocus": "Low activity: 74%"
+      },
+      {
+        "name": "Vitalorange",
+        "class": "Druid",
+        "spec": "Balance",
+        "role": "dps",
+        "dps": 47733,
+        "hps": 5702,
+        "rankPercent": 60,
+        "itemLevel": 246,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 67,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 34,
+        "improvementFocus": "Low activity: 67%"
+      },
+      {
+        "name": "Flandri",
+        "class": "Priest",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 46702,
+        "hps": 48954,
+        "rankPercent": 0,
+        "itemLevel": 243,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 23,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 10,
+        "improvementFocus": "Low activity: 23%"
+      },
+      {
+        "name": "Ando",
+        "class": "Druid",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 46517,
+        "hps": 8803,
+        "rankPercent": 53,
+        "itemLevel": 234,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 58,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 25,
+        "improvementFocus": "Low activity: 58%"
+      },
+      {
+        "name": "Fabed",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 46337,
+        "hps": 10050,
+        "rankPercent": 47,
+        "itemLevel": 245,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 54,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 21,
+        "improvementFocus": "Low activity: 54%"
+      },
+      {
+        "name": "Brokuo",
+        "class": "DeathKnight",
+        "spec": "Unholy",
+        "role": "healer",
+        "dps": 41694,
+        "hps": 7953,
+        "rankPercent": 0,
+        "itemLevel": 247,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 62,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 29,
+        "improvementFocus": "Low activity: 62%"
+      },
+      {
+        "name": "Pyrophobiac",
+        "class": "Warlock",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 40159,
+        "hps": 6397,
+        "rankPercent": 40,
+        "itemLevel": 241,
+        "server": "Gul'dan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 77,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 44,
+        "improvementFocus": "Low activity: 77%"
+      },
+      {
+        "name": "Spacekraken",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 39730,
+        "hps": 5262,
+        "rankPercent": 33,
+        "itemLevel": 244,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 61,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 28,
+        "improvementFocus": "Low activity: 61%"
+      },
+      {
+        "name": "Urtag",
+        "class": "Hunter",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 37587,
+        "hps": 3762,
+        "rankPercent": 27,
+        "itemLevel": 224,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 89,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 56,
+        "improvementFocus": "Low activity: 89%"
+      },
+      {
+        "name": "Ioboma",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 37054,
+        "hps": 15098,
+        "rankPercent": 20,
+        "itemLevel": 233,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 75,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 42,
+        "improvementFocus": "Low activity: 75%"
+      },
+      {
+        "name": "Boxiebrown",
+        "class": "Hunter",
+        "spec": "BeastMastery",
+        "role": "dps",
+        "dps": 34368,
+        "hps": 330,
+        "rankPercent": 13,
+        "itemLevel": 243,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 49,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 16,
+        "improvementFocus": "Low activity: 49%"
+      },
+      {
+        "name": "Dotterparty",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "role": "dps",
+        "dps": 29947,
+        "hps": 3828,
+        "rankPercent": 7,
+        "itemLevel": 233,
+        "server": "Cho'gall",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 90,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 57,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Reilin",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "role": "dps",
+        "dps": 28200,
+        "hps": 6616,
+        "rankPercent": 0,
+        "itemLevel": 239,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 2,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 42,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Cutedwarfxd",
+        "class": "DeathKnight",
+        "spec": "Blood",
+        "role": "tank",
+        "dps": 25766,
+        "hps": 18098,
+        "rankPercent": 0,
+        "itemLevel": 246,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 93,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 60,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Adowyrm",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 14428,
+        "hps": 51126,
+        "rankPercent": 0,
+        "itemLevel": 238,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 17,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 0,
+        "improvementFocus": "Low activity: 17%"
+      },
+      {
+        "name": "Mattank",
+        "class": "Paladin",
+        "spec": "Protection",
+        "role": "tank",
+        "dps": 13011,
+        "hps": 13347,
+        "rankPercent": 0,
+        "itemLevel": 245,
+        "server": "Malfurion",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 2,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 42,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Wubers",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 5246,
+        "hps": 39703,
+        "rankPercent": 0,
+        "itemLevel": 243,
+        "server": "Malfurion",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 81,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 48,
+        "improvementFocus": "Low activity: 81%"
+      },
+      {
+        "name": "Implant",
+        "class": "Druid",
+        "spec": "Restoration",
+        "role": "healer",
+        "dps": 3701,
+        "hps": 39356,
+        "rankPercent": 0,
+        "itemLevel": 248,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 94,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 61,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Tanishalfelf",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 3207,
+        "hps": 46084,
+        "rankPercent": 0,
+        "itemLevel": 238,
+        "server": "Stormrage",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 54,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 21,
+        "improvementFocus": "Low activity: 54%"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Demonnova",
+        "Reilin",
+        "Dotterparty",
+        "Xcat",
+        "Wubers",
+        "Fabed",
+        "Tanishalfelf",
+        "Flandri",
+        "Dramonk",
+        "Urtag",
+        "Boxiebrown",
+        "Implant",
+        "Ando",
+        "Adowyrm",
+        "Mattank",
+        "Jormungandr",
+        "Hiddenmight",
+        "Spacekraken",
+        "Latrice",
+        "Cutedwarfxd",
+        "Ioboma",
+        "Vitalorange",
+        "Pyrophobiac",
+        "Brokuo"
+      ],
+      "missingFood": [
+        "Demonnova",
+        "Reilin",
+        "Dotterparty",
+        "Xcat",
+        "Wubers",
+        "Fabed",
+        "Tanishalfelf",
+        "Flandri",
+        "Dramonk",
+        "Urtag",
+        "Boxiebrown",
+        "Implant",
+        "Ando",
+        "Adowyrm",
+        "Mattank",
+        "Jormungandr",
+        "Hiddenmight",
+        "Spacekraken",
+        "Latrice",
+        "Cutedwarfxd",
+        "Ioboma",
+        "Vitalorange",
+        "Pyrophobiac",
+        "Brokuo"
+      ],
+      "missingPotion": [
+        "Demonnova",
+        "Reilin",
+        "Dotterparty",
+        "Xcat",
+        "Wubers",
+        "Fabed",
+        "Tanishalfelf",
+        "Flandri",
+        "Dramonk",
+        "Urtag",
+        "Boxiebrown",
+        "Implant",
+        "Ando",
+        "Adowyrm",
+        "Mattank",
+        "Jormungandr",
+        "Hiddenmight",
+        "Spacekraken",
+        "Latrice",
+        "Cutedwarfxd",
+        "Ioboma",
+        "Vitalorange",
+        "Pyrophobiac",
+        "Brokuo"
+      ],
+      "missingRune": [
+        "Demonnova",
+        "Reilin",
+        "Dotterparty",
+        "Xcat",
+        "Wubers",
+        "Fabed",
+        "Tanishalfelf",
+        "Flandri",
+        "Dramonk",
+        "Urtag",
+        "Boxiebrown",
+        "Implant",
+        "Ando",
+        "Adowyrm",
+        "Mattank",
+        "Jormungandr",
+        "Hiddenmight",
+        "Spacekraken",
+        "Latrice",
+        "Cutedwarfxd",
+        "Ioboma",
+        "Vitalorange",
+        "Pyrophobiac",
+        "Brokuo"
+      ],
+      "estimatedDPSLoss": 4440000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": true,
+        "source": "Reilin",
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": true,
+        "source": "Flandri",
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": true,
+        "source": "Spacekraken",
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": true,
+        "source": "Latrice",
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": true,
+        "source": "Implant",
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": true,
+        "source": "Dramonk",
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 36,
+      "dps": 33,
+      "survival": 0,
+      "mechanics": 100,
+      "consumables": 0,
+      "grade": "F"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "deathCascade": {
+      "rootDeath": {
+        "player": "Boxiebrown",
+        "role": "dps",
+        "ability": "Gloom",
+        "time": 69,
+        "impact": "high"
+      },
+      "chainDeaths": [
+        {
+          "player": "Fabed",
+          "role": "dps",
+          "ability": "Midnight Manifestation",
+          "time": 81,
+          "causedByRoot": true
+        },
+        {
+          "player": "Reilin",
+          "role": "dps",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Dramonk",
+          "role": "dps",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Ando",
+          "role": "dps",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Adowyrm",
+          "role": "healer",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Mattank",
+          "role": "tank",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Hiddenmight",
+          "role": "dps",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Brokuo",
+          "role": "healer",
+          "ability": "Void Howl",
+          "time": 82,
+          "causedByRoot": true
+        },
+        {
+          "player": "Spacekraken",
+          "role": "dps",
+          "ability": "Melee",
+          "time": 84,
+          "causedByRoot": true
+        }
+      ],
+      "timeToWipe": 91,
+      "recoveryPossible": false,
+      "recommendation": "Boxiebrown died to Gloom. Review positioning and timing"
+    },
+    "causeChains": [
+      "Twisted Fusion or duplicate control slipped -> Shadow Nova pressure spiked -> the synchronized phase collapsed.",
+      "Twin Strike assignment slipped in Phase 2: Dark Synchronization. -> Boxiebrown died to Gloom at 1:09. -> 9 chain death(s) followed before the raid stabilized. -> Phase 2: Dark Synchronization stayed not ready, so the pull converted into a wipe there."
+    ],
+    "causeChainDetails": [
+      {
+        "id": "chain-assignment-assignment-tanks-twin_strike",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Twin Strike assignment slipped in Phase 2: Dark Synchronization."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "Boxiebrown died to Gloom at 1:09."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "9 chain death(s) followed before the raid stabilized."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "Phase 2: Dark Synchronization stayed not ready, so the pull converted into a wipe there."
+          }
+        ]
+      }
+    ],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Twisted Fusion, Duplicate control, and Shadow Nova stabilization are the wipe gate on the twins.",
+        "owner": "Raid, Healers + RL, Tanks",
+        "reason": "The twins are mainly a coordination fight around movement, duplicates, and stabilization. Fix beam discipline, duplicate control, and Shadow Nova coverage before changing throughput targets."
+      },
+      {
+        "priority": 2,
+        "title": "Twin Strike needs a clearer assignment plan.",
+        "owner": "Mattank, Cutedwarfxd",
+        "reason": "No explicit tank swap or external plan is defined. Never have same boss for more than 3 strikes"
+      },
+      {
+        "priority": 3,
+        "title": "Throughput is below the level needed for a clean progression pull.",
+        "owner": "Reilin, Spacekraken",
+        "reason": "282K estimated DPS gap across the biggest underperformers. Review uptime, potion usage, and burst alignment before the next pull."
+      }
+    ],
+    "wipeCause": {
+      "primary": "throughput",
+      "details": "Effective damage and healing stayed below what the checkpoint required."
+    },
+    "repeatedMistakes": [],
+    "phaseCausality": [
+      {
+        "phase": "Phase 1: Twin Assault",
+        "start": 0,
+        "end": 80,
+        "deaths": 1,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      },
+      {
+        "phase": "Phase 2: Dark Synchronization",
+        "start": 80,
+        "end": 160,
+        "deaths": 24,
+        "avoidableDeaths": 8,
+        "dominantCause": "mechanics"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Twin Assault",
+        "status": "at_risk",
+        "summary": "Phase 1: Twin Assault is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Twin Strike, Void Link, Shadow Nova (Vaelgor)."
+      },
+      {
+        "phase": "Phase 2: Dark Synchronization",
+        "status": "missed",
+        "summary": "Phase 2: Dark Synchronization is failing on duplicate control or beam movement.",
+        "evidence": "Key checks: Twin Strike, Twisted Fusion, Duplicate, Shadow Nova (Vaelgor). Deaths 24, avoidable 8."
+      }
+    ],
+    "roleScores": {
+      "tanks": 33,
+      "healers": 0,
+      "dps": 0
+    },
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-twin_strike",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "mechanic": "Twin Strike",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Mattank, Cutedwarfxd."
+        ],
+        "recommendation": "Never have same boss for more than 3 strikes",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-shadow_nova",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 2: Dark Synchronization",
+        "mechanic": "Shadow Nova (Vaelgor)",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Use raid CDs, healers top off before",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-dispel-essence_drain",
+        "category": "dispel",
+        "status": "at_risk",
+        "owner": "Wubers, Tanishalfelf",
+        "phase": "Phase 2: Dark Synchronization",
+        "mechanic": "Essence Drain (Ezzorak)",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Dispel quickly, priority on healers/tanks",
+        "confidence": "medium"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 3,
+      "missingCategories": [
+        "Dispels",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/3 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Dispels, Raid CDs, Tank swaps before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Demonnova",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Reilin",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Dotterparty",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Xcat",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Fabed",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Dramonk",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      }
+    ],
+    "killProbability": 85,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "bossrule-twins-baseline",
+        "kind": "raid_strategy",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 430,
+        "owner": "Raid, Healers + RL, Tanks",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Twisted Fusion, Duplicate control, and Shadow Nova stabilization are the wipe gate on the twins.",
+        "evidence": "The twins are mainly a coordination fight around movement, duplicates, and stabilization.",
+        "confidenceReasons": [
+          "The twins encounter is defined by Duplicate control and Twisted Fusion movement.",
+          "The reviewed fixtures expect coordination-first language on this boss."
+        ],
+        "recommendation": "Fix beam discipline, duplicate control, and Shadow Nova coverage before changing throughput targets.",
+        "category": "strategy"
+      },
+      {
+        "id": "assignment-assignment-tanks-twin_strike",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Twin Strike needs a clearer assignment plan.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Mattank, Cutedwarfxd."
+        ],
+        "recommendation": "Never have same boss for more than 3 strikes",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 79,
+        "owner": "Reilin, Spacekraken",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "282K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "282K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 2: Dark Synchronization."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 132,
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull.",
+          "2 tank death(s) were recorded.",
+          "Mattank reliability score: 42."
+        ],
+        "recommendation": "Never have same boss for more than 3 strikes",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-dispel",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Wubers, Tanishalfelf",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Dispel ownership is still too loose for this phase.",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Dispel quickly, priority on healers/tanks",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-melee-Hiddenmight",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Hiddenmight",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Hiddenmight needs cleaner melee uptime without greedy deaths.",
+        "evidence": "50% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Hiddenmight active time is 50%.",
+          "Hiddenmight died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Boxiebrown",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Boxiebrown",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Boxiebrown needs cleaner movement and uptime discipline.",
+        "evidence": "49% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Boxiebrown active time is 49%.",
+          "Boxiebrown died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Reilin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 64,
+        "owner": "Reilin",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Reilin needs a throughput cleanup.",
+        "evidence": "142K below the expected DPS target.",
+        "confidenceReasons": [
+          "142K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Spacekraken",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 64,
+        "owner": "Spacekraken",
+        "phase": "Phase 2: Dark Synchronization",
+        "summary": "Spacekraken needs a throughput cleanup.",
+        "evidence": "140K below the expected DPS target.",
+        "confidenceReasons": [
+          "140K DPS below the expected target.",
+          "Current issue marker: Low activity: 61%."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: Low activity: 61%.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Twin Assault",
+        "status": "close",
+        "summary": "Phase 1: Twin Assault is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Dark Synchronization",
+        "status": "not_ready",
+        "summary": "Phase 2: Dark Synchronization is failing on duplicate control or beam movement.",
+        "blocker": "The synchronized phase is still breaking on movement and coordination.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Phase 2: Dark Synchronization is not ready yet.",
+        "owner": "Raid",
+        "phase": "Phase 2: Dark Synchronization",
+        "reason": "The synchronized phase is still breaking on movement and coordination."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Twin Strike is the most likely repeat wipe point.",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 2: Dark Synchronization",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    }
+  }
+}

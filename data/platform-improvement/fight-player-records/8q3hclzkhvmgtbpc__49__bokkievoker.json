@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:preservation",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__bokkievoker",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 1,
+  "name": "Bokkievoker",
+  "role": "healer",
+  "className": "Evoker",
+  "spec": "Preservation",
+  "talents": [],
+  "itemLevel": 257,
+  "server": "Sargeras",
+  "dps": 16232,
+  "hps": 100133,
+  "dtps": 0,
+  "activeTime": 65,
+  "deaths": 0,
+  "rankPercent": 57,
+  "avoidableDamageTaken": 0
+}

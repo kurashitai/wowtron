@@ -1,0 +1,39 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__28__vorasius",
+  "bossName": "Vorasius",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 28,
+  "fixtureType": "kill_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Void Scream",
+      "interrupt",
+      "Consume Essence",
+      "Shadow Feast"
+    ],
+    "expectedCauseChainIncludes": [
+      "kick rotation",
+      "orb soaks",
+      "Shadow Feast",
+      "stable assignments"
+    ],
+    "expectedOwners": [
+      "Assigned kickers",
+      "Assigned soakers",
+      "Healers + RL"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "random deaths",
+      "healing issue only"
+    ],
+    "reviewerNotes": "This is a kill reference. The analyzer should read it as a fight won through stable interrupt coverage, clean orb soak execution, and controlled healing throughput during Shadow Feast rather than generic damage racing."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

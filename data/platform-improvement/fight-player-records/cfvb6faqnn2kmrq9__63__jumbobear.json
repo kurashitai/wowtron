@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:guardian",
+  "buildSource": "spec_fallback",
+  "key": "cFVb6faqnN2kMrQ9__63__jumbobear",
+  "fightKey": "cFVb6faqnN2kMrQ9__63",
+  "actorId": 361,
+  "name": "Jumbobear",
+  "role": "tank",
+  "className": "Druid",
+  "spec": "Guardian",
+  "talents": [],
+  "itemLevel": 261,
+  "server": "Illidan",
+  "dps": 54375,
+  "hps": 31158,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 83,
+  "avoidableDamageTaken": 0
+}

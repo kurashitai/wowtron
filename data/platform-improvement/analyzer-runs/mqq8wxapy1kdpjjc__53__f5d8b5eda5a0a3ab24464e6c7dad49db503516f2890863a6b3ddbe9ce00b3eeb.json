@@ -1,0 +1,1808 @@
+{
+  "key": "mQq8WxapY1KDPjJc__53__f5d8b5eda5a0a3ab24464e6c7dad49db503516f2890863a6b3ddbe9ce00b3eeb",
+  "fightKey": "mQq8WxapY1KDPjJc__53",
+  "reportCode": "mQq8WxapY1KDPjJc",
+  "fightId": 53,
+  "bossName": "Alleria Windrunner",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T14:13:42.184Z",
+  "summaryText": "Alleria is still gated by Barrage ownership and Void Collapse coverage.",
+  "topOwner": "Healers + RL",
+  "topPhase": "Phase 1: Hunter's Pressure",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "alleria windrunner::53",
+    "fightId": 53,
+    "bossName": "Alleria Windrunner",
+    "difficulty": "Unknown",
+    "reportCode": "mQq8WxapY1KDPjJc",
+    "recordedAt": "2026-03-27T14:13:41.947Z",
+    "kill": false,
+    "bossHP": 100,
+    "duration": 6,
+    "briefInsights": [
+      {
+        "id": "bossrule-alleria-coverage",
+        "kind": "raid_cooldown",
+        "severity": "critical",
+        "confidence": "medium",
+        "priorityScore": 146,
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Alleria is still gated by Barrage ownership and Void Collapse coverage.",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "The current public MQD corpus shows Alleria as an assignment and healer-coverage fight first.",
+          "The static boss rules for Alleria emphasize soak ownership and healer coverage over raw throughput blame.",
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Pre-assign Barrage coverage, then map healer CDs to every dangerous Void Collapse before changing damage goals.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "critical",
+        "confidence": "medium",
+        "priorityScore": 114,
+        "owner": "Shiftingg, Killnye",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "355K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "355K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 1: Hunter's Pressure."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      },
+      {
+        "id": "assignment-assignment-interrupt-windrunner_adds",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Windrunner Adds needs a clearer assignment plan.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign kicks and swap to adds instantly before they stack pressure on the raid.",
+        "category": "strategy"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-utility-interrupt",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Utility players are still losing control of key casts.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign kicks and swap to adds instantly before they stack pressure on the raid.",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Duckchow, Kmandeathk",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Senegosa was at 45% active time with 0 death(s).",
+        "confidenceReasons": [
+          "Senegosa active time: 45%."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-melee-Nadriin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Nadriin",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Nadriin needs cleaner melee uptime without greedy deaths.",
+        "evidence": "47% active time, 0 death(s).",
+        "confidenceReasons": [
+          "Nadriin active time is 47%."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Jonnyrollove",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 76,
+        "owner": "Jonnyrollove",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Jonnyrollove needs cleaner movement and uptime discipline.",
+        "evidence": "42% active time, 0 death(s).",
+        "confidenceReasons": [
+          "Jonnyrollove active time is 42%."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Shiftingg",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 68,
+        "owner": "Shiftingg",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Shiftingg needs a throughput cleanup.",
+        "evidence": "180K below the expected DPS target.",
+        "confidenceReasons": [
+          "180K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Killnye",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 67,
+        "owner": "Killnye",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Killnye needs a throughput cleanup.",
+        "evidence": "175K below the expected DPS target.",
+        "confidenceReasons": [
+          "175K DPS below the expected target.",
+          "Current issue marker: Low activity: 79%."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: Low activity: 79%.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-interrupt-windrunner_adds",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "mechanic": "Windrunner Adds",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign kicks and swap to adds instantly before they stack pressure on the raid.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-void_collapse",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Hunter's Pressure",
+        "mechanic": "Void Collapse",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map raid cooldowns here and protect the raid before movement overlap windows.",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-soak-windrunner_barrage",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 1: Hunter's Pressure",
+        "mechanic": "Windrunner Barrage",
+        "evidence": "The soak plan is incomplete for Windrunner Barrage.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Pre-assign soak groups and use personals when barrage overlaps with movement.",
+        "confidence": "medium"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Hunter's Pressure",
+        "status": "met",
+        "summary": "Phase 1: Hunter's Pressure met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Dark Arrow Volley, Ranger's Mark, Shadowstep Pursuit."
+      },
+      {
+        "phase": "Phase 2: Windrunner Reinforcements",
+        "status": "met",
+        "summary": "Phase 2: Windrunner Reinforcements is stable enough to keep progressing Alleria.",
+        "evidence": "Key checks: Windrunner Adds, Void Collapse, Windrunner Barrage. Deaths 0, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Final Hunt",
+        "status": "met",
+        "summary": "Phase 3: Final Hunt met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Dark Arrow Volley, Void Collapse, Shadowstep Pursuit."
+      }
+    ],
+    "causeChains": [
+      "Movement or add control slipped -> Void Collapse landed into an unstable raid -> the pull failed before a clean final phase.",
+      "Windrunner Adds assignment slipped in Phase 1: Hunter's Pressure. -> 0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan. -> The raid did not recover the failed assignment cleanly. -> The failed assignment snowballed into a full wipe.",
+      "Throughput missed by roughly 355K DPS across the main underperformers. -> The boss stayed above 100% and another dangerous cycle had to be played. -> The raid had to absorb extra mechanics and healing pressure instead of ending the phase. -> The extra cycle became the wipe window."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Hunter's Pressure",
+        "status": "ready",
+        "summary": "Phase 1: Hunter's Pressure met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 2: Windrunner Reinforcements",
+        "status": "ready",
+        "summary": "Phase 2: Windrunner Reinforcements is stable enough to keep progressing Alleria.",
+        "blocker": "Add control and coverage look stable enough here.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Final Hunt",
+        "status": "ready",
+        "summary": "Phase 3: Final Hunt met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Alleria is still gated by Barrage ownership and Void Collapse coverage.",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Hunter's Pressure",
+        "reason": "No raid-cooldown plan is defined for this boss."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Windrunner Adds is the most likely repeat wipe point.",
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "reason": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 3,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Raid CDs"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        }
+      ],
+      "summary": "0/3 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Raid CDs before the next pull."
+    },
+    "avgReliability": 67,
+    "killProbability": 20,
+    "totalDeaths": 0,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Stinkbone",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Affliction",
+        "talents": [],
+        "reliabilityScore": 73,
+        "activeTime": 86,
+        "deaths": 0
+      },
+      {
+        "name": "Addopr",
+        "role": "dps",
+        "className": "Priest",
+        "spec": "Shadow",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 100,
+        "deaths": 0
+      },
+      {
+        "name": "Elrindre",
+        "role": "dps",
+        "className": "Druid",
+        "spec": "Feral",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 100,
+        "deaths": 0
+      },
+      {
+        "name": "Shiftingg",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Fury",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Kmandeathk",
+        "role": "healer",
+        "className": "DeathKnight",
+        "spec": "Unholy",
+        "talents": [],
+        "reliabilityScore": 77,
+        "activeTime": 90,
+        "deaths": 0
+      },
+      {
+        "name": "Mabreezy",
+        "role": "dps",
+        "className": "Evoker",
+        "spec": "Augmentation",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 100,
+        "deaths": 0
+      },
+      {
+        "name": "Pumprstltskn",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 74,
+        "activeTime": 87,
+        "deaths": 0
+      },
+      {
+        "name": "Fps",
+        "role": "dps",
+        "className": "DemonHunter",
+        "spec": "Devourer",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 98,
+        "deaths": 0
+      },
+      {
+        "name": "Ppd",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Survival",
+        "talents": [],
+        "reliabilityScore": 75,
+        "activeTime": 88,
+        "deaths": 0
+      },
+      {
+        "name": "Muffgobln",
+        "role": "dps",
+        "className": "Shaman",
+        "spec": "Elemental",
+        "talents": [],
+        "reliabilityScore": 66,
+        "activeTime": 79,
+        "deaths": 0
+      },
+      {
+        "name": "Yarrgiw",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Demonology",
+        "talents": [],
+        "reliabilityScore": 53,
+        "activeTime": 66,
+        "deaths": 0
+      },
+      {
+        "name": "Geckodisco",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 69,
+        "activeTime": 82,
+        "deaths": 0
+      },
+      {
+        "name": "Scottbrexit",
+        "role": "tank",
+        "className": "DeathKnight",
+        "spec": "Blood",
+        "talents": [],
+        "reliabilityScore": 36,
+        "activeTime": 49,
+        "deaths": 0
+      },
+      {
+        "name": "Splatfrog",
+        "role": "dps",
+        "className": "Druid",
+        "spec": "Balance",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 97,
+        "deaths": 0
+      },
+      {
+        "name": "Kotoong",
+        "role": "dps",
+        "className": "Shaman",
+        "spec": "Enhancement",
+        "talents": [],
+        "reliabilityScore": 76,
+        "activeTime": 89,
+        "deaths": 0
+      },
+      {
+        "name": "Duckchow",
+        "role": "healer",
+        "className": "Shaman",
+        "spec": "Restoration",
+        "talents": [],
+        "reliabilityScore": 75,
+        "activeTime": 88,
+        "deaths": 0
+      },
+      {
+        "name": "Senegosa",
+        "role": "healer",
+        "className": "Evoker",
+        "spec": "Preservation",
+        "talents": [],
+        "reliabilityScore": 32,
+        "activeTime": 45,
+        "deaths": 0
+      },
+      {
+        "name": "Killnye",
+        "role": "dps",
+        "className": "DemonHunter",
+        "spec": "Havoc",
+        "talents": [],
+        "reliabilityScore": 66,
+        "activeTime": 79,
+        "deaths": 0
+      },
+      {
+        "name": "Emmalizheart",
+        "role": "dps",
+        "className": "DemonHunter",
+        "spec": "Devourer",
+        "talents": [],
+        "reliabilityScore": 53,
+        "activeTime": 66,
+        "deaths": 0
+      },
+      {
+        "name": "Nadriin",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Survival",
+        "talents": [],
+        "reliabilityScore": 34,
+        "activeTime": 47,
+        "deaths": 0
+      },
+      {
+        "name": "Fmbcl",
+        "role": "dps",
+        "className": "Priest",
+        "spec": "Shadow",
+        "talents": [],
+        "reliabilityScore": 76,
+        "activeTime": 89,
+        "deaths": 0
+      },
+      {
+        "name": "Araeda",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 75,
+        "activeTime": 88,
+        "deaths": 0
+      },
+      {
+        "name": "Jonnyrollove",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 29,
+        "activeTime": 42,
+        "deaths": 0
+      },
+      {
+        "name": "Arvana",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 98,
+        "deaths": 0
+      },
+      {
+        "name": "Nicksevokerw",
+        "role": "healer",
+        "className": "Evoker",
+        "spec": "Preservation",
+        "talents": [],
+        "reliabilityScore": 73,
+        "activeTime": 86,
+        "deaths": 0
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": false,
+      "whyWiped": [
+        "Boss still had 100% HP remaining.",
+        "Roughly 4.6M DPS was lost to prep gaps.",
+        "18 players were below the expected output."
+      ],
+      "keyIssues": []
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": []
+    },
+    "performance": {
+      "raidDPS": 1958,
+      "raidHPS": 129403,
+      "requiredDPS": 2895000,
+      "dpsGap": 2893047,
+      "lowPerformers": [
+        {
+          "player": "Shiftingg",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 2,
+          "gap": 179998,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Killnye",
+          "class": "DemonHunter",
+          "expectedDPS": 175000,
+          "actualDPS": 1,
+          "gap": 174999,
+          "reason": "Low activity: 79%"
+        },
+        {
+          "player": "Kotoong",
+          "class": "Shaman",
+          "expectedDPS": 170000,
+          "actualDPS": 1,
+          "gap": 169999,
+          "reason": "Low activity: 89%"
+        },
+        {
+          "player": "Elrindre",
+          "class": "Druid",
+          "expectedDPS": 170000,
+          "actualDPS": 2,
+          "gap": 169998,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Ppd",
+          "class": "Hunter",
+          "expectedDPS": 165000,
+          "actualDPS": 1,
+          "gap": 164999,
+          "reason": "Low activity: 88%"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Stinkbone",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "role": "dps",
+        "dps": 1932,
+        "hps": 0,
+        "rankPercent": 100,
+        "itemLevel": 244.39285278320312,
+        "server": "MoonGuard",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 86,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 73,
+        "improvementFocus": "Low activity: 86%"
+      },
+      {
+        "name": "Addopr",
+        "class": "Priest",
+        "spec": "Shadow",
+        "role": "dps",
+        "dps": 2,
+        "hps": 13072,
+        "rankPercent": 94,
+        "itemLevel": 246,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 100,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Elrindre",
+        "class": "Druid",
+        "spec": "Feral",
+        "role": "dps",
+        "dps": 2,
+        "hps": 0,
+        "rankPercent": 88,
+        "itemLevel": 248,
+        "server": "Mal'Ganis",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 100,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Shiftingg",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 2,
+        "hps": 11414,
+        "rankPercent": 82,
+        "itemLevel": 251,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Kmandeathk",
+        "class": "DeathKnight",
+        "spec": "Unholy",
+        "role": "healer",
+        "dps": 2,
+        "hps": 702,
+        "rankPercent": 0,
+        "itemLevel": 243,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 90,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 77,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Mabreezy",
+        "class": "Evoker",
+        "spec": "Augmentation",
+        "role": "dps",
+        "dps": 2,
+        "hps": 93,
+        "rankPercent": 76,
+        "itemLevel": 244,
+        "server": "BleedingHollow",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 100,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Pumprstltskn",
+        "class": "Warlock",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 2,
+        "hps": 0,
+        "rankPercent": 71,
+        "itemLevel": 243,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 87,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 74,
+        "improvementFocus": "Low activity: 87%"
+      },
+      {
+        "name": "Fps",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 65,
+        "itemLevel": 249,
+        "server": "Zul'jin",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Ppd",
+        "class": "Hunter",
+        "spec": "Survival",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 59,
+        "itemLevel": 244,
+        "server": "Thrall",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 88,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 75,
+        "improvementFocus": "Low activity: 88%"
+      },
+      {
+        "name": "Muffgobln",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 53,
+        "itemLevel": 247,
+        "server": "Stormrage",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 79,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 66,
+        "improvementFocus": "Low activity: 79%"
+      },
+      {
+        "name": "Yarrgiw",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 47,
+        "itemLevel": 246,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 66,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 53,
+        "improvementFocus": "Low activity: 66%"
+      },
+      {
+        "name": "Geckodisco",
+        "class": "Warrior",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 1,
+        "hps": 6780,
+        "rankPercent": 41,
+        "itemLevel": 240,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 82,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 69,
+        "improvementFocus": "Low activity: 82%"
+      },
+      {
+        "name": "Scottbrexit",
+        "class": "DeathKnight",
+        "spec": "Blood",
+        "role": "tank",
+        "dps": 1,
+        "hps": 1188,
+        "rankPercent": 0,
+        "itemLevel": 246,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 49,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 36,
+        "improvementFocus": "Low activity: 49%"
+      },
+      {
+        "name": "Splatfrog",
+        "class": "Druid",
+        "spec": "Balance",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 35,
+        "itemLevel": 245,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 97,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Kotoong",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 29,
+        "itemLevel": 241,
+        "server": "Kil'jaeden",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 89,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 76,
+        "improvementFocus": "Low activity: 89%"
+      },
+      {
+        "name": "Duckchow",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "role": "healer",
+        "dps": 1,
+        "hps": 50506,
+        "rankPercent": 0,
+        "itemLevel": 243,
+        "server": "CenarionCircle",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 88,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 75,
+        "improvementFocus": "Low activity: 88%"
+      },
+      {
+        "name": "Senegosa",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 1,
+        "hps": 5905,
+        "rankPercent": 0,
+        "itemLevel": 245,
+        "server": "Proudmoore",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 45,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 32,
+        "improvementFocus": "Low activity: 45%"
+      },
+      {
+        "name": "Killnye",
+        "class": "DemonHunter",
+        "spec": "Havoc",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 24,
+        "itemLevel": 250,
+        "server": "EmeraldDream",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 79,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 66,
+        "improvementFocus": "Low activity: 79%"
+      },
+      {
+        "name": "Emmalizheart",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 1,
+        "hps": 0,
+        "rankPercent": 18,
+        "itemLevel": 243,
+        "server": "WyrmrestAccord",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 66,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 53,
+        "improvementFocus": "Low activity: 66%"
+      },
+      {
+        "name": "Nadriin",
+        "class": "Hunter",
+        "spec": "Survival",
+        "role": "dps",
+        "dps": 1,
+        "hps": 927,
+        "rankPercent": 12,
+        "itemLevel": 242,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 47,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 34,
+        "improvementFocus": "Low activity: 47%"
+      },
+      {
+        "name": "Fmbcl",
+        "class": "Priest",
+        "spec": "Shadow",
+        "role": "dps",
+        "dps": 1,
+        "hps": 411,
+        "rankPercent": 6,
+        "itemLevel": 245,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 89,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 76,
+        "improvementFocus": "Low activity: 89%"
+      },
+      {
+        "name": "Araeda",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 0,
+        "hps": 8926,
+        "rankPercent": 0,
+        "itemLevel": 242,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 88,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 75,
+        "improvementFocus": "Low activity: 88%"
+      },
+      {
+        "name": "Jonnyrollove",
+        "class": "Warlock",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 0,
+        "hps": 979,
+        "rankPercent": 0,
+        "itemLevel": 241,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 42,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 29,
+        "improvementFocus": "Low activity: 42%"
+      },
+      {
+        "name": "Arvana",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 0,
+        "hps": 18490,
+        "rankPercent": 0,
+        "itemLevel": 243,
+        "server": "Tichondrius",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Nicksevokerw",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 0,
+        "hps": 10010,
+        "rankPercent": 0,
+        "itemLevel": 244,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 86,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 73,
+        "improvementFocus": "Low activity: 86%"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Fps",
+        "Ppd",
+        "Muffgobln",
+        "Addopr",
+        "Yarrgiw",
+        "Geckodisco",
+        "Scottbrexit",
+        "Elrindre",
+        "Shiftingg",
+        "Splatfrog",
+        "Kotoong",
+        "Duckchow",
+        "Kmandeathk",
+        "Senegosa",
+        "Mabreezy",
+        "Pumprstltskn",
+        "Killnye",
+        "Stinkbone",
+        "Emmalizheart",
+        "Nadriin",
+        "Fmbcl",
+        "Araeda",
+        "Jonnyrollove",
+        "Arvana",
+        "Nicksevokerw"
+      ],
+      "missingFood": [
+        "Fps",
+        "Ppd",
+        "Muffgobln",
+        "Addopr",
+        "Yarrgiw",
+        "Geckodisco",
+        "Scottbrexit",
+        "Elrindre",
+        "Shiftingg",
+        "Splatfrog",
+        "Kotoong",
+        "Duckchow",
+        "Kmandeathk",
+        "Senegosa",
+        "Mabreezy",
+        "Pumprstltskn",
+        "Killnye",
+        "Stinkbone",
+        "Emmalizheart",
+        "Nadriin",
+        "Fmbcl",
+        "Araeda",
+        "Jonnyrollove",
+        "Arvana",
+        "Nicksevokerw"
+      ],
+      "missingPotion": [
+        "Fps",
+        "Ppd",
+        "Muffgobln",
+        "Addopr",
+        "Yarrgiw",
+        "Geckodisco",
+        "Scottbrexit",
+        "Elrindre",
+        "Shiftingg",
+        "Splatfrog",
+        "Kotoong",
+        "Duckchow",
+        "Kmandeathk",
+        "Senegosa",
+        "Mabreezy",
+        "Pumprstltskn",
+        "Killnye",
+        "Stinkbone",
+        "Emmalizheart",
+        "Nadriin",
+        "Fmbcl",
+        "Araeda",
+        "Jonnyrollove",
+        "Arvana",
+        "Nicksevokerw"
+      ],
+      "missingRune": [
+        "Fps",
+        "Ppd",
+        "Muffgobln",
+        "Addopr",
+        "Yarrgiw",
+        "Geckodisco",
+        "Scottbrexit",
+        "Elrindre",
+        "Shiftingg",
+        "Splatfrog",
+        "Kotoong",
+        "Duckchow",
+        "Kmandeathk",
+        "Senegosa",
+        "Mabreezy",
+        "Pumprstltskn",
+        "Killnye",
+        "Stinkbone",
+        "Emmalizheart",
+        "Nadriin",
+        "Fmbcl",
+        "Araeda",
+        "Jonnyrollove",
+        "Arvana",
+        "Nicksevokerw"
+      ],
+      "estimatedDPSLoss": 4625000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": true,
+        "source": "Muffgobln",
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": true,
+        "source": "Addopr",
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": true,
+        "source": "Geckodisco",
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": false,
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": true,
+        "source": "Elrindre",
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": false,
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 55,
+      "dps": 0,
+      "survival": 100,
+      "mechanics": 100,
+      "consumables": 0,
+      "grade": "C"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "causeChains": [
+      "Movement or add control slipped -> Void Collapse landed into an unstable raid -> the pull failed before a clean final phase.",
+      "Windrunner Adds assignment slipped in Phase 1: Hunter's Pressure. -> 0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan. -> The raid did not recover the failed assignment cleanly. -> The failed assignment snowballed into a full wipe.",
+      "Throughput missed by roughly 355K DPS across the main underperformers. -> The boss stayed above 100% and another dangerous cycle had to be played. -> The raid had to absorb extra mechanics and healing pressure instead of ending the phase. -> The extra cycle became the wipe window."
+    ],
+    "causeChainDetails": [
+      {
+        "id": "chain-assignment-assignment-interrupt-windrunner_adds",
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Windrunner Adds assignment slipped in Phase 1: Hunter's Pressure."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "The raid did not recover the failed assignment cleanly."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "The failed assignment snowballed into a full wipe."
+          }
+        ]
+      },
+      {
+        "id": "chain-throughput",
+        "owner": "Shiftingg, Killnye",
+        "phase": "Phase 1: Hunter's Pressure",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Throughput missed by roughly 355K DPS across the main underperformers."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "The boss stayed above 100% and another dangerous cycle had to be played."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "The raid had to absorb extra mechanics and healing pressure instead of ending the phase."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "The extra cycle became the wipe window."
+          }
+        ]
+      }
+    ],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Alleria is still gated by Barrage ownership and Void Collapse coverage.",
+        "owner": "Healers + RL",
+        "reason": "No raid-cooldown plan is defined for this boss. Pre-assign Barrage coverage, then map healer CDs to every dangerous Void Collapse before changing damage goals."
+      },
+      {
+        "priority": 2,
+        "title": "Throughput is below the level needed for a clean progression pull.",
+        "owner": "Shiftingg, Killnye",
+        "reason": "355K estimated DPS gap across the biggest underperformers. Review uptime, potion usage, and burst alignment before the next pull."
+      },
+      {
+        "priority": 3,
+        "title": "Windrunner Adds needs a clearer assignment plan.",
+        "owner": "Fps, Addopr, Elrindre",
+        "reason": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan. Assign kicks and swap to adds instantly before they stack pressure on the raid."
+      }
+    ],
+    "wipeCause": {
+      "primary": "throughput",
+      "details": "Effective damage and healing stayed below what the checkpoint required."
+    },
+    "repeatedMistakes": [],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Hunter's Pressure",
+        "status": "met",
+        "summary": "Phase 1: Hunter's Pressure met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Dark Arrow Volley, Ranger's Mark, Shadowstep Pursuit."
+      },
+      {
+        "phase": "Phase 2: Windrunner Reinforcements",
+        "status": "met",
+        "summary": "Phase 2: Windrunner Reinforcements is stable enough to keep progressing Alleria.",
+        "evidence": "Key checks: Windrunner Adds, Void Collapse, Windrunner Barrage. Deaths 0, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Final Hunt",
+        "status": "met",
+        "summary": "Phase 3: Final Hunt met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Dark Arrow Volley, Void Collapse, Shadowstep Pursuit."
+      }
+    ],
+    "roleScores": {
+      "tanks": 36,
+      "healers": 69,
+      "dps": 69
+    },
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-interrupt-windrunner_adds",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "mechanic": "Windrunner Adds",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign kicks and swap to adds instantly before they stack pressure on the raid.",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-void_collapse",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Hunter's Pressure",
+        "mechanic": "Void Collapse",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map raid cooldowns here and protect the raid before movement overlap windows.",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-soak-windrunner_barrage",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 1: Hunter's Pressure",
+        "mechanic": "Windrunner Barrage",
+        "evidence": "The soak plan is incomplete for Windrunner Barrage.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Pre-assign soak groups and use personals when barrage overlaps with movement.",
+        "confidence": "medium"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 3,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Raid CDs"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        }
+      ],
+      "summary": "0/3 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Raid CDs before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Fps",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Ppd",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Muffgobln",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Addopr",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Yarrgiw",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Geckodisco",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      }
+    ],
+    "killProbability": 20,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "bossrule-alleria-coverage",
+        "kind": "raid_cooldown",
+        "severity": "critical",
+        "confidence": "medium",
+        "priorityScore": 146,
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Alleria is still gated by Barrage ownership and Void Collapse coverage.",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "The current public MQD corpus shows Alleria as an assignment and healer-coverage fight first.",
+          "The static boss rules for Alleria emphasize soak ownership and healer coverage over raw throughput blame.",
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Pre-assign Barrage coverage, then map healer CDs to every dangerous Void Collapse before changing damage goals.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "critical",
+        "confidence": "medium",
+        "priorityScore": 114,
+        "owner": "Shiftingg, Killnye",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "355K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "355K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 1: Hunter's Pressure."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      },
+      {
+        "id": "assignment-assignment-interrupt-windrunner_adds",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Windrunner Adds needs a clearer assignment plan.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign kicks and swap to adds instantly before they stack pressure on the raid.",
+        "category": "strategy"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-utility-interrupt",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Utility players are still losing control of key casts.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign kicks and swap to adds instantly before they stack pressure on the raid.",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Duckchow, Kmandeathk",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Senegosa was at 45% active time with 0 death(s).",
+        "confidenceReasons": [
+          "Senegosa active time: 45%."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-melee-Nadriin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Nadriin",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Nadriin needs cleaner melee uptime without greedy deaths.",
+        "evidence": "47% active time, 0 death(s).",
+        "confidenceReasons": [
+          "Nadriin active time is 47%."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Jonnyrollove",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 76,
+        "owner": "Jonnyrollove",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Jonnyrollove needs cleaner movement and uptime discipline.",
+        "evidence": "42% active time, 0 death(s).",
+        "confidenceReasons": [
+          "Jonnyrollove active time is 42%."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Shiftingg",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 68,
+        "owner": "Shiftingg",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Shiftingg needs a throughput cleanup.",
+        "evidence": "180K below the expected DPS target.",
+        "confidenceReasons": [
+          "180K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Killnye",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 67,
+        "owner": "Killnye",
+        "phase": "Phase 1: Hunter's Pressure",
+        "summary": "Killnye needs a throughput cleanup.",
+        "evidence": "175K below the expected DPS target.",
+        "confidenceReasons": [
+          "175K DPS below the expected target.",
+          "Current issue marker: Low activity: 79%."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: Low activity: 79%.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Hunter's Pressure",
+        "status": "ready",
+        "summary": "Phase 1: Hunter's Pressure met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 2: Windrunner Reinforcements",
+        "status": "ready",
+        "summary": "Phase 2: Windrunner Reinforcements is stable enough to keep progressing Alleria.",
+        "blocker": "Add control and coverage look stable enough here.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Final Hunt",
+        "status": "ready",
+        "summary": "Phase 3: Final Hunt met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Alleria is still gated by Barrage ownership and Void Collapse coverage.",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Hunter's Pressure",
+        "reason": "No raid-cooldown plan is defined for this boss."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Windrunner Adds is the most likely repeat wipe point.",
+        "owner": "Fps, Addopr, Elrindre",
+        "phase": "Phase 1: Hunter's Pressure",
+        "reason": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan."
+      }
+    }
+  }
+}

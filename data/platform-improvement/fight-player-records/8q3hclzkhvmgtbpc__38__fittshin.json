@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:fury",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__fittshin",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 8,
+  "name": "Fittshin",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Fury",
+  "talents": [],
+  "itemLevel": 252,
+  "server": "Sargeras",
+  "dps": 57011,
+  "hps": 4350,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 54,
+  "avoidableDamageTaken": 0
+}

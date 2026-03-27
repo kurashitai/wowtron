@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:augmentation",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__foresvoker",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 385,
+  "name": "Foresvoker",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Augmentation",
+  "talents": [],
+  "itemLevel": 259,
+  "server": "Sargeras",
+  "dps": 66439,
+  "hps": 10489,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

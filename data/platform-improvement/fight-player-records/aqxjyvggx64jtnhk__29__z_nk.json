@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:balance",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__z_nk",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 2,
+  "name": "Zünk",
+  "role": "dps",
+  "className": "Druid",
+  "spec": "Balance",
+  "talents": [],
+  "itemLevel": 257,
+  "server": "Stormrage",
+  "dps": 56975,
+  "hps": 13444,
+  "dtps": 0,
+  "activeTime": 88,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -43,6 +43,9 @@ local-*
 .claude
 .z-ai-config
 dev.log
+.wowtron-cache/
+.wowtron-dev.pid
+crown*.json
 test
 prompt
 

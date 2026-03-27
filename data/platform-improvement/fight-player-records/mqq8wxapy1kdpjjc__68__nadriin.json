@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:survival",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__68__nadriin",
+  "fightKey": "mQq8WxapY1KDPjJc__68",
+  "actorId": 487,
+  "name": "Nadriin",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "Survival",
+  "talents": [],
+  "itemLevel": 242,
+  "server": "Area52",
+  "dps": 1,
+  "hps": 927,
+  "dtps": 0,
+  "activeTime": 47,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

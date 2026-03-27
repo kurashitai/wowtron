@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:brewmaster",
+  "buildSource": "spec_fallback",
+  "key": "cFVb6faqnN2kMrQ9__63__brewforlife",
+  "fightKey": "cFVb6faqnN2kMrQ9__63",
+  "actorId": 16,
+  "name": "Brewforlife",
+  "role": "tank",
+  "className": "Monk",
+  "spec": "Brewmaster",
+  "talents": [],
+  "itemLevel": 266,
+  "server": "Sargeras",
+  "dps": 47573,
+  "hps": 42464,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 55,
+  "avoidableDamageTaken": 0
+}

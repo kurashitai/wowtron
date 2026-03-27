@@ -1,3 +1,5 @@
+import { PrismaPg } from '@prisma/adapter-pg';
+
 type PrismaClientLike = {
   $disconnect?: () => Promise<void>;
 };
@@ -13,7 +15,13 @@ function createPrismaClient(): PrismaClientLike | null {
     const prismaModule = require('@prisma/client');
     const PrismaClient = prismaModule?.PrismaClient;
     if (!PrismaClient) return null;
-    return new PrismaClient({ log: ['query'] });
+    const connectionString = process.env.DATABASE_URL;
+    if (!connectionString) {
+      return new PrismaClient({ log: ['query'] });
+    }
+
+    const adapter = new PrismaPg({ connectionString });
+    return new PrismaClient({ adapter, log: ['query'] });
   } catch {
     // Prisma client is optional in local/dev environments where `prisma generate` was not run.
     return null;

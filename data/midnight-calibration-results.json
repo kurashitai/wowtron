@@ -1,0 +1,115 @@
+{
+  "summary": {
+    "generatedAt": "2026-03-27T14:14:01.337Z",
+    "fixturesPath": "data/midnight-reviewed-fixtures.json",
+    "snapshotsPath": "data/midnight-calibration-snapshots.json",
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "averageScore": 98
+  },
+  "results": [
+    {
+      "fixtureId": "imperator-averzian-8q3hcLzkHVmGtbpC-61",
+      "bossName": "Imperator Averzian",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 61,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "imperator-averzian-cFVb6faqnN2kMrQ9-63",
+      "bossName": "Imperator Averzian",
+      "code": "cFVb6faqnN2kMrQ9",
+      "fightId": 63,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "vorasius-r3xjWwKB6X7F8ALT-65",
+      "bossName": "Vorasius",
+      "code": "r3xjWwKB6X7F8ALT",
+      "fightId": 65,
+      "score": 75,
+      "passed": true,
+      "findings": [
+        "Cause chain did not include the expected wipe story."
+      ]
+    },
+    {
+      "fixtureId": "vorasius-4wtkBjDbRQWvxYK7-28",
+      "bossName": "Vorasius",
+      "code": "4wtkBjDbRQWvxYK7",
+      "fightId": 28,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "fallen-king-salhadaar-8q3hcLzkHVmGtbpC-38",
+      "bossName": "Fallen-King Salhadaar",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 38,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "vaelgor-ezzorak-4wtkBjDbRQWvxYK7-38",
+      "bossName": "Vaelgor & Ezzorak",
+      "code": "4wtkBjDbRQWvxYK7",
+      "fightId": 38,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "vaelgor-ezzorak-4wtkBjDbRQWvxYK7-39",
+      "bossName": "Vaelgor & Ezzorak",
+      "code": "4wtkBjDbRQWvxYK7",
+      "fightId": 39,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "lightblinded-vanguard-8q3hcLzkHVmGtbpC-49",
+      "bossName": "Lightblinded Vanguard",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 49,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "crown-of-the-cosmos-8q3hcLzkHVmGtbpC-51",
+      "bossName": "Crown of the Cosmos",
+      "code": "8q3hcLzkHVmGtbpC",
+      "fightId": 51,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "alleria-windrunner-mQq8WxapY1KDPjJc-53",
+      "bossName": "Alleria Windrunner",
+      "code": "mQq8WxapY1KDPjJc",
+      "fightId": 53,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    },
+    {
+      "fixtureId": "chimaerus-the-undreamt-god-tvkgC7cVPTAQdGBh-16",
+      "bossName": "Chimaerus the Undreamt God",
+      "code": "tvkgC7cVPTAQdGBh",
+      "fightId": 16,
+      "score": 100,
+      "passed": true,
+      "findings": []
+    }
+  ],
+  "groupedFailures": []
+}

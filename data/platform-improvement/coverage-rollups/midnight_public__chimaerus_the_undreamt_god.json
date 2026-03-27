@@ -1,0 +1,27 @@
+{
+  "key": "midnight_public__chimaerus_the_undreamt_god",
+  "scope": "midnight_public",
+  "bossName": "Chimaerus the Undreamt God",
+  "zone": "Midnight",
+  "payload": {
+    "bossName": "Chimaerus the Undreamt God",
+    "zone": "Midnight",
+    "totalReports": 3,
+    "totalPulls": 3,
+    "wipes": 3,
+    "kills": 0,
+    "firstPhaseWipes": 3,
+    "latePhaseWipes": 0,
+    "finalPhaseWipes": 0,
+    "goodAssignmentSignal": 0,
+    "poorDataQuality": 3,
+    "bestWipeHP": 100,
+    "longestPullSec": 4,
+    "reportCodes": [
+      "mQq8WxapY1KDPjJc",
+      "tvkgC7cVPTAQdGBh",
+      "HQhjm9CZdAgLqbfp"
+    ]
+  },
+  "generatedAt": "2026-03-27T14:17:11.569Z"
+}

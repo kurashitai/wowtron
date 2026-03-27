@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__fabled",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 24,
+  "name": "Fabled",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 266,
+  "server": "Ghostlands",
+  "dps": 2496,
+  "hps": 3323,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:demonology",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__68__yarrgiw",
+  "fightKey": "mQq8WxapY1KDPjJc__68",
+  "actorId": 468,
+  "name": "Yarrgiw",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Demonology",
+  "talents": [],
+  "itemLevel": 246,
+  "server": "Illidan",
+  "dps": 1,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 66,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,39 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__38__vaelgor_ezzorak",
+  "bossName": "Vaelgor & Ezzorak",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 38,
+  "fixtureType": "wipe_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Twisted Fusion",
+      "Shadow Nova",
+      "Duplicate",
+      "coordination"
+    ],
+    "expectedCauseChainIncludes": [
+      "beam",
+      "Twisted Fusion",
+      "Shadow Nova",
+      "duplicate pressure"
+    ],
+    "expectedOwners": [
+      "Raid",
+      "Healers + RL",
+      "Tanks"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "gear issue",
+      "single-player blame"
+    ],
+    "reviewerNotes": "The twins wipe should be framed as coordination failure around beam handling, duplicate control, and raid damage stabilization. It should not collapse into generic throughput blame."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

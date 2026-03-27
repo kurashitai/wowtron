@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:blood",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__bfldk",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 31,
+  "name": "Bfldk",
+  "role": "tank",
+  "className": "DeathKnight",
+  "spec": "Blood",
+  "talents": [],
+  "itemLevel": 253,
+  "server": "Sargeras",
+  "dps": 45816,
+  "hps": 39678,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 33,
+  "avoidableDamageTaken": 0
+}

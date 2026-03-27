@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:fury",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__spacekraken",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 878,
+  "name": "Spacekraken",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Fury",
+  "talents": [],
+  "itemLevel": 244,
+  "server": "Ghostlands",
+  "dps": 49573,
+  "hps": 4123,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 39,
+  "avoidableDamageTaken": 0
+}

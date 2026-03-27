@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devourer",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__demonnova",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 873,
+  "name": "Demonnova",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Devourer",
+  "talents": [],
+  "itemLevel": 249,
+  "server": "Malfurion",
+  "dps": 43422,
+  "hps": 3781,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 47,
+  "avoidableDamageTaken": 0
+}

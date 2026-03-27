@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:frost",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__latrice",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 880,
+  "name": "Latrice",
+  "role": "dps",
+  "className": "Mage",
+  "spec": "Frost",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "GrizzlyHills",
+  "dps": 58751,
+  "hps": 3257,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 53,
+  "avoidableDamageTaken": 0
+}

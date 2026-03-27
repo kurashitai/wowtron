@@ -1,0 +1,44 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__28",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 28,
+  "bossName": "Vorasius",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Normal",
+  "kill": true,
+  "bossHPPercent": 0,
+  "durationSec": 313,
+  "startTime": 5982540,
+  "endTime": 6295859,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:12:52.484Z",
+  "composition": {
+    "tanks": 2,
+    "healers": 6,
+    "dps": 16,
+    "total": 24,
+    "bloodlust": false,
+    "brez": 5
+  },
+  "summary": {
+    "raidDPS": 743040,
+    "raidHPS": 295223,
+    "raidDTPS": 0,
+    "totalDamage": 232571563,
+    "totalHealing": 92405014,
+    "totalDamageTaken": 95622453,
+    "deaths": 6,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 24,
+    "deaths": 6,
+    "timelineEvents": 6,
+    "combatEvents": 5000,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

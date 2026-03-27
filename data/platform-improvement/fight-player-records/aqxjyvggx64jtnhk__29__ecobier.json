@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:destruction",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__ecobier",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 93,
+  "name": "Ecobier",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Destruction",
+  "talents": [],
+  "itemLevel": 244,
+  "server": "Stormrage",
+  "dps": 34114,
+  "hps": 6524,
+  "dtps": 0,
+  "activeTime": 82,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

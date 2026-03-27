@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__wubers",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 193,
+  "name": "Wubers",
+  "role": "healer",
+  "className": "Paladin",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "Malfurion",
+  "dps": 5246,
+  "hps": 39703,
+  "dtps": 0,
+  "activeTime": 81,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

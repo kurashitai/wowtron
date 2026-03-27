@@ -1,0 +1,1742 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__51__2f0a745755521e755e8c314878f9d1b6473a2fe853ef543d581d152ee4237ba1",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 51,
+  "bossName": "Crown of the Cosmos",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T14:13:36.168Z",
+  "summaryText": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase.",
+  "topOwner": "Healers + RL, Raid",
+  "topPhase": "Phase 3: Three Platforms",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "crown of the cosmos::51",
+    "fightId": 51,
+    "bossName": "Crown of the Cosmos",
+    "difficulty": "Heroic",
+    "reportCode": "8q3hcLzkHVmGtbpC",
+    "recordedAt": "2026-03-27T14:13:35.934Z",
+    "kill": true,
+    "bossHP": 0,
+    "duration": 537,
+    "briefInsights": [
+      {
+        "id": "bossrule-crown-baseline",
+        "kind": "raid_cooldown",
+        "severity": "info",
+        "confidence": "high",
+        "priorityScore": 151,
+        "owner": "Healers + RL, Raid",
+        "phase": "Phase 3: Three Platforms",
+        "summary": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase.",
+        "evidence": "The raid held movement and healing discipline through the final platform phase.",
+        "confidenceReasons": [
+          "Crown heavily rewards movement discipline and late-phase raid-CD planning.",
+          "The reviewed fixtures expect final platform language on this boss."
+        ],
+        "recommendation": "Keep Hero/Lust for the final platform phase and preserve the same raid-CD map.",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 47,
+        "owner": "Apoctaliptic, Fitshin",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "178K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "178K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 1: Crown Ascent."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 112,
+        "owner": "Bfldk, Jumbobear",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull."
+        ],
+        "recommendation": "Swap cleanly and plan externals before dangerous overlap windows",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Groovey, Sariphena",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Sariphena was at 25% active time with 0 death(s).",
+        "confidenceReasons": [
+          "Sariphena active time: 25%."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-ranged-Roldyy",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Roldyy",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Roldyy needs cleaner movement and uptime discipline.",
+        "evidence": "97% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Roldyy active time is 97%.",
+          "Roldyy died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-melee-Delights",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Delights",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Delights needs cleaner melee uptime without greedy deaths.",
+        "evidence": "84% active time, 0 death(s).",
+        "confidenceReasons": [
+          "Delights active time is 84%."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Apoctaliptic",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 59,
+        "owner": "Apoctaliptic",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Apoctaliptic needs a throughput cleanup.",
+        "evidence": "93K below the expected DPS target.",
+        "confidenceReasons": [
+          "93K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Fitshin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 58,
+        "owner": "Fitshin",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Fitshin needs a throughput cleanup.",
+        "evidence": "85K below the expected DPS target.",
+        "confidenceReasons": [
+          "85K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-grasp_of_emptiness",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Bfldk, Jumbobear",
+        "phase": "Phase 1: Crown Ascent",
+        "mechanic": "Grasp of Emptiness",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Bfldk, Jumbobear."
+        ],
+        "recommendation": "Swap cleanly and plan externals before dangerous overlap windows",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-devouring_cosmos",
+        "category": "raid_cd",
+        "status": "covered",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Crown Ascent",
+        "mechanic": "Devouring Cosmos",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map raid cooldowns here and protect the raid before platform pressure stacks up",
+        "confidence": "high"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Crown Ascent",
+        "status": "at_risk",
+        "summary": "Phase 1: Crown Ascent is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Void Barrage, Void Expulsion, Silverstrike Ricochet."
+      },
+      {
+        "phase": "Phase 2: Celestial Fracture",
+        "status": "met",
+        "summary": "Phase 2: Celestial Fracture met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Void Barrage, Voidstalker Sting, Grasp of Emptiness."
+      },
+      {
+        "phase": "Phase 3: Three Platforms",
+        "status": "met",
+        "summary": "Phase 3: Three Platforms is stable enough for final-burn progression.",
+        "evidence": "Key checks: Void Expulsion, Silverstrike Ricochet, Devouring Cosmos. Deaths 0, avoidable 0."
+      }
+    ],
+    "causeChains": [
+      "Devouring Cosmos coverage held -> movement and spacing stayed controlled -> the raid converted the final platform phase."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Crown Ascent",
+        "status": "close",
+        "summary": "Phase 1: Crown Ascent is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Celestial Fracture",
+        "status": "ready",
+        "summary": "Phase 2: Celestial Fracture met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Three Platforms",
+        "status": "ready",
+        "summary": "Phase 3: Three Platforms is stable enough for final-burn progression.",
+        "blocker": "Spacing and coverage are stable enough for the last phase.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase.",
+        "owner": "Healers + RL, Raid",
+        "phase": "Phase 3: Three Platforms",
+        "reason": "The raid held movement and healing discipline through the final platform phase."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Phase 1: Crown Ascent is the first place that slips if execution drops.",
+        "owner": "DPS Core",
+        "phase": "Phase 1: Crown Ascent",
+        "reason": "The raid still needs more stable output here."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 2,
+      "missingCategories": [
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/2 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Raid CDs, Tank swaps before the next pull."
+    },
+    "avgReliability": 72,
+    "killProbability": 97,
+    "totalDeaths": 1,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Liaisa",
+        "role": "dps",
+        "className": "Priest",
+        "spec": "Shadow",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 96,
+        "deaths": 0
+      },
+      {
+        "name": "Lethkar",
+        "role": "healer",
+        "className": "DeathKnight",
+        "spec": "Unholy",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 96,
+        "deaths": 0
+      },
+      {
+        "name": "Delights",
+        "role": "dps",
+        "className": "Rogue",
+        "spec": "Subtlety",
+        "talents": [],
+        "reliabilityScore": 71,
+        "activeTime": 84,
+        "deaths": 0
+      },
+      {
+        "name": "Rybackrn",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Fury",
+        "talents": [],
+        "reliabilityScore": 75,
+        "activeTime": 88,
+        "deaths": 0
+      },
+      {
+        "name": "Ghwost",
+        "role": "dps",
+        "className": "Mage",
+        "spec": "Frost",
+        "talents": [],
+        "reliabilityScore": 77,
+        "activeTime": 90,
+        "deaths": 0
+      },
+      {
+        "name": "Eregor",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Fury",
+        "talents": [],
+        "reliabilityScore": 74,
+        "activeTime": 87,
+        "deaths": 0
+      },
+      {
+        "name": "Kramdudu",
+        "role": "dps",
+        "className": "Druid",
+        "spec": "Balance",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 96,
+        "deaths": 0
+      },
+      {
+        "name": "Zabl",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 97,
+        "deaths": 0
+      },
+      {
+        "name": "Roldyy",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Demonology",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 97,
+        "deaths": 1
+      },
+      {
+        "name": "Hungnuts",
+        "role": "dps",
+        "className": "Shaman",
+        "spec": "Enhancement",
+        "talents": [],
+        "reliabilityScore": 77,
+        "activeTime": 90,
+        "deaths": 0
+      },
+      {
+        "name": "Frostrend",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Marksmanship",
+        "talents": [],
+        "reliabilityScore": 79,
+        "activeTime": 92,
+        "deaths": 0
+      },
+      {
+        "name": "Zimydh",
+        "role": "dps",
+        "className": "DemonHunter",
+        "spec": "Devourer",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 97,
+        "deaths": 0
+      },
+      {
+        "name": "Fitshin",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Marksmanship",
+        "talents": [],
+        "reliabilityScore": 79,
+        "activeTime": 92,
+        "deaths": 0
+      },
+      {
+        "name": "Phoenìxr",
+        "role": "dps",
+        "className": "Rogue",
+        "spec": "Subtlety",
+        "talents": [],
+        "reliabilityScore": 71,
+        "activeTime": 84,
+        "deaths": 0
+      },
+      {
+        "name": "Foresvoker",
+        "role": "dps",
+        "className": "Evoker",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 72,
+        "activeTime": 85,
+        "deaths": 0
+      },
+      {
+        "name": "Apoctaliptic",
+        "role": "dps",
+        "className": "Paladin",
+        "spec": "Retribution",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 97,
+        "deaths": 0
+      },
+      {
+        "name": "Bjormani",
+        "role": "dps",
+        "className": "Shaman",
+        "spec": "Elemental",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 96,
+        "deaths": 0
+      },
+      {
+        "name": "Aqv",
+        "role": "dps",
+        "className": "Evoker",
+        "spec": "Devastation",
+        "talents": [],
+        "reliabilityScore": 75,
+        "activeTime": 88,
+        "deaths": 0
+      },
+      {
+        "name": "Jumbobear",
+        "role": "tank",
+        "className": "Druid",
+        "spec": "Guardian",
+        "talents": [],
+        "reliabilityScore": 78,
+        "activeTime": 91,
+        "deaths": 0
+      },
+      {
+        "name": "Bfldk",
+        "role": "tank",
+        "className": "DeathKnight",
+        "spec": "Blood",
+        "talents": [],
+        "reliabilityScore": 75,
+        "activeTime": 88,
+        "deaths": 0
+      },
+      {
+        "name": "Groovey",
+        "role": "healer",
+        "className": "Priest",
+        "spec": "Discipline",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 96,
+        "deaths": 0
+      },
+      {
+        "name": "Bokkievoker",
+        "role": "healer",
+        "className": "Evoker",
+        "spec": "Preservation",
+        "talents": [],
+        "reliabilityScore": 43,
+        "activeTime": 56,
+        "deaths": 0
+      },
+      {
+        "name": "Yaennah",
+        "role": "healer",
+        "className": "Monk",
+        "spec": "Mistweaver",
+        "talents": [],
+        "reliabilityScore": 69,
+        "activeTime": 82,
+        "deaths": 0
+      },
+      {
+        "name": "Seagie",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 72,
+        "activeTime": 85,
+        "deaths": 0
+      },
+      {
+        "name": "Sariphena",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 12,
+        "activeTime": 25,
+        "deaths": 0
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": true,
+      "whyWiped": [],
+      "keyIssues": [],
+      "fightEfficiency": {
+        "actualTime": 537,
+        "optimalTime": 834,
+        "timeSaved": 0,
+        "dpsLoss": 4625000
+      }
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": [
+        {
+          "player": "Roldyy",
+          "ability": "Bursting Emptiness",
+          "time": 43,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        }
+      ]
+    },
+    "performance": {
+      "raidDPS": 1769716,
+      "raidHPS": 714627,
+      "requiredDPS": 2750000,
+      "dpsGap": 1246256,
+      "lowPerformers": [
+        {
+          "player": "Apoctaliptic",
+          "class": "Paladin",
+          "expectedDPS": 165000,
+          "actualDPS": 71850,
+          "gap": 93150,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Fitshin",
+          "class": "Hunter",
+          "expectedDPS": 170000,
+          "actualDPS": 85195,
+          "gap": 84805,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Eregor",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 95204,
+          "gap": 84796,
+          "reason": "Low activity: 87%"
+        },
+        {
+          "player": "Frostrend",
+          "class": "Hunter",
+          "expectedDPS": 170000,
+          "actualDPS": 87035,
+          "gap": 82965,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Rybackrn",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 97076,
+          "gap": 82924,
+          "reason": "Low activity: 88%"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Liaisa",
+        "class": "Priest",
+        "spec": "Shadow",
+        "role": "dps",
+        "dps": 117424,
+        "hps": 18275,
+        "rankPercent": 86,
+        "itemLevel": 263,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 96,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Lethkar",
+        "class": "DeathKnight",
+        "spec": "Unholy",
+        "role": "healer",
+        "dps": 100216,
+        "hps": 7078,
+        "rankPercent": 69,
+        "itemLevel": 262,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 96,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Delights",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 98132,
+        "hps": 4971,
+        "rankPercent": 59,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 84,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 71,
+        "improvementFocus": "Low activity: 84%"
+      },
+      {
+        "name": "Rybackrn",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 97076,
+        "hps": 8425,
+        "rankPercent": 81,
+        "itemLevel": 262,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 88,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 75,
+        "improvementFocus": "Low activity: 88%"
+      },
+      {
+        "name": "Ghwost",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 96093,
+        "hps": 5477,
+        "rankPercent": 29,
+        "itemLevel": 257,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 90,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 77,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Eregor",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 95204,
+        "hps": 7483,
+        "rankPercent": 77,
+        "itemLevel": 264,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 87,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 74,
+        "improvementFocus": "Low activity: 87%"
+      },
+      {
+        "name": "Kramdudu",
+        "class": "Druid",
+        "spec": "Balance",
+        "role": "dps",
+        "dps": 94994,
+        "hps": 3273,
+        "rankPercent": 72,
+        "itemLevel": 263,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 96,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Zabl",
+        "class": "Warlock",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 94593,
+        "hps": 7899,
+        "rankPercent": 39,
+        "itemLevel": 265,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 97,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Roldyy",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "role": "dps",
+        "dps": 91200,
+        "hps": 5506,
+        "rankPercent": 40,
+        "itemLevel": 261,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 97,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Hungnuts",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "role": "dps",
+        "dps": 87912,
+        "hps": 6003,
+        "rankPercent": 80,
+        "itemLevel": 264,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 90,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 77,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Frostrend",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "role": "dps",
+        "dps": 87035,
+        "hps": 10193,
+        "rankPercent": 51,
+        "itemLevel": 260,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 92,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 79,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Zimydh",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 86406,
+        "hps": 7333,
+        "rankPercent": 64,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 97,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Fitshin",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "role": "dps",
+        "dps": 85195,
+        "hps": 10074,
+        "rankPercent": 43,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 92,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 79,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Phoenìxr",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 80438,
+        "hps": 4628,
+        "rankPercent": 10,
+        "itemLevel": 259,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 84,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 71,
+        "improvementFocus": "Low activity: 84%"
+      },
+      {
+        "name": "Foresvoker",
+        "class": "Evoker",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 78788,
+        "hps": 3280,
+        "rankPercent": 11,
+        "itemLevel": 257,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 85,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 72,
+        "improvementFocus": "Low activity: 85%"
+      },
+      {
+        "name": "Apoctaliptic",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 71850,
+        "hps": 7091,
+        "rankPercent": 22,
+        "itemLevel": 258,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 97,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Bjormani",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "role": "dps",
+        "dps": 70950,
+        "hps": 4925,
+        "rankPercent": 32,
+        "itemLevel": 258,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 96,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Aqv",
+        "class": "Evoker",
+        "spec": "Devastation",
+        "role": "dps",
+        "dps": 70454,
+        "hps": 3940,
+        "rankPercent": 5,
+        "itemLevel": 258,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 88,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 75,
+        "improvementFocus": "Low activity: 88%"
+      },
+      {
+        "name": "Jumbobear",
+        "class": "Druid",
+        "spec": "Guardian",
+        "role": "tank",
+        "dps": 64860,
+        "hps": 32774,
+        "rankPercent": 90,
+        "itemLevel": 259,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 91,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 78,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Bfldk",
+        "class": "DeathKnight",
+        "spec": "Blood",
+        "role": "tank",
+        "dps": 41191,
+        "hps": 27610,
+        "rankPercent": 39,
+        "itemLevel": 253,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 88,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 75,
+        "improvementFocus": "Low activity: 88%"
+      },
+      {
+        "name": "Groovey",
+        "class": "Priest",
+        "spec": "Discipline",
+        "role": "healer",
+        "dps": 24633,
+        "hps": 132730,
+        "rankPercent": 94,
+        "itemLevel": 261,
+        "server": "Thrall",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 96,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Bokkievoker",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 10275,
+        "hps": 111716,
+        "rankPercent": 48,
+        "itemLevel": 262,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 56,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 43,
+        "improvementFocus": "Low activity: 56%"
+      },
+      {
+        "name": "Yaennah",
+        "class": "Monk",
+        "spec": "Mistweaver",
+        "role": "healer",
+        "dps": 9646,
+        "hps": 106580,
+        "rankPercent": 57,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 82,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 69,
+        "improvementFocus": "Low activity: 82%"
+      },
+      {
+        "name": "Seagie",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 9146,
+        "hps": 83405,
+        "rankPercent": 14,
+        "itemLevel": 257,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 85,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 72,
+        "improvementFocus": "Low activity: 85%"
+      },
+      {
+        "name": "Sariphena",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 6005,
+        "hps": 93958,
+        "rankPercent": 43,
+        "itemLevel": 259,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 25,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 12,
+        "improvementFocus": "Low activity: 25%"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Bfldk",
+        "Roldyy",
+        "Frostrend",
+        "Hungnuts",
+        "Fitshin",
+        "Aqv",
+        "Kramdudu",
+        "Foresvoker",
+        "Groovey",
+        "Sariphena",
+        "Eregor",
+        "Bokkievoker",
+        "Liaisa",
+        "Bjormani",
+        "Lethkar",
+        "Yaennah",
+        "Ghwost",
+        "Rybackrn",
+        "Jumbobear",
+        "Delights",
+        "Apoctaliptic",
+        "Seagie",
+        "Zimydh",
+        "Phoenìxr",
+        "Zabl"
+      ],
+      "missingFood": [
+        "Bfldk",
+        "Roldyy",
+        "Frostrend",
+        "Hungnuts",
+        "Fitshin",
+        "Aqv",
+        "Kramdudu",
+        "Foresvoker",
+        "Groovey",
+        "Sariphena",
+        "Eregor",
+        "Bokkievoker",
+        "Liaisa",
+        "Bjormani",
+        "Lethkar",
+        "Yaennah",
+        "Ghwost",
+        "Rybackrn",
+        "Jumbobear",
+        "Delights",
+        "Apoctaliptic",
+        "Seagie",
+        "Zimydh",
+        "Phoenìxr",
+        "Zabl"
+      ],
+      "missingPotion": [
+        "Bfldk",
+        "Roldyy",
+        "Frostrend",
+        "Hungnuts",
+        "Fitshin",
+        "Aqv",
+        "Kramdudu",
+        "Foresvoker",
+        "Groovey",
+        "Sariphena",
+        "Eregor",
+        "Bokkievoker",
+        "Liaisa",
+        "Bjormani",
+        "Lethkar",
+        "Yaennah",
+        "Ghwost",
+        "Rybackrn",
+        "Jumbobear",
+        "Delights",
+        "Apoctaliptic",
+        "Seagie",
+        "Zimydh",
+        "Phoenìxr",
+        "Zabl"
+      ],
+      "missingRune": [
+        "Bfldk",
+        "Roldyy",
+        "Frostrend",
+        "Hungnuts",
+        "Fitshin",
+        "Aqv",
+        "Kramdudu",
+        "Foresvoker",
+        "Groovey",
+        "Sariphena",
+        "Eregor",
+        "Bokkievoker",
+        "Liaisa",
+        "Bjormani",
+        "Lethkar",
+        "Yaennah",
+        "Ghwost",
+        "Rybackrn",
+        "Jumbobear",
+        "Delights",
+        "Apoctaliptic",
+        "Seagie",
+        "Zimydh",
+        "Phoenìxr",
+        "Zabl"
+      ],
+      "estimatedDPSLoss": 4625000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": true,
+        "source": "Hungnuts",
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": true,
+        "source": "Groovey",
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": true,
+        "source": "Eregor",
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": true,
+        "source": "Ghwost",
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": true,
+        "source": "Kramdudu",
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": true,
+        "source": "Yaennah",
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 74,
+      "dps": 64,
+      "survival": 90,
+      "mechanics": 100,
+      "consumables": 0,
+      "grade": "B"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "deathCascade": {
+      "rootDeath": {
+        "player": "Roldyy",
+        "role": "dps",
+        "ability": "Bursting Emptiness",
+        "time": 43,
+        "impact": "critical"
+      },
+      "chainDeaths": [],
+      "timeToWipe": 494,
+      "recoveryPossible": true,
+      "recommendation": "Roldyy died to Bursting Emptiness. Review positioning and timing"
+    },
+    "causeChains": [
+      "Devouring Cosmos coverage held -> movement and spacing stayed controlled -> the raid converted the final platform phase."
+    ],
+    "causeChainDetails": [],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase.",
+        "owner": "Healers + RL, Raid",
+        "reason": "The raid held movement and healing discipline through the final platform phase. Keep Hero/Lust for the final platform phase and preserve the same raid-CD map."
+      },
+      {
+        "priority": 2,
+        "title": "Throughput is below the level needed for a clean progression pull.",
+        "owner": "Apoctaliptic, Fitshin",
+        "reason": "178K estimated DPS gap across the biggest underperformers. Review uptime, potion usage, and burst alignment before the next pull."
+      }
+    ],
+    "wipeCause": {
+      "primary": "mixed",
+      "details": "The pull ended in a kill."
+    },
+    "repeatedMistakes": [],
+    "phaseCausality": [
+      {
+        "phase": "Phase 1: Crown Ascent",
+        "start": 0,
+        "end": 179,
+        "deaths": 1,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      },
+      {
+        "phase": "Phase 2: Celestial Fracture",
+        "start": 179,
+        "end": 358,
+        "deaths": 0,
+        "avoidableDeaths": 0,
+        "dominantCause": "stable"
+      },
+      {
+        "phase": "Phase 3: Three Platforms",
+        "start": 358,
+        "end": 537,
+        "deaths": 0,
+        "avoidableDeaths": 0,
+        "dominantCause": "stable"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: Crown Ascent",
+        "status": "at_risk",
+        "summary": "Phase 1: Crown Ascent is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Void Barrage, Void Expulsion, Silverstrike Ricochet."
+      },
+      {
+        "phase": "Phase 2: Celestial Fracture",
+        "status": "met",
+        "summary": "Phase 2: Celestial Fracture met the minimum execution bar.",
+        "evidence": "No major avoidable failures or raid-CD gaps were detected. Key mechanics covered: Void Barrage, Voidstalker Sting, Grasp of Emptiness."
+      },
+      {
+        "phase": "Phase 3: Three Platforms",
+        "status": "met",
+        "summary": "Phase 3: Three Platforms is stable enough for final-burn progression.",
+        "evidence": "Key checks: Void Expulsion, Silverstrike Ricochet, Devouring Cosmos. Deaths 0, avoidable 0."
+      }
+    ],
+    "roleScores": {
+      "tanks": 77,
+      "healers": 60,
+      "dps": 71
+    },
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-grasp_of_emptiness",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Bfldk, Jumbobear",
+        "phase": "Phase 1: Crown Ascent",
+        "mechanic": "Grasp of Emptiness",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Bfldk, Jumbobear."
+        ],
+        "recommendation": "Swap cleanly and plan externals before dangerous overlap windows",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-devouring_cosmos",
+        "category": "raid_cd",
+        "status": "covered",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: Crown Ascent",
+        "mechanic": "Devouring Cosmos",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map raid cooldowns here and protect the raid before platform pressure stacks up",
+        "confidence": "high"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 2,
+      "missingCategories": [
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/2 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Raid CDs, Tank swaps before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Roldyy",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Frostrend",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Hungnuts",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Fitshin",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Aqv",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Kramdudu",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      }
+    ],
+    "killProbability": 97,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "bossrule-crown-baseline",
+        "kind": "raid_cooldown",
+        "severity": "info",
+        "confidence": "high",
+        "priorityScore": 151,
+        "owner": "Healers + RL, Raid",
+        "phase": "Phase 3: Three Platforms",
+        "summary": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase.",
+        "evidence": "The raid held movement and healing discipline through the final platform phase.",
+        "confidenceReasons": [
+          "Crown heavily rewards movement discipline and late-phase raid-CD planning.",
+          "The reviewed fixtures expect final platform language on this boss."
+        ],
+        "recommendation": "Keep Hero/Lust for the final platform phase and preserve the same raid-CD map.",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 47,
+        "owner": "Apoctaliptic, Fitshin",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "178K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "178K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 1: Crown Ascent."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 112,
+        "owner": "Bfldk, Jumbobear",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull."
+        ],
+        "recommendation": "Swap cleanly and plan externals before dangerous overlap windows",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Groovey, Sariphena",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Sariphena was at 25% active time with 0 death(s).",
+        "confidenceReasons": [
+          "Sariphena active time: 25%."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-ranged-Roldyy",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Roldyy",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Roldyy needs cleaner movement and uptime discipline.",
+        "evidence": "97% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Roldyy active time is 97%.",
+          "Roldyy died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-melee-Delights",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Delights",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Delights needs cleaner melee uptime without greedy deaths.",
+        "evidence": "84% active time, 0 death(s).",
+        "confidenceReasons": [
+          "Delights active time is 84%."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Apoctaliptic",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 59,
+        "owner": "Apoctaliptic",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Apoctaliptic needs a throughput cleanup.",
+        "evidence": "93K below the expected DPS target.",
+        "confidenceReasons": [
+          "93K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Fitshin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 58,
+        "owner": "Fitshin",
+        "phase": "Phase 1: Crown Ascent",
+        "summary": "Fitshin needs a throughput cleanup.",
+        "evidence": "85K below the expected DPS target.",
+        "confidenceReasons": [
+          "85K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: Crown Ascent",
+        "status": "close",
+        "summary": "Phase 1: Crown Ascent is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Celestial Fracture",
+        "status": "ready",
+        "summary": "Phase 2: Celestial Fracture met the minimum execution bar.",
+        "blocker": "Execution is stable enough to keep progressing.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Three Platforms",
+        "status": "ready",
+        "summary": "Phase 3: Three Platforms is stable enough for final-burn progression.",
+        "blocker": "Spacing and coverage are stable enough for the last phase.",
+        "owner": "Raid"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Devouring Cosmos coverage, movement, and spacing stayed stable into the final platform phase.",
+        "owner": "Healers + RL, Raid",
+        "phase": "Phase 3: Three Platforms",
+        "reason": "The raid held movement and healing discipline through the final platform phase."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Phase 1: Crown Ascent is the first place that slips if execution drops.",
+        "owner": "DPS Core",
+        "phase": "Phase 1: Crown Ascent",
+        "reason": "The raid still needs more stable output here."
+      }
+    }
+  }
+}

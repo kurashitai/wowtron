@@ -1,0 +1,39 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__61__imperator_averzian",
+  "bossName": "Imperator Averzian",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 61,
+  "fixtureType": "wipe_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Void Blast",
+      "raid-CD",
+      "Imperial Decree",
+      "positioning"
+    ],
+    "expectedCauseChainIncludes": [
+      "Void Blast",
+      "raid damage",
+      "Decree",
+      "positioning collapse"
+    ],
+    "expectedOwners": [
+      "Healers + RL",
+      "Raid",
+      "Healers"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "only throughput",
+      "gear issue"
+    ],
+    "reviewerNotes": "This is a near-kill wipe, so the analyzer should avoid lazy throughput blame. The fight should read more like a late execution or cooldown-map collapse around Void Blast and Decree handling than a raw DPS failure."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

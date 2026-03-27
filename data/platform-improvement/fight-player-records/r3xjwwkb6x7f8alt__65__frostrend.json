@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:marksmanship",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__frostrend",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 395,
+  "name": "Frostrend",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "Marksmanship",
+  "talents": [],
+  "itemLevel": 263,
+  "server": "Sargeras",
+  "dps": 69564,
+  "hps": 9055,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

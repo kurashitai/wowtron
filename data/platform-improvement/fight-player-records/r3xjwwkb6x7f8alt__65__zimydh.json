@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devourer",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__zimydh",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 392,
+  "name": "Zimydh",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Devourer",
+  "talents": [],
+  "itemLevel": 268,
+  "server": "Sargeras",
+  "dps": 86832,
+  "hps": 16604,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

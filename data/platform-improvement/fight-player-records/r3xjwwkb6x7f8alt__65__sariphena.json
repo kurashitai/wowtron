@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__sariphena",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 35,
+  "name": "Sariphena",
+  "role": "healer",
+  "className": "Paladin",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 268,
+  "server": "Sargeras",
+  "dps": 3971,
+  "hps": 104972,
+  "dtps": 0,
+  "activeTime": 67,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

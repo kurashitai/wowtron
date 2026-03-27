@@ -1,0 +1,44 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__38",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 38,
+  "bossName": "Fallen-King Salhadaar",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Heroic",
+  "kill": true,
+  "bossHPPercent": 0,
+  "durationSec": 309,
+  "startTime": 6328278,
+  "endTime": 6637537,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:13:01.369Z",
+  "composition": {
+    "tanks": 2,
+    "healers": 7,
+    "dps": 20,
+    "total": 29,
+    "bloodlust": false,
+    "brez": 5
+  },
+  "summary": {
+    "raidDPS": 1500281,
+    "raidHPS": 623483,
+    "raidDTPS": 0,
+    "totalDamage": 463586909,
+    "totalHealing": 192656538,
+    "totalDamageTaken": 193809287,
+    "deaths": 3,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 29,
+    "deaths": 3,
+    "timelineEvents": 3,
+    "combatEvents": 5000,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

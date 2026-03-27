@@ -1,0 +1,20 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__38__fallen_king_salhadaar",
+  "bossName": "Fallen-King Salhadaar",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 38,
+  "source": "heuristic_review",
+  "payload": {
+    "biggestBlockerBelievable": true,
+    "nextWipeBelievable": true,
+    "topActionsActionable": true,
+    "causeChainUseful": true,
+    "bossMemoryReady": true,
+    "reliabilityHighlightsReady": true,
+    "calibrationPassed": true,
+    "calibrationScore": 100,
+    "findings": [],
+    "topInsightSummary": "King's Decree, Void Shockwave, Shadow Realm, and Guardian interrupts stayed controlled on the kill."
+  },
+  "reviewedAt": "2026-03-27T06:45:41.575Z"
+}

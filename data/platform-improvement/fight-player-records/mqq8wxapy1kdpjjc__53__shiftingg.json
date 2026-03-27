@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:fury",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__53__shiftingg",
+  "fightKey": "mQq8WxapY1KDPjJc__53",
+  "actorId": 492,
+  "name": "Shiftingg",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Fury",
+  "talents": [],
+  "itemLevel": 251,
+  "server": "Illidan",
+  "dps": 2,
+  "hps": 11414,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

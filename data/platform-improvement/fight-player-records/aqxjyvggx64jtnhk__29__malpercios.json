@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:restoration",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__malpercios",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 225,
+  "name": "Malpercios",
+  "role": "healer",
+  "className": "Shaman",
+  "spec": "Restoration",
+  "talents": [],
+  "itemLevel": 256,
+  "server": "Proudmoore",
+  "dps": 5231,
+  "hps": 82711,
+  "dtps": 0,
+  "activeTime": 29,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

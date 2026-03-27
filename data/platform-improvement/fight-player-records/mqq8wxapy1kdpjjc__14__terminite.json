@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__terminite",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 14,
+  "name": "Terminite",
+  "role": "healer",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 242,
+  "server": "Illidan",
+  "dps": 3,
+  "hps": 413,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -22,6 +22,7 @@ import {
   type WCLFight,
   type WCLActor,
   type WCLTableEntry,
+  type WCLPlayerDetailEntry,
   type WCLEvent,
   type WCLRankingsData,
   type WCLRankingCharacter
@@ -40,11 +41,54 @@ import {
 } from '@/lib/analysis/phase2-analysis';
 import { getBossByNickname, type BossData } from '@/lib/boss-data-midnight';
 import { getCachedValue, setCachedValue } from '@/lib/wcl-cache';
+import { resolveBossContext } from '@/lib/boss-context';
+import { extractTalentNames } from '@/lib/platform-improvement/build-significance';
+import { persistFightRecord, persistRawLogArtifact } from '@/lib/platform-improvement/repository';
 
 // Token cache
 let cachedToken: { token: string; expiresAt: number } | null = null;
 const REPORT_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h
 const FIGHT_CACHE_TTL_MS = 60 * 60 * 1000; // 1h
+
+function flattenPlayerDetailsEntries(playerDetails: any): WCLPlayerDetailEntry[] {
+  if (!playerDetails || typeof playerDetails !== 'object') return [];
+  return [
+    ...((playerDetails.tanks || []) as WCLPlayerDetailEntry[]),
+    ...((playerDetails.healers || []) as WCLPlayerDetailEntry[]),
+    ...((playerDetails.dps || []) as WCLPlayerDetailEntry[]),
+  ].filter((entry) => Boolean(entry && entry.name));
+}
+
+function buildPlayerDetailsLookup(playerDetails: any) {
+  const lookup = new Map<string, WCLPlayerDetailEntry>();
+  flattenPlayerDetailsEntries(playerDetails).forEach((entry) => {
+    if (!entry.name) return;
+    lookup.set(entry.name.toLowerCase(), entry);
+  });
+  return lookup;
+}
+
+function extractPlayerTalentNames(
+  entryTalents: unknown,
+  playerDetailsEntry?: WCLPlayerDetailEntry
+): string[] {
+  const directTalents = extractTalentNames(entryTalents);
+  if (directTalents.length > 0) return directTalents;
+  if (!playerDetailsEntry) return [];
+
+  const detailCandidates = [
+    playerDetailsEntry.talents,
+    playerDetailsEntry.combatantInfo?.talents,
+    playerDetailsEntry.combatantInfo?.pvpTalents,
+  ];
+
+  for (const candidate of detailCandidates) {
+    const talentNames = extractTalentNames(candidate);
+    if (talentNames.length > 0) return talentNames;
+  }
+
+  return [];
+}
 
 async function getToken(): Promise<string> {
   const clientId = process.env.WCL_CLIENT_ID;
@@ -103,7 +147,7 @@ export async function GET(request: NextRequest) {
           bossIcon: fight.name.toLowerCase().split(' ')[0],
           difficulty: getDifficultyName(fight.difficulty),
           duration: Math.floor((fight.endTime - fight.startTime) / 1000),
-          kill: fight.kill,
+          kill: Boolean(fight.kill),
           // WCL returns bossPercentage as 0-10000 (e.g., 4200 = 42.00% HP remaining)
           // For kills, it's 0. For wipes, it's the HP remaining
           bossHPPercent: fight.kill ? 0 : Math.floor((fight.bossPercentage ?? fight.fightPercentage ?? 10000) / 100),
@@ -111,6 +155,31 @@ export async function GET(request: NextRequest) {
           endTime: fight.endTime
         }))
       };
+
+      await persistRawLogArtifact({
+        artifactType: 'wcl_report',
+        source: 'wcl_api',
+        cacheKey: `report:${reportCode}:raw`,
+        reportCode,
+        payload: wclReport,
+        metadata: {
+          title: report.title,
+          zone: report.zone,
+          fightCount: report.fights.length,
+        },
+      });
+      await persistRawLogArtifact({
+        artifactType: 'wcl_report_payload',
+        source: 'wcl_api',
+        cacheKey: `report:${reportCode}:payload`,
+        reportCode,
+        payload: report,
+        metadata: {
+          title: report.title,
+          zone: report.zone,
+          fightCount: report.fights.length,
+        },
+      });
 
       await setCachedValue('report', reportCode, report);
       
@@ -285,8 +354,10 @@ export async function GET(request: NextRequest) {
       // Build actor lookup from masterData
       // The GraphQL query already filters actors(type: "player") so all returned are players
       const actors = wclReport.masterData?.actors || [];
+      const abilities = wclReport.masterData?.abilities || [];
       const actorMap = new Map<number, WCLActor>();
       const actorNameMap = new Map<string, WCLActor>();
+      const abilityMap = new Map<number, WCLReport['masterData']['abilities'][number]>();
       const playerNameSet = new Set<string>();
       
       // Add all actors - they're already filtered by the query to be players only
@@ -295,21 +366,18 @@ export async function GET(request: NextRequest) {
         actorNameMap.set(a.name.toLowerCase(), a);
         playerNameSet.add(a.name);
       });
+      abilities.forEach((ability) => {
+        abilityMap.set(ability.gameID, ability);
+      });
       
       // Also build a set of player names from playerDetails for extra validation
       const playerDetailsNames = new Set<string>();
-      if (playerDetails) {
-        const allDetails = [
-          ...(playerDetails.tanks || []), 
-          ...(playerDetails.healers || []), 
-          ...(playerDetails.dps || [])
-        ];
-        allDetails.forEach((p: any) => {
-          if (p && p.name) {
-            playerDetailsNames.add(p.name);
-          }
-        });
-      }
+      const playerDetailsLookup = buildPlayerDetailsLookup(playerDetails);
+      playerDetailsLookup.forEach((entry) => {
+        if (entry.name) {
+          playerDetailsNames.add(entry.name);
+        }
+      });
       
       // Log for debugging
       console.log('[WCL] Actors found:', actors.length);
@@ -378,9 +446,9 @@ export async function GET(request: NextRequest) {
       const getPlayerRole = (playerName: string, actor: WCLActor | undefined): 'tank' | 'healer' | 'dps' => {
         // First check playerDetails from WCL - this is the most reliable source
         if (playerDetails) {
-          const tanks = playerDetails.tanks || [];
-          const healers = playerDetails.healers || [];
-          const dps = playerDetails.dps || [];
+          const tanks = (playerDetails.tanks || []) as WCLPlayerDetailEntry[];
+          const healers = (playerDetails.healers || []) as WCLPlayerDetailEntry[];
+          const dps = (playerDetails.dps || []) as WCLPlayerDetailEntry[];
           
           // Check exact match first, handle both {name: string} and string formats
           const findByName = (arr: any[], name: string) => arr.some((item: any) => {
@@ -406,6 +474,16 @@ export async function GET(request: NextRequest) {
       
       // Get class from actor
       const getPlayerClass = (actor: WCLActor | undefined): string => {
+        if (actor?.name) {
+          const detailsPlayer = playerDetailsLookup.get(actor.name.toLowerCase());
+          if (typeof detailsPlayer?.class === 'string' && detailsPlayer.class) {
+            return detailsPlayer.class;
+          }
+          if (typeof detailsPlayer?.type === 'string' && detailsPlayer.type) {
+            return detailsPlayer.type;
+          }
+        }
+
         if (!actor) return 'Unknown';
         
         // subType contains class name
@@ -424,16 +502,15 @@ export async function GET(request: NextRequest) {
       // Get spec from actor icon
       const getPlayerSpec = (playerName: string, actor: WCLActor | undefined): string => {
         // Check playerDetails first
-        if (playerDetails) {
-          const allPlayers = [
-            ...(playerDetails.tanks || []),
-            ...(playerDetails.healers || []),
-            ...(playerDetails.dps || [])
-          ];
-          const player = allPlayers.find((p: any) => p.name === playerName);
-          if (player?.spec) return player.spec;
+        const player = playerDetailsLookup.get(playerName.toLowerCase());
+        if (player?.spec) return player.spec;
+        if (Array.isArray((player as WCLPlayerDetailEntry | undefined)?.specs)) {
+          const firstSpec = ((player as WCLPlayerDetailEntry & { specs?: Array<{ spec?: string }> }).specs || []).find(
+            (specEntry) => typeof specEntry?.spec === 'string' && specEntry.spec
+          );
+          if (firstSpec?.spec) return firstSpec.spec;
         }
-        
+
         // Parse from icon
         if (actor?.icon) {
           return getSpecFromIcon(actor.icon);
@@ -608,16 +685,19 @@ export async function GET(request: NextRequest) {
           percentile = (entry as any).rankPercent;
         }
         
-        const consumables = playerConsumables.get(entry.name) || { potion: false, flask: false, food: false, rune: false };
-        
-        const player: PlayerStats = {
-          id: entry.id,
-          name: entry.name,
-          class: className,
-          spec: playerSpec,
-          role: playerRole,
-          itemLevel: entry.itemLevel || fight.averageItemLevel || 480,
-          server: actor?.server || 'Unknown',
+          const consumables = playerConsumables.get(entry.name) || { potion: false, flask: false, food: false, rune: false };
+          const playerDetailsEntry = playerDetailsLookup.get(entry.name.toLowerCase());
+          const playerTalents = extractPlayerTalentNames(entry.talents, playerDetailsEntry);
+          
+          const player: PlayerStats = {
+            id: entry.id,
+            name: entry.name,
+            class: className,
+            spec: playerSpec,
+            role: playerRole,
+            talents: playerTalents,
+            itemLevel: entry.itemLevel || fight.averageItemLevel || 480,
+            server: actor?.server || 'Unknown',
           
           dps: dps,
           dpsMax: dps,
@@ -689,10 +769,14 @@ export async function GET(request: NextRequest) {
         const player = playerMap.get(entry.id);
         
         if (player) {
-          // Update existing player with healing data
-          player.hps = hps;
-          player.hpsMax = hps;
-          player.hpsMin = hps;
+            // Update existing player with healing data
+            if (!player.talents || player.talents.length === 0) {
+              const playerDetailsEntry = playerDetailsLookup.get(entry.name.toLowerCase());
+              player.talents = extractPlayerTalentNames(entry.talents, playerDetailsEntry);
+            }
+            player.hps = hps;
+            player.hpsMax = hps;
+            player.hpsMin = hps;
           player.totalHealing = entry.total || 0;
           
           // Update percentile if healer
@@ -716,7 +800,9 @@ export async function GET(request: NextRequest) {
           player.hpsTimeline = generateTimelineFromGraph(hpsGraph, entry.id, duration, hps);
         } else {
           // Healer not in damage table - add them
-          const consumables = playerConsumables.get(entry.name) || { potion: false, flask: false, food: false, rune: false };
+            const consumables = playerConsumables.get(entry.name) || { potion: false, flask: false, food: false, rune: false };
+              const playerDetailsEntry = playerDetailsLookup.get(entry.name.toLowerCase());
+              const playerTalents = extractPlayerTalentNames(entry.talents, playerDetailsEntry);
           
           // Get HPS percentile for healer
           let healerPercentile = rankings?.hps || 0;
@@ -727,11 +813,12 @@ export async function GET(request: NextRequest) {
           const newPlayer: PlayerStats = {
             id: entry.id,
             name: entry.name,
-            class: className,
-            spec: playerSpec,
-            role: playerRole,
-            itemLevel: entry.itemLevel || fight.averageItemLevel || 480,
-            server: actor?.server || 'Unknown',
+              class: className,
+              spec: playerSpec,
+              role: playerRole,
+              talents: playerTalents,
+              itemLevel: entry.itemLevel || fight.averageItemLevel || 480,
+              server: actor?.server || 'Unknown',
             
             dps: 0,
             dpsMax: 0,
@@ -809,13 +896,17 @@ export async function GET(request: NextRequest) {
       }
       
       deathsArray.forEach((death: WCLEvent) => {
-        if (!death?.target) {
-          console.log('[WCL] Death event has no target:', JSON.stringify(death).substring(0, 200));
-          return;
-        }
-        
-        const targetId = death.target.id;
-        const targetName = death.target.name;
+        const targetId = death.target?.id || death.targetID || 0;
+        const targetName = death.target?.name || (targetId ? actorMap.get(targetId)?.name : undefined) || 'Unknown';
+        const resolvedAbilityName =
+          death.ability?.name ||
+          (typeof (death as WCLEvent & { killingAbilityGameID?: number }).killingAbilityGameID === 'number'
+            ? abilityMap.get((death as WCLEvent & { killingAbilityGameID?: number }).killingAbilityGameID || 0)?.name
+            : undefined) ||
+          (typeof (death as WCLEvent & { abilityGameID?: number }).abilityGameID === 'number'
+            ? abilityMap.get((death as WCLEvent & { abilityGameID?: number }).abilityGameID || 0)?.name
+            : undefined) ||
+          'Unknown';
         
         // Find player by ID or name
         let player: PlayerStats | undefined = playerMap.get(targetId || 0);
@@ -833,8 +924,8 @@ export async function GET(request: NextRequest) {
           const deathTime = Math.floor((death.timestamp - fight.startTime) / 1000);
           player.deathEvents.push({
             time: deathTime,
-            killer: death.source?.name || fight.name,
-            ability: death.ability?.name || 'Unknown',
+            killer: death.source?.name || (death.sourceID ? actorMap.get(death.sourceID)?.name : undefined) || fight.name,
+            ability: resolvedAbilityName,
             damage: death.amount || 0,
             hpRemaining: 0
           });
@@ -933,6 +1024,8 @@ export async function GET(request: NextRequest) {
         .filter(Boolean) as { name: string; uptime: number; source: string }[];
       
       // Build fight data
+      const bossContext = await resolveBossContext(fight.name);
+
       const fightData: FightData = {
         id: fight.id,
         reportId: reportCode,
@@ -944,7 +1037,7 @@ export async function GET(request: NextRequest) {
         duration,
         startTime: fight.startTime,
         endTime: fight.endTime,
-        kill: fight.kill,
+        kill: Boolean(fight.kill),
         bossHPPercent: fight.kill ? 0 : Math.floor((fight.bossPercentage ?? fight.fightPercentage ?? 10000) / 100),
         
         composition: {
@@ -1007,6 +1100,8 @@ export async function GET(request: NextRequest) {
           dps: (playerDetails.dps || []).map((d: any) => ({ name: d.name, class: d.class || 'Unknown', spec: d.spec || 'Unknown' }))
         } : undefined
       };
+
+      (fightData as FightData & { bossContext?: unknown }).bossContext = bossContext;
       
       // Run advanced analysis
       const bossMechanicsData = getBossByNickname(bossKey);
@@ -1020,6 +1115,49 @@ export async function GET(request: NextRequest) {
         defensiveAnalysis,
         playerScorecards,
       };
+
+      await persistRawLogArtifact({
+        artifactType: 'wcl_fight_bundle',
+        source: 'wcl_api',
+        cacheKey: `fight:${fightCacheKey}:bundle`,
+        reportCode,
+        fightId,
+        bossName: fight.name,
+        payload: {
+          report: wclReport,
+          damageDone,
+          healingDone,
+          damageTaken,
+          deaths,
+          buffs,
+          casts,
+          playerDetails,
+          dpsGraph,
+          hpsGraph,
+          dpsRankings,
+          hpsRankings,
+        },
+        metadata: {
+          difficulty: fightData.difficulty,
+          duration: fightData.duration,
+        },
+      });
+      await persistRawLogArtifact({
+        artifactType: 'wcl_fight_payload',
+        source: 'wcl_api',
+        cacheKey: `fight:${fightCacheKey}:payload`,
+        reportCode,
+        fightId,
+        bossName: fight.name,
+        payload: responsePayload,
+        metadata: {
+          difficulty: fightData.difficulty,
+          duration: fightData.duration,
+          kill: fightData.kill,
+          bossHPPercent: fightData.bossHPPercent,
+        },
+      });
+      await persistFightRecord(fightData, reportCode, 'wcl_api');
 
       await setCachedValue('fight', fightCacheKey, responsePayload);
       

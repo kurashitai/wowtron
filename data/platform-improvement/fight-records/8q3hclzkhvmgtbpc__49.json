@@ -1,0 +1,44 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__49",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 49,
+  "bossName": "Lightblinded Vanguard",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Heroic",
+  "kill": true,
+  "bossHPPercent": 0,
+  "durationSec": 348,
+  "startTime": 7593318,
+  "endTime": 7942201,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:13:25.082Z",
+  "composition": {
+    "tanks": 2,
+    "healers": 7,
+    "dps": 20,
+    "total": 29,
+    "bloodlust": false,
+    "brez": 5
+  },
+  "summary": {
+    "raidDPS": 2007898,
+    "raidHPS": 703123,
+    "raidDTPS": 0,
+    "totalDamage": 698748767,
+    "totalHealing": 244687124,
+    "totalDamageTaken": 227930724,
+    "deaths": 5,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 29,
+    "deaths": 5,
+    "timelineEvents": 5,
+    "combatEvents": 5000,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

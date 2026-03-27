@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__foresvoker",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 18,
+  "name": "Foresvoker",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 257,
+  "server": "Sargeras",
+  "dps": 78788,
+  "hps": 3280,
+  "dtps": 0,
+  "activeTime": 85,
+  "deaths": 0,
+  "rankPercent": 11,
+  "avoidableDamageTaken": 0
+}

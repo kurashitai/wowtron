@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:frost",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__annatarx",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 23,
+  "name": "Annatarx",
+  "role": "dps",
+  "className": "Mage",
+  "spec": "Frost",
+  "talents": [],
+  "itemLevel": 253,
+  "server": "Stormrage",
+  "dps": 66294,
+  "hps": 16362,
+  "dtps": 0,
+  "activeTime": 77,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

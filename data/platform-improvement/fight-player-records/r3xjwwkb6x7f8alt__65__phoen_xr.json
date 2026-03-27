@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:subtlety",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__phoen_xr",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 75,
+  "name": "Phoenìxr",
+  "role": "dps",
+  "className": "Rogue",
+  "spec": "Subtlety",
+  "talents": [],
+  "itemLevel": 267,
+  "server": "Sargeras",
+  "dps": 74952,
+  "hps": 7098,
+  "dtps": 0,
+  "activeTime": 96,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

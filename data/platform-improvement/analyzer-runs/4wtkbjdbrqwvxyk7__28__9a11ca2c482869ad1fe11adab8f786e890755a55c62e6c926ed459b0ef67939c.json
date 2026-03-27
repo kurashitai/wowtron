@@ -1,0 +1,1824 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__28__9a11ca2c482869ad1fe11adab8f786e890755a55c62e6c926ed459b0ef67939c",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 28,
+  "bossName": "Vorasius",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T14:12:54.848Z",
+  "summaryText": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill.",
+  "topOwner": "Assigned kickers, Assigned soakers, Healers + RL",
+  "topPhase": "Phase 1: The Hunger",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "vorasius::28",
+    "fightId": 28,
+    "bossName": "Vorasius",
+    "difficulty": "Normal",
+    "reportCode": "4wtkBjDbRQWvxYK7",
+    "recordedAt": "2026-03-27T14:12:54.610Z",
+    "kill": true,
+    "bossHP": 0,
+    "duration": 313,
+    "briefInsights": [
+      {
+        "id": "bossrule-vorasius-baseline",
+        "kind": "raid_assignment",
+        "severity": "info",
+        "confidence": "high",
+        "priorityScore": 150,
+        "owner": "Assigned kickers, Assigned soakers, Healers + RL",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill.",
+        "evidence": "The fight stayed stable through its assignment checks.",
+        "confidenceReasons": [
+          "Vorasius is defined by kick order and soak execution.",
+          "The reviewed fixtures expect assignment-first diagnosis on this boss."
+        ],
+        "recommendation": "Keep the same kick rotation, soak map, and Shadow Feast coverage.",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 48,
+        "owner": "Spacekraken, Reilin",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "274K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "274K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 1: The Hunger."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 112,
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-interrupt",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Boxiebrown, Xcat, Jormungandr",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Utility players are still losing control of key casts.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Wubers, Brokuo",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Brokuo was at 19% active time with 1 death(s).",
+        "confidenceReasons": [
+          "Brokuo active time: 19%.",
+          "Brokuo died 1 time(s)."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-melee-Spacekraken",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Spacekraken",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Spacekraken needs cleaner melee uptime without greedy deaths.",
+        "evidence": "99% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Spacekraken active time is 99%.",
+          "Spacekraken died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Dotterparty",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Dotterparty",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Dotterparty needs cleaner movement and uptime discipline.",
+        "evidence": "18% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Dotterparty active time is 18%.",
+          "Dotterparty died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Reilin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 63,
+        "owner": "Reilin",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Reilin needs a throughput cleanup.",
+        "evidence": "134K below the expected DPS target.",
+        "confidenceReasons": [
+          "134K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-voracious_bite",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Voracious Bite",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Mattank, Cutedwarfxd."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-interrupt-void_scream",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Boxiebrown, Xcat, Jormungandr",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Void Scream",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-soak-consume_essence",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Consume Essence",
+        "evidence": "The soak plan is incomplete for Consume Essence.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign soakers per orb, use personals",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-shadow_feast",
+        "category": "raid_cd",
+        "status": "covered",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Shadow Feast",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Big healing needed, use healing CDs",
+        "confidence": "high"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "at_risk",
+        "summary": "Phase 1: The Hunger is close, but early movement or tank stability is still leaking value.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Void Scream. Deaths 5, avoidable 4."
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "met",
+        "summary": "Phase 2: Feast of Shadows is stable enough for progression.",
+        "evidence": "Key checks: Voracious Bite, Consume Essence, Void Scream, Shadow Feast. Deaths 0, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "at_risk",
+        "summary": "Phase 3: Unending Hunger is close, but early movement or tank stability is still leaking value.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Consume Essence, Shadow Feast. Deaths 1, avoidable 1."
+      }
+    ],
+    "causeChains": [
+      "Kick rotation held on Void Scream -> Consume Essence soaks stayed clean -> Shadow Feast stabilized and the kill converted."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "close",
+        "summary": "Phase 1: The Hunger is close, but early movement or tank stability is still leaking value.",
+        "blocker": "The raid is still losing control before the real soak phase.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "ready",
+        "summary": "Phase 2: Feast of Shadows is stable enough for progression.",
+        "blocker": "Orb soaks and feast healing look good enough.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "close",
+        "summary": "Phase 3: Unending Hunger is close, but early movement or tank stability is still leaking value.",
+        "blocker": "The raid is still losing control before the real soak phase.",
+        "owner": "DPS Core"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill.",
+        "owner": "Assigned kickers, Assigned soakers, Healers + RL",
+        "phase": "Phase 1: The Hunger",
+        "reason": "The fight stayed stable through its assignment checks."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Phase 1: The Hunger is the first place that slips if execution drops.",
+        "owner": "Raid",
+        "phase": "Phase 1: The Hunger",
+        "reason": "The raid is still losing control before the real soak phase."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 4,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/4 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Raid CDs, Tank swaps before the next pull."
+    },
+    "avgReliability": 67,
+    "killProbability": 82,
+    "totalDeaths": 6,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Brokuo",
+        "role": "healer",
+        "className": "DeathKnight",
+        "spec": "Unholy",
+        "talents": [],
+        "reliabilityScore": 0,
+        "activeTime": 19,
+        "deaths": 1
+      },
+      {
+        "name": "Fabed",
+        "role": "dps",
+        "className": "Paladin",
+        "spec": "Retribution",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Dramonk",
+        "role": "dps",
+        "className": "Monk",
+        "spec": "Windwalker",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Xcat",
+        "role": "dps",
+        "className": "Paladin",
+        "spec": "Retribution",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Urtag",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 0,
+        "activeTime": 21,
+        "deaths": 1
+      },
+      {
+        "name": "Vitalorange",
+        "role": "dps",
+        "className": "Druid",
+        "spec": "Balance",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Latrice",
+        "role": "dps",
+        "className": "Mage",
+        "spec": "Frost",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Hiddenmight",
+        "role": "dps",
+        "className": "Rogue",
+        "spec": "Subtlety",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Ioboma",
+        "role": "dps",
+        "className": "Mage",
+        "spec": "Frost",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Demonnova",
+        "role": "dps",
+        "className": "DemonHunter",
+        "spec": "Devourer",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Pyrophobiac",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Jormungandr",
+        "role": "dps",
+        "className": "Evoker",
+        "spec": "Devastation",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Boxiebrown",
+        "role": "dps",
+        "className": "Hunter",
+        "spec": "BeastMastery",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Spacekraken",
+        "role": "dps",
+        "className": "Warrior",
+        "spec": "Fury",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Ando",
+        "role": "dps",
+        "className": "Druid",
+        "spec": "Unknown",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Reilin",
+        "role": "dps",
+        "className": "Shaman",
+        "spec": "Enhancement",
+        "talents": [],
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Dotterparty",
+        "role": "dps",
+        "className": "Warlock",
+        "spec": "Demonology",
+        "talents": [],
+        "reliabilityScore": 0,
+        "activeTime": 18,
+        "deaths": 1
+      },
+      {
+        "name": "Cutedwarfxd",
+        "role": "tank",
+        "className": "DeathKnight",
+        "spec": "Blood",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Mattank",
+        "role": "tank",
+        "className": "Paladin",
+        "spec": "Protection",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Flandri",
+        "role": "healer",
+        "className": "Priest",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 64,
+        "activeTime": 77,
+        "deaths": 0
+      },
+      {
+        "name": "Adowyrm",
+        "role": "healer",
+        "className": "Evoker",
+        "spec": "Preservation",
+        "talents": [],
+        "reliabilityScore": 58,
+        "activeTime": 71,
+        "deaths": 0
+      },
+      {
+        "name": "Implant",
+        "role": "healer",
+        "className": "Druid",
+        "spec": "Restoration",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 98,
+        "deaths": 0
+      },
+      {
+        "name": "Wubers",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 99,
+        "deaths": 0
+      },
+      {
+        "name": "Tanishalfelf",
+        "role": "healer",
+        "className": "Paladin",
+        "spec": "Holy",
+        "talents": [],
+        "reliabilityScore": 82,
+        "activeTime": 98,
+        "deaths": 0
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": true,
+      "whyWiped": [],
+      "keyIssues": [],
+      "fightEfficiency": {
+        "actualTime": 313,
+        "optimalTime": 929,
+        "timeSaved": 0,
+        "dpsLoss": 4440000
+      }
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": [
+        {
+          "player": "Reilin",
+          "ability": "Shadowclaw Slam",
+          "time": 31,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Spacekraken",
+          "ability": "Shadowclaw Slam",
+          "time": 41,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Brokuo",
+          "ability": "Shadowclaw Slam",
+          "time": 51,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Dotterparty",
+          "ability": "Shadowclaw Slam",
+          "time": 51,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Urtag",
+          "ability": "Parasite Expulsion",
+          "time": 64,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Pyrophobiac",
+          "ability": "Shadowclaw Slam",
+          "time": 292,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        }
+      ]
+    },
+    "performance": {
+      "raidDPS": 865443,
+      "raidHPS": 310661,
+      "requiredDPS": 2570000,
+      "dpsGap": 1852796,
+      "lowPerformers": [
+        {
+          "player": "Spacekraken",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 40139,
+          "gap": 139861,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Reilin",
+          "class": "Shaman",
+          "expectedDPS": 170000,
+          "actualDPS": 35863,
+          "gap": 134137,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Dotterparty",
+          "class": "Warlock",
+          "expectedDPS": 165000,
+          "actualDPS": 33226,
+          "gap": 131774,
+          "reason": "Low activity: 18%"
+        },
+        {
+          "player": "Ioboma",
+          "class": "Mage",
+          "expectedDPS": 170000,
+          "actualDPS": 44801,
+          "gap": 125199,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Latrice",
+          "class": "Mage",
+          "expectedDPS": 170000,
+          "actualDPS": 47753,
+          "gap": 122247,
+          "reason": "No potion used"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Brokuo",
+        "class": "DeathKnight",
+        "spec": "Unholy",
+        "role": "healer",
+        "dps": 62292,
+        "hps": 4574,
+        "rankPercent": 2,
+        "itemLevel": 247,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 19,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 0,
+        "improvementFocus": "Low activity: 19%"
+      },
+      {
+        "name": "Fabed",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 56562,
+        "hps": 4945,
+        "rankPercent": 68,
+        "itemLevel": 245,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Dramonk",
+        "class": "Monk",
+        "spec": "Windwalker",
+        "role": "dps",
+        "dps": 54615,
+        "hps": 1311,
+        "rankPercent": 63,
+        "itemLevel": 245,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Xcat",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 51648,
+        "hps": 4930,
+        "rankPercent": 54,
+        "itemLevel": 242,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Urtag",
+        "class": "Hunter",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 49813,
+        "hps": 4775,
+        "rankPercent": 1,
+        "itemLevel": 224,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 21,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 0,
+        "improvementFocus": "Low activity: 21%"
+      },
+      {
+        "name": "Vitalorange",
+        "class": "Druid",
+        "spec": "Balance",
+        "role": "dps",
+        "dps": 49076,
+        "hps": 2509,
+        "rankPercent": 71,
+        "itemLevel": 245,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Latrice",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 47753,
+        "hps": 1263,
+        "rankPercent": 44,
+        "itemLevel": 243,
+        "server": "GrizzlyHills",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Hiddenmight",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 47388,
+        "hps": 2787,
+        "rankPercent": 56,
+        "itemLevel": 239,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Ioboma",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 44801,
+        "hps": 1631,
+        "rankPercent": 35,
+        "itemLevel": 233,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Demonnova",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 43422,
+        "hps": 3781,
+        "rankPercent": 47,
+        "itemLevel": 249,
+        "server": "Malfurion",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Pyrophobiac",
+        "class": "Warlock",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 42249,
+        "hps": 3051,
+        "rankPercent": 52,
+        "itemLevel": 241,
+        "server": "Gul'dan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Jormungandr",
+        "class": "Evoker",
+        "spec": "Devastation",
+        "role": "dps",
+        "dps": 41375,
+        "hps": 1300,
+        "rankPercent": 33,
+        "itemLevel": 232,
+        "server": "Gnomeregan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Boxiebrown",
+        "class": "Hunter",
+        "spec": "BeastMastery",
+        "role": "dps",
+        "dps": 41327,
+        "hps": 676,
+        "rankPercent": 43,
+        "itemLevel": 242,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Spacekraken",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 40139,
+        "hps": 3658,
+        "rankPercent": 24,
+        "itemLevel": 244,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Ando",
+        "class": "Druid",
+        "spec": "Unknown",
+        "role": "dps",
+        "dps": 37947,
+        "hps": 3613,
+        "rankPercent": 25,
+        "itemLevel": 232,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Reilin",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "role": "dps",
+        "dps": 35863,
+        "hps": 3791,
+        "rankPercent": 16,
+        "itemLevel": 239,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Dotterparty",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "role": "dps",
+        "dps": 33226,
+        "hps": 2377,
+        "rankPercent": 0,
+        "itemLevel": 233,
+        "server": "Cho'gall",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 18,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 0,
+        "improvementFocus": "Low activity: 18%"
+      },
+      {
+        "name": "Cutedwarfxd",
+        "class": "DeathKnight",
+        "spec": "Blood",
+        "role": "tank",
+        "dps": 32930,
+        "hps": 21103,
+        "rankPercent": 90,
+        "itemLevel": 246,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Mattank",
+        "class": "Paladin",
+        "spec": "Protection",
+        "role": "tank",
+        "dps": 25679,
+        "hps": 9816,
+        "rankPercent": 78,
+        "itemLevel": 245,
+        "server": "Malfurion",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Flandri",
+        "class": "Priest",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 7576,
+        "hps": 40944,
+        "rankPercent": 24,
+        "itemLevel": 243,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 77,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 64,
+        "improvementFocus": "Low activity: 77%"
+      },
+      {
+        "name": "Adowyrm",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 6318,
+        "hps": 61753,
+        "rankPercent": 64,
+        "itemLevel": 234,
+        "server": "Kael'thas",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 71,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 58,
+        "improvementFocus": "Low activity: 71%"
+      },
+      {
+        "name": "Implant",
+        "class": "Druid",
+        "spec": "Restoration",
+        "role": "healer",
+        "dps": 5795,
+        "hps": 46104,
+        "rankPercent": 68,
+        "itemLevel": 249,
+        "server": "Ghostlands",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Wubers",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 4495,
+        "hps": 40979,
+        "rankPercent": 34,
+        "itemLevel": 243,
+        "server": "Malfurion",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Tanishalfelf",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 3154,
+        "hps": 38990,
+        "rankPercent": 28,
+        "itemLevel": 238,
+        "server": "Stormrage",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 0,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 82,
+        "improvementFocus": "No potion used"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Boxiebrown",
+        "Spacekraken",
+        "Pyrophobiac",
+        "Xcat",
+        "Jormungandr",
+        "Latrice",
+        "Mattank",
+        "Wubers",
+        "Cutedwarfxd",
+        "Reilin",
+        "Ioboma",
+        "Ando",
+        "Brokuo",
+        "Demonnova",
+        "Dotterparty",
+        "Urtag",
+        "Fabed",
+        "Adowyrm",
+        "Flandri",
+        "Hiddenmight",
+        "Vitalorange",
+        "Tanishalfelf",
+        "Dramonk",
+        "Implant"
+      ],
+      "missingFood": [
+        "Boxiebrown",
+        "Spacekraken",
+        "Pyrophobiac",
+        "Xcat",
+        "Jormungandr",
+        "Latrice",
+        "Mattank",
+        "Wubers",
+        "Cutedwarfxd",
+        "Reilin",
+        "Ioboma",
+        "Ando",
+        "Brokuo",
+        "Demonnova",
+        "Dotterparty",
+        "Urtag",
+        "Fabed",
+        "Adowyrm",
+        "Flandri",
+        "Hiddenmight",
+        "Vitalorange",
+        "Tanishalfelf",
+        "Dramonk",
+        "Implant"
+      ],
+      "missingPotion": [
+        "Boxiebrown",
+        "Spacekraken",
+        "Pyrophobiac",
+        "Xcat",
+        "Jormungandr",
+        "Latrice",
+        "Mattank",
+        "Wubers",
+        "Cutedwarfxd",
+        "Reilin",
+        "Ioboma",
+        "Ando",
+        "Brokuo",
+        "Demonnova",
+        "Dotterparty",
+        "Urtag",
+        "Fabed",
+        "Adowyrm",
+        "Flandri",
+        "Hiddenmight",
+        "Vitalorange",
+        "Tanishalfelf",
+        "Dramonk",
+        "Implant"
+      ],
+      "missingRune": [
+        "Boxiebrown",
+        "Spacekraken",
+        "Pyrophobiac",
+        "Xcat",
+        "Jormungandr",
+        "Latrice",
+        "Mattank",
+        "Wubers",
+        "Cutedwarfxd",
+        "Reilin",
+        "Ioboma",
+        "Ando",
+        "Brokuo",
+        "Demonnova",
+        "Dotterparty",
+        "Urtag",
+        "Fabed",
+        "Adowyrm",
+        "Flandri",
+        "Hiddenmight",
+        "Vitalorange",
+        "Tanishalfelf",
+        "Dramonk",
+        "Implant"
+      ],
+      "estimatedDPSLoss": 4440000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": true,
+        "source": "Jormungandr",
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": true,
+        "source": "Flandri",
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": true,
+        "source": "Spacekraken",
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": true,
+        "source": "Latrice",
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": true,
+        "source": "Ando",
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": true,
+        "source": "Dramonk",
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 48,
+      "dps": 33,
+      "survival": 40,
+      "mechanics": 100,
+      "consumables": 0,
+      "grade": "D"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "deathCascade": {
+      "rootDeath": {
+        "player": "Reilin",
+        "role": "dps",
+        "ability": "Shadowclaw Slam",
+        "time": 31,
+        "impact": "critical"
+      },
+      "chainDeaths": [
+        {
+          "player": "Spacekraken",
+          "role": "dps",
+          "ability": "Shadowclaw Slam",
+          "time": 41,
+          "causedByRoot": true
+        }
+      ],
+      "timeToWipe": 282,
+      "recoveryPossible": true,
+      "recommendation": "Reilin died to Shadowclaw Slam. Review positioning and timing"
+    },
+    "causeChains": [
+      "Kick rotation held on Void Scream -> Consume Essence soaks stayed clean -> Shadow Feast stabilized and the kill converted."
+    ],
+    "causeChainDetails": [],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill.",
+        "owner": "Assigned kickers, Assigned soakers, Healers + RL",
+        "reason": "The fight stayed stable through its assignment checks. Keep the same kick rotation, soak map, and Shadow Feast coverage."
+      },
+      {
+        "priority": 2,
+        "title": "Throughput is below the level needed for a clean progression pull.",
+        "owner": "Spacekraken, Reilin",
+        "reason": "274K estimated DPS gap across the biggest underperformers. Review uptime, potion usage, and burst alignment before the next pull."
+      }
+    ],
+    "wipeCause": {
+      "primary": "mixed",
+      "details": "The pull ended in a kill."
+    },
+    "repeatedMistakes": [],
+    "phaseCausality": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "start": 0,
+        "end": 104,
+        "deaths": 5,
+        "avoidableDeaths": 4,
+        "dominantCause": "mechanics"
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "start": 104,
+        "end": 208,
+        "deaths": 0,
+        "avoidableDeaths": 0,
+        "dominantCause": "stable"
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "start": 208,
+        "end": 313,
+        "deaths": 1,
+        "avoidableDeaths": 1,
+        "dominantCause": "throughput"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "at_risk",
+        "summary": "Phase 1: The Hunger is close, but early movement or tank stability is still leaking value.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Void Scream. Deaths 5, avoidable 4."
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "met",
+        "summary": "Phase 2: Feast of Shadows is stable enough for progression.",
+        "evidence": "Key checks: Voracious Bite, Consume Essence, Void Scream, Shadow Feast. Deaths 0, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "at_risk",
+        "summary": "Phase 3: Unending Hunger is close, but early movement or tank stability is still leaking value.",
+        "evidence": "Key checks: Voracious Bite, Hungering Mist, Consume Essence, Shadow Feast. Deaths 1, avoidable 1."
+      }
+    ],
+    "roleScores": {
+      "tanks": 82,
+      "healers": 55,
+      "dps": 38
+    },
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-voracious_bite",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Voracious Bite",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Mattank, Cutedwarfxd."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-interrupt-void_scream",
+        "category": "interrupt",
+        "status": "at_risk",
+        "owner": "Boxiebrown, Xcat, Jormungandr",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Void Scream",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-soak-consume_essence",
+        "category": "soak",
+        "status": "covered",
+        "owner": "Assigned soakers",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Consume Essence",
+        "evidence": "The soak plan is incomplete for Consume Essence.",
+        "confidenceReasons": [
+          "No soak owners are defined in the assignment plan.",
+          "No soak plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Assign soakers per orb, use personals",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-shadow_feast",
+        "category": "raid_cd",
+        "status": "covered",
+        "owner": "Healers + RL",
+        "phase": "Phase 1: The Hunger",
+        "mechanic": "Shadow Feast",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Big healing needed, use healing CDs",
+        "confidence": "high"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 4,
+      "missingCategories": [
+        "Interrupts",
+        "Soaks",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "covered",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/4 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Interrupts, Soaks, Raid CDs, Tank swaps before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Boxiebrown",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Spacekraken",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Pyrophobiac",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Xcat",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Jormungandr",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Latrice",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      }
+    ],
+    "killProbability": 82,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "bossrule-vorasius-baseline",
+        "kind": "raid_assignment",
+        "severity": "info",
+        "confidence": "high",
+        "priorityScore": 150,
+        "owner": "Assigned kickers, Assigned soakers, Healers + RL",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill.",
+        "evidence": "The fight stayed stable through its assignment checks.",
+        "confidenceReasons": [
+          "Vorasius is defined by kick order and soak execution.",
+          "The reviewed fixtures expect assignment-first diagnosis on this boss."
+        ],
+        "recommendation": "Keep the same kick rotation, soak map, and Shadow Feast coverage.",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 48,
+        "owner": "Spacekraken, Reilin",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "274K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "274K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 1: The Hunger."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 112,
+        "owner": "Mattank, Cutedwarfxd",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull."
+        ],
+        "recommendation": "Swap immediately after each bite, use big CDs",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-interrupt",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Boxiebrown, Xcat, Jormungandr",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Utility players are still losing control of key casts.",
+        "evidence": "0 total interrupts recorded on this pull. No matching interrupt line is defined in the plan.",
+        "confidenceReasons": [
+          "No interrupt plan line matches this mechanic or phase."
+        ],
+        "recommendation": "MUST interrupt! Rotate kicks",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-healer",
+        "kind": "raid_cooldown",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 108,
+        "owner": "Wubers, Brokuo",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Healer stability still needs cleanup before the raid can recover cleanly.",
+        "evidence": "Brokuo was at 19% active time with 1 death(s).",
+        "confidenceReasons": [
+          "Brokuo active time: 19%.",
+          "Brokuo died 1 time(s)."
+        ],
+        "recommendation": "Keep healers alive longer, reduce movement waste, and stabilize ramp timing before the next pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "coach-role-melee-Spacekraken",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Spacekraken",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Spacekraken needs cleaner melee uptime without greedy deaths.",
+        "evidence": "99% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Spacekraken active time is 99%.",
+          "Spacekraken died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Dotterparty",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Dotterparty",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Dotterparty needs cleaner movement and uptime discipline.",
+        "evidence": "18% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Dotterparty active time is 18%.",
+          "Dotterparty died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Reilin",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 63,
+        "owner": "Reilin",
+        "phase": "Phase 1: The Hunger",
+        "summary": "Reilin needs a throughput cleanup.",
+        "evidence": "134K below the expected DPS target.",
+        "confidenceReasons": [
+          "134K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: The Hunger",
+        "status": "close",
+        "summary": "Phase 1: The Hunger is close, but early movement or tank stability is still leaking value.",
+        "blocker": "The raid is still losing control before the real soak phase.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 2: Feast of Shadows",
+        "status": "ready",
+        "summary": "Phase 2: Feast of Shadows is stable enough for progression.",
+        "blocker": "Orb soaks and feast healing look good enough.",
+        "owner": "Raid"
+      },
+      {
+        "phase": "Phase 3: Unending Hunger",
+        "status": "close",
+        "summary": "Phase 3: Unending Hunger is close, but early movement or tank stability is still leaking value.",
+        "blocker": "The raid is still losing control before the real soak phase.",
+        "owner": "DPS Core"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Void Scream interrupts, Consume Essence soaks, and Shadow Feast coverage stayed stable on the kill.",
+        "owner": "Assigned kickers, Assigned soakers, Healers + RL",
+        "phase": "Phase 1: The Hunger",
+        "reason": "The fight stayed stable through its assignment checks."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Phase 1: The Hunger is the first place that slips if execution drops.",
+        "owner": "Raid",
+        "phase": "Phase 1: The Hunger",
+        "reason": "The raid is still losing control before the real soak phase."
+      }
+    }
+  }
+}

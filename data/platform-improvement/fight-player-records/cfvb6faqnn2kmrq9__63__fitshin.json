@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:marksmanship",
+  "buildSource": "spec_fallback",
+  "key": "cFVb6faqnN2kMrQ9__63__fitshin",
+  "fightKey": "cFVb6faqnN2kMrQ9__63",
+  "actorId": 83,
+  "name": "Fitshin",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "Marksmanship",
+  "talents": [],
+  "itemLevel": 270,
+  "server": "Sargeras",
+  "dps": 103585,
+  "hps": 7907,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 89,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:frost",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__ghwost",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 388,
+  "name": "Ghwost",
+  "role": "dps",
+  "className": "Mage",
+  "spec": "Frost",
+  "talents": [],
+  "itemLevel": 264,
+  "server": "Sargeras",
+  "dps": 73139,
+  "hps": 9437,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

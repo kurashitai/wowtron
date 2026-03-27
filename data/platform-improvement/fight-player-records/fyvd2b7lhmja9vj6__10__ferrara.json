@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:marksmanship",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__ferrara",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 14,
+  "name": "Ferrara",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "Marksmanship",
+  "talents": [],
+  "itemLevel": 260,
+  "server": "Kael'thas",
+  "dps": 0,
+  "hps": 1867,
+  "dtps": 0,
+  "activeTime": 65,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:enhancement",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__errofatal",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 19,
+  "name": "Errofatal",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Enhancement",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "Azralon",
+  "dps": 22598,
+  "hps": 5304,
+  "dtps": 0,
+  "activeTime": 73,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

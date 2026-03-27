@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devastation",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__ryuback",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 9,
+  "name": "Ryuback",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Devastation",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "Sargeras",
+  "dps": 102513,
+  "hps": 3637,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 60,
+  "avoidableDamageTaken": 0
+}

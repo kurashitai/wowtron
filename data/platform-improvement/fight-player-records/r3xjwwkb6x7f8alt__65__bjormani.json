@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__bjormani",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 61,
+  "name": "Bjormani",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 267,
+  "server": "Sargeras",
+  "dps": 75764,
+  "hps": 8271,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

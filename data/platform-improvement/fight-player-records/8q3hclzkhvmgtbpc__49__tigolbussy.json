@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devourer",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__tigolbussy",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 23,
+  "name": "Tigolbussy",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Devourer",
+  "talents": [],
+  "itemLevel": 252,
+  "server": "Thrall",
+  "dps": 81603,
+  "hps": 6970,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 20,
+  "avoidableDamageTaken": 0
+}

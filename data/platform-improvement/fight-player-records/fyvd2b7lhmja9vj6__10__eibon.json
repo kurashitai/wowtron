@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__eibon",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 11,
+  "name": "Eibon",
+  "role": "healer",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 256,
+  "server": "Kael'thas",
+  "dps": 3,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 96,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,39 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__38__fallen_king_salhadaar",
+  "bossName": "Fallen-King Salhadaar",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 38,
+  "fixtureType": "kill_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "King's Decree",
+      "Void Shockwave",
+      "Royal Guardian",
+      "Shadow Realm"
+    ],
+    "expectedCauseChainIncludes": [
+      "Decree reactions",
+      "Shockwave timing",
+      "Guardian interrupts",
+      "realm coordination"
+    ],
+    "expectedOwners": [
+      "Raid",
+      "Assigned kickers",
+      "Tanks"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "healing issue only",
+      "luck"
+    ],
+    "reviewerNotes": "Salhadaar kill should read as clean decree reactions, stable shockwave movement, controlled shadow-realm coordination, and reliable Guardian interrupts. The analyzer should not flatten this into generic throughput language."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

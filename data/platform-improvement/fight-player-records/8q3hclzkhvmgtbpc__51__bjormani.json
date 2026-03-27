@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:elemental",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__bjormani",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 356,
+  "name": "Bjormani",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Elemental",
+  "talents": [],
+  "itemLevel": 258,
+  "server": "Sargeras",
+  "dps": 70950,
+  "hps": 4925,
+  "dtps": 0,
+  "activeTime": 96,
+  "deaths": 0,
+  "rankPercent": 32,
+  "avoidableDamageTaken": 0
+}

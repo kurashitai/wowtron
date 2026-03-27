@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:demonology",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__roldyy",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 357,
+  "name": "Roldyy",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Demonology",
+  "talents": [],
+  "itemLevel": 261,
+  "server": "Illidan",
+  "dps": 91200,
+  "hps": 5506,
+  "dtps": 0,
+  "activeTime": 97,
+  "deaths": 1,
+  "rankPercent": 40,
+  "avoidableDamageTaken": 0
+}

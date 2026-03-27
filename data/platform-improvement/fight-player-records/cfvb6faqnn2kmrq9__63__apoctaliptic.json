@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "cFVb6faqnN2kMrQ9__63__apoctaliptic",
+  "fightKey": "cFVb6faqnN2kMrQ9__63",
+  "actorId": 79,
+  "name": "Apoctaliptic",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 263,
+  "server": "Sargeras",
+  "dps": 80961,
+  "hps": 10208,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 12,
+  "avoidableDamageTaken": 0
+}

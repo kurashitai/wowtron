@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unholy",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__brokuo",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 9,
+  "name": "Brokuo",
+  "role": "healer",
+  "className": "DeathKnight",
+  "spec": "Unholy",
+  "talents": [],
+  "itemLevel": 256,
+  "server": "Ghostlands",
+  "dps": 4,
+  "hps": 4091,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

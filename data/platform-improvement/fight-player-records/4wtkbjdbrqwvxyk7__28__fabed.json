@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__28__fabed",
+  "fightKey": "4wtkBjDbRQWvxYK7__28",
+  "actorId": 140,
+  "name": "Fabed",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Ghostlands",
+  "dps": 56562,
+  "hps": 4945,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 68,
+  "avoidableDamageTaken": 0
+}

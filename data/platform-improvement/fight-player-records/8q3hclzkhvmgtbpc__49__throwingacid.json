@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:retribution",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__throwingacid",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 3,
+  "name": "Throwingacid",
+  "role": "dps",
+  "className": "Paladin",
+  "spec": "Retribution",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Sargeras",
+  "dps": 34928,
+  "hps": 6617,
+  "dtps": 0,
+  "activeTime": 96,
+  "deaths": 0,
+  "rankPercent": 3,
+  "avoidableDamageTaken": 0
+}

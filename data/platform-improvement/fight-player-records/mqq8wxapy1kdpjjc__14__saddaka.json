@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:restoration",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__saddaka",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 2,
+  "name": "Saddaka",
+  "role": "healer",
+  "className": "Shaman",
+  "spec": "Restoration",
+  "talents": [],
+  "itemLevel": 242,
+  "server": "Area52",
+  "dps": 0,
+  "hps": 18036,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

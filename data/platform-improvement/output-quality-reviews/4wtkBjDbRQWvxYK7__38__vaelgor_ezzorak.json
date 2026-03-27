@@ -1,0 +1,20 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__38__vaelgor_ezzorak",
+  "bossName": "Vaelgor & Ezzorak",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 38,
+  "source": "heuristic_review",
+  "payload": {
+    "biggestBlockerBelievable": true,
+    "nextWipeBelievable": true,
+    "topActionsActionable": true,
+    "causeChainUseful": true,
+    "bossMemoryReady": true,
+    "reliabilityHighlightsReady": true,
+    "calibrationPassed": true,
+    "calibrationScore": 100,
+    "findings": [],
+    "topInsightSummary": "Twisted Fusion, Duplicate control, and Shadow Nova stabilization are the wipe gate on the twins."
+  },
+  "reviewedAt": "2026-03-27T06:45:41.575Z"
+}

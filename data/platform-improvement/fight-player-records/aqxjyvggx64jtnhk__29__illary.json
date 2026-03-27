@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:preservation",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__illary",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 8,
+  "name": "Illary",
+  "role": "healer",
+  "className": "Evoker",
+  "spec": "Preservation",
+  "talents": [],
+  "itemLevel": 225,
+  "server": "Azralon",
+  "dps": 0,
+  "hps": 50070,
+  "dtps": 0,
+  "activeTime": 92,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

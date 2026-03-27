@@ -1,0 +1,44 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__61",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 61,
+  "bossName": "Imperator Averzian",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Mythic",
+  "kill": false,
+  "bossHPPercent": 0,
+  "durationSec": 440,
+  "startTime": 11012829,
+  "endTime": 11453378,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:12:27.036Z",
+  "composition": {
+    "tanks": 2,
+    "healers": 4,
+    "dps": 14,
+    "total": 20,
+    "bloodlust": false,
+    "brez": 3
+  },
+  "summary": {
+    "raidDPS": 1198774,
+    "raidHPS": 630384,
+    "raidDTPS": 0,
+    "totalDamage": 527460784,
+    "totalHealing": 277369395,
+    "totalDamageTaken": 287667335,
+    "deaths": 21,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 20,
+    "deaths": 21,
+    "timelineEvents": 21,
+    "combatEvents": 5000,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

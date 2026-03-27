@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:beastmastery",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__kramhunt",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 32,
+  "name": "Kramhunt",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "BeastMastery",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "Area52",
+  "dps": 63097,
+  "hps": 349,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 94,
+  "avoidableDamageTaken": 0
+}

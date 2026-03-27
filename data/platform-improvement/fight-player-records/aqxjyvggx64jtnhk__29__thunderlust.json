@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:enhancement",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__thunderlust",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 94,
+  "name": "Thunderlust",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Enhancement",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "Sargeras",
+  "dps": 48254,
+  "hps": 6872,
+  "dtps": 0,
+  "activeTime": 88,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

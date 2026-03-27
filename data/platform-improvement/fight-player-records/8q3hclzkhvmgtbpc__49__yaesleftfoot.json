@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:devourer",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__yaesleftfoot",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 45,
+  "name": "Yaesleftfoot",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Devourer",
+  "talents": [],
+  "itemLevel": 256,
+  "server": "Sargeras",
+  "dps": 73863,
+  "hps": 7333,
+  "dtps": 0,
+  "activeTime": 96,
+  "deaths": 0,
+  "rankPercent": 10,
+  "avoidableDamageTaken": 0
+}

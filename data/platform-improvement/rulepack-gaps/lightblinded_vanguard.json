@@ -1,0 +1,32 @@
+{
+  "key": "lightblinded_vanguard",
+  "bossName": "Lightblinded Vanguard",
+  "status": "ready_for_rules",
+  "payload": {
+    "coverage": {
+      "totalPulls": 79,
+      "kills": 33,
+      "wipes": 46,
+      "bestWipeHP": 0,
+      "goodAssignmentSignal": 45,
+      "poorDataQuality": 27
+    },
+    "reviewedFixtureCount": 1,
+    "expectedMechanics": [
+      "Void Touched",
+      "Righteous Flame",
+      "Beam discipline"
+    ],
+    "expectedAssignmentTypes": [
+      "soak",
+      "raid_cd"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Deepen encounter-specific rule checks and success criteria."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:shadow",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__liaisa",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 73,
+  "name": "Liaisa",
+  "role": "dps",
+  "className": "Priest",
+  "spec": "Shadow",
+  "talents": [],
+  "itemLevel": 270,
+  "server": "Illidan",
+  "dps": 90482,
+  "hps": 14992,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

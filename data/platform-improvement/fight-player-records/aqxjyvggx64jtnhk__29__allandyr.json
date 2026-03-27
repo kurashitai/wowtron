@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:beastmastery",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__allandyr",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 10,
+  "name": "Allandyr",
+  "role": "dps",
+  "className": "Hunter",
+  "spec": "BeastMastery",
+  "talents": [],
+  "itemLevel": 254,
+  "server": "Gallywix",
+  "dps": 54144,
+  "hps": 3113,
+  "dtps": 0,
+  "activeTime": 77,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

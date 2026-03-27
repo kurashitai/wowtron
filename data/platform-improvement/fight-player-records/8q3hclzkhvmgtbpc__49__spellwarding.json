@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__spellwarding",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 40,
+  "name": "Spellwarding",
+  "role": "healer",
+  "className": "Paladin",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 254,
+  "server": "Sargeras",
+  "dps": 2436,
+  "hps": 57462,
+  "dtps": 0,
+  "activeTime": 73,
+  "deaths": 0,
+  "rankPercent": 5,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:augmentation",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__holyfawn",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 70,
+  "name": "Holyfawn",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Augmentation",
+  "talents": [],
+  "itemLevel": 251,
+  "server": "Trollbane",
+  "dps": 65771,
+  "hps": 7578,
+  "dtps": 0,
+  "activeTime": 84,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

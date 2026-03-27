@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:protection",
+  "buildSource": "spec_fallback",
+  "key": "AQxjYvgGX64JTNhk__29__zugzugaxe",
+  "fightKey": "AQxjYvgGX64JTNhk__29",
+  "actorId": 9,
+  "name": "Zugzugaxe",
+  "role": "tank",
+  "className": "Warrior",
+  "spec": "Protection",
+  "talents": [],
+  "itemLevel": 248,
+  "server": "Area52",
+  "dps": 23717,
+  "hps": 16424,
+  "dtps": 0,
+  "activeTime": 86,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

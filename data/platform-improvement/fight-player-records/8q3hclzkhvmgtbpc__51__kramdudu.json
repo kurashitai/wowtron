@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:balance",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__kramdudu",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 358,
+  "name": "Kramdudu",
+  "role": "dps",
+  "className": "Druid",
+  "spec": "Balance",
+  "talents": [],
+  "itemLevel": 263,
+  "server": "Area52",
+  "dps": 94994,
+  "hps": 3273,
+  "dtps": 0,
+  "activeTime": 96,
+  "deaths": 0,
+  "rankPercent": 72,
+  "avoidableDamageTaken": 0
+}

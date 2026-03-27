@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:restoration",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__implant",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 879,
+  "name": "Implant",
+  "role": "healer",
+  "className": "Druid",
+  "spec": "Restoration",
+  "talents": [],
+  "itemLevel": 248,
+  "server": "Ghostlands",
+  "dps": 6554,
+  "hps": 56866,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 87,
+  "avoidableDamageTaken": 0
+}

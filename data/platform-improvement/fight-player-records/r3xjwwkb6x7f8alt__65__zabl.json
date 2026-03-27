@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:destruction",
+  "buildSource": "spec_fallback",
+  "key": "r3xjWwKB6X7F8ALT__65__zabl",
+  "fightKey": "r3xjWwKB6X7F8ALT__65",
+  "actorId": 399,
+  "name": "Zabl",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Destruction",
+  "talents": [],
+  "itemLevel": 267,
+  "server": "Sargeras",
+  "dps": 78626,
+  "hps": 11189,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

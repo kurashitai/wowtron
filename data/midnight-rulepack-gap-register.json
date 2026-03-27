@@ -1,0 +1,263 @@
+{
+  "generatedAt": "2026-03-27T14:17:32.963Z",
+  "source": {
+    "coveragePath": "data/midnight-public-coverage.json",
+    "fixturesPath": "data/midnight-reviewed-fixtures.json",
+    "calibrationPath": "data/midnight-calibration-results.json"
+  },
+  "count": 8,
+  "bosses": [
+    {
+      "bossName": "Imperator Averzian",
+      "status": "stable",
+      "payload": {
+        "coverage": {
+          "totalPulls": 192,
+          "kills": 37,
+          "wipes": 155,
+          "bestWipeHP": 0,
+          "goodAssignmentSignal": 53,
+          "poorDataQuality": 131
+        },
+        "reviewedFixtureCount": 2,
+        "expectedMechanics": [
+          "Void Blast",
+          "Imperial Decree",
+          "Positioning"
+        ],
+        "expectedAssignmentTypes": [
+          "raid_cd",
+          "tank_swap"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Improve public coverage quality before adding deeper rules."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Vorasius",
+      "status": "stable",
+      "payload": {
+        "coverage": {
+          "totalPulls": 173,
+          "kills": 41,
+          "wipes": 132,
+          "bestWipeHP": 0,
+          "goodAssignmentSignal": 64,
+          "poorDataQuality": 92
+        },
+        "reviewedFixtureCount": 2,
+        "expectedMechanics": [
+          "Void Scream",
+          "Consume Essence",
+          "Shadow Feast"
+        ],
+        "expectedAssignmentTypes": [
+          "interrupt",
+          "soak",
+          "raid_cd"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Improve public coverage quality before adding deeper rules."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Fallen-King Salhadaar",
+      "status": "ready_for_rules",
+      "payload": {
+        "coverage": {
+          "totalPulls": 144,
+          "kills": 38,
+          "wipes": 106,
+          "bestWipeHP": 0,
+          "goodAssignmentSignal": 60,
+          "poorDataQuality": 76
+        },
+        "reviewedFixtureCount": 1,
+        "expectedMechanics": [
+          "Royal Collapse",
+          "Tank handling",
+          "Raid movement"
+        ],
+        "expectedAssignmentTypes": [
+          "tank_swap",
+          "raid_cd"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Improve public coverage quality before adding deeper rules."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Vaelgor & Ezzorak",
+      "status": "stable",
+      "payload": {
+        "coverage": {
+          "totalPulls": 111,
+          "kills": 34,
+          "wipes": 77,
+          "bestWipeHP": 0,
+          "goodAssignmentSignal": 73,
+          "poorDataQuality": 11
+        },
+        "reviewedFixtureCount": 2,
+        "expectedMechanics": [
+          "Duplicate control",
+          "Twisted Fusion",
+          "Shadow Nova"
+        ],
+        "expectedAssignmentTypes": [
+          "raid_cd",
+          "assignment"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Maintain and expand with phase-specific false-positive suppressors."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Crown of the Cosmos",
+      "status": "ready_for_rules",
+      "payload": {
+        "coverage": {
+          "totalPulls": 110,
+          "kills": 22,
+          "wipes": 88,
+          "bestWipeHP": 0,
+          "goodAssignmentSignal": 69,
+          "poorDataQuality": 2
+        },
+        "reviewedFixtureCount": 1,
+        "expectedMechanics": [
+          "Devouring Cosmos",
+          "Spacing",
+          "Final platform discipline"
+        ],
+        "expectedAssignmentTypes": [
+          "raid_cd",
+          "movement"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Deepen encounter-specific rule checks and success criteria."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Lightblinded Vanguard",
+      "status": "ready_for_rules",
+      "payload": {
+        "coverage": {
+          "totalPulls": 79,
+          "kills": 33,
+          "wipes": 46,
+          "bestWipeHP": 0,
+          "goodAssignmentSignal": 45,
+          "poorDataQuality": 27
+        },
+        "reviewedFixtureCount": 1,
+        "expectedMechanics": [
+          "Void Touched",
+          "Righteous Flame",
+          "Beam discipline"
+        ],
+        "expectedAssignmentTypes": [
+          "soak",
+          "raid_cd"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Deepen encounter-specific rule checks and success criteria."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Alleria Windrunner",
+      "status": "ready_for_rules",
+      "payload": {
+        "coverage": {
+          "totalPulls": 24,
+          "kills": 0,
+          "wipes": 24,
+          "bestWipeHP": 100,
+          "goodAssignmentSignal": 0,
+          "poorDataQuality": 24
+        },
+        "reviewedFixtureCount": 1,
+        "expectedMechanics": [
+          "Windrunner Adds",
+          "Void Collapse",
+          "Barrage ownership"
+        ],
+        "expectedAssignmentTypes": [
+          "interrupt",
+          "soak",
+          "raid_cd"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Improve public coverage quality before adding deeper rules."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    },
+    {
+      "bossName": "Chimaerus the Undreamt God",
+      "status": "needs_data",
+      "payload": {
+        "coverage": {
+          "totalPulls": 3,
+          "kills": 0,
+          "wipes": 3,
+          "bestWipeHP": 100,
+          "goodAssignmentSignal": 0,
+          "poorDataQuality": 3
+        },
+        "reviewedFixtureCount": 1,
+        "expectedMechanics": [
+          "Aberrant Spawn",
+          "Cosmic Rupture",
+          "Shattered Heads"
+        ],
+        "expectedAssignmentTypes": [
+          "interrupt",
+          "soak",
+          "raid_cd",
+          "tank_swap"
+        ],
+        "calibration": {
+          "passed": true,
+          "score": 100,
+          "findings": []
+        },
+        "nextPriority": "Improve public coverage quality before adding deeper rules."
+      },
+      "updatedAt": "2026-03-27T14:17:32.963Z"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:subtlety",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__51__delights",
+  "fightKey": "8q3hcLzkHVmGtbpC__51",
+  "actorId": 13,
+  "name": "Delights",
+  "role": "dps",
+  "className": "Rogue",
+  "spec": "Subtlety",
+  "talents": [],
+  "itemLevel": 261,
+  "server": "Sargeras",
+  "dps": 98132,
+  "hps": 4971,
+  "dtps": 0,
+  "activeTime": 84,
+  "deaths": 0,
+  "rankPercent": 59,
+  "avoidableDamageTaken": 0
+}

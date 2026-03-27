@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:blood",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__cutedwarfxd",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 794,
+  "name": "Cutedwarfxd",
+  "role": "tank",
+  "className": "DeathKnight",
+  "spec": "Blood",
+  "talents": [],
+  "itemLevel": 246,
+  "server": "Ghostlands",
+  "dps": 25766,
+  "hps": 18098,
+  "dtps": 0,
+  "activeTime": 93,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

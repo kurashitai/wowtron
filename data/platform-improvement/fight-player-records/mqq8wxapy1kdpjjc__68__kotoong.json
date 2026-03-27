@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:enhancement",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__68__kotoong",
+  "fightKey": "mQq8WxapY1KDPjJc__68",
+  "actorId": 475,
+  "name": "Kotoong",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Enhancement",
+  "talents": [],
+  "itemLevel": 241,
+  "server": "Kil'jaeden",
+  "dps": 0,
+  "hps": 0,
+  "dtps": 0,
+  "activeTime": 89,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

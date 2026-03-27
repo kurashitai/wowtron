@@ -1,0 +1,46 @@
+{
+  "sources": [
+    {
+      "guildName": "Liquid",
+      "guildServerSlug": "illidan",
+      "guildServerRegion": "US",
+      "limit": 25,
+      "maxPages": 3
+    },
+    {
+      "guildName": "Echo",
+      "guildServerSlug": "tarren-mill",
+      "guildServerRegion": "EU",
+      "limit": 25,
+      "maxPages": 3
+    },
+    {
+      "guildName": "Method",
+      "guildServerSlug": "twisting-nether",
+      "guildServerRegion": "EU",
+      "limit": 25,
+      "maxPages": 3
+    },
+    {
+      "guildName": "Internet Explorers",
+      "guildServerSlug": "kaelthas",
+      "guildServerRegion": "US",
+      "limit": 20,
+      "maxPages": 2
+    },
+    {
+      "guildName": "comma",
+      "guildServerSlug": "sargeras",
+      "guildServerRegion": "US",
+      "limit": 20,
+      "maxPages": 2
+    },
+    {
+      "guildName": "Saviors",
+      "guildServerSlug": "drakthul",
+      "guildServerRegion": "EU",
+      "limit": 20,
+      "maxPages": 2
+    }
+  ]
+}

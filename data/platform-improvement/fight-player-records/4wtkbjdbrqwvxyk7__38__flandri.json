@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__38__flandri",
+  "fightKey": "4wtkBjDbRQWvxYK7__38",
+  "actorId": 225,
+  "name": "Flandri",
+  "role": "healer",
+  "className": "Priest",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 243,
+  "server": "Kael'thas",
+  "dps": 46702,
+  "hps": 48954,
+  "dtps": 0,
+  "activeTime": 23,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

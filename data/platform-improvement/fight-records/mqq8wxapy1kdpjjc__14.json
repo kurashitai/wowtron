@@ -1,0 +1,44 @@
+{
+  "key": "mQq8WxapY1KDPjJc__14",
+  "reportCode": "mQq8WxapY1KDPjJc",
+  "fightId": 14,
+  "bossName": "Alleria Windrunner",
+  "zone": "VS / DR / MQD",
+  "difficulty": "Unknown",
+  "kill": false,
+  "bossHPPercent": 100,
+  "durationSec": 1,
+  "startTime": 3268188,
+  "endTime": 3270119,
+  "source": "wcl_api",
+  "capturedAt": "2026-03-27T14:23:43.008Z",
+  "composition": {
+    "tanks": 1,
+    "healers": 7,
+    "dps": 12,
+    "total": 20,
+    "bloodlust": false,
+    "brez": 4
+  },
+  "summary": {
+    "raidDPS": 3876,
+    "raidHPS": 670085,
+    "raidDTPS": 0,
+    "totalDamage": 3876,
+    "totalHealing": 670085,
+    "totalDamageTaken": 194505,
+    "deaths": 0,
+    "bloodlusts": 0,
+    "dispels": 0,
+    "interrupts": 0
+  },
+  "bossContextSource": "midnight-static",
+  "dataQuality": {
+    "playerCount": 20,
+    "deaths": 0,
+    "timelineEvents": 0,
+    "combatEvents": 9,
+    "hasPlayerDetails": true,
+    "hasBossContext": true
+  }
+}

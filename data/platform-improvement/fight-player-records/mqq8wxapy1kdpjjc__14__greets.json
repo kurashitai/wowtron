@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:restoration",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__greets",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 10,
+  "name": "Greets",
+  "role": "healer",
+  "className": "Druid",
+  "spec": "Restoration",
+  "talents": [],
+  "itemLevel": 247,
+  "server": "Sargeras",
+  "dps": 1,
+  "hps": 47966,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

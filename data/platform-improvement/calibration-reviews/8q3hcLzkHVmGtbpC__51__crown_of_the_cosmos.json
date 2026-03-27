@@ -1,0 +1,40 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__51__crown_of_the_cosmos",
+  "bossName": "Crown of the Cosmos",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 51,
+  "fixtureType": "kill_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Devouring Cosmos",
+      "raid-CD",
+      "final platform",
+      "movement",
+      "spacing"
+    ],
+    "expectedCauseChainIncludes": [
+      "Devouring Cosmos",
+      "platform pressure",
+      "final phase",
+      "movement discipline"
+    ],
+    "expectedOwners": [
+      "Healers + RL",
+      "Raid",
+      "Healers"
+    ],
+    "bannedSummaryIncludes": [
+      "lust too early",
+      "throughput wall",
+      "greed damage first"
+    ],
+    "reviewerNotes": "This is a kill reference, so the analyzer should frame it as successful control of movement, spacing, and raid-CD coverage into the final platform phase. It should not overblame throughput or recommend using Hero/Lust earlier."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

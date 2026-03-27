@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__salamando",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 8,
+  "name": "Salamando",
+  "role": "dps",
+  "className": "Evoker",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 265,
+  "server": "Lothar",
+  "dps": 23,
+  "hps": 64,
+  "dtps": 0,
+  "activeTime": 100,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

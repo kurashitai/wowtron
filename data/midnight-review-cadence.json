@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-03-27T06:49:26.406Z",
+  "weekly": {
+    "goal": "Keep calibration honest and catch regressions early.",
+    "checklist": [
+      "Run calibration and review failed findings.",
+      "Review the top backlog items: Expand reviewed fixtures beyond the current Midnight core; Add human-reviewed output quality samples for session-level summaries; Deepen Fallen-King Salhadaar rulepack; Deepen Crown of the Cosmos rulepack; Improve Fallen-King Salhadaar public coverage quality.",
+      "Inspect the current priority bosses: Crown of the Cosmos, Fallen-King Salhadaar, Lightblinded Vanguard.",
+      "Append new reviewed fixtures if new progression pulls exist."
+    ]
+  },
+  "biweekly": {
+    "goal": "Decide where rule work and public coverage work should move next.",
+    "checklist": [
+      "Review rulepack gaps and move one boss from queued to in-progress.",
+      "Check whether poor-quality public coverage is blocking a boss.",
+      "Review output quality samples and mark any misleading summaries."
+    ]
+  },
+  "monthly": {
+    "goal": "Use data to redirect product work, not just engine work.",
+    "checklist": [
+      "Re-rank backlog categories by impact on raid leader usefulness.",
+      "Review whether Boss Memory and Session Review are still helping progression.",
+      "Decide whether new encounters or a new raid tier should enter the fixture program."
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:subtlety",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__hiddenmight",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 135,
+  "name": "Hiddenmight",
+  "role": "dps",
+  "className": "Rogue",
+  "spec": "Subtlety",
+  "talents": [],
+  "itemLevel": 239,
+  "server": "Ghostlands",
+  "dps": 51483,
+  "hps": 3744,
+  "dtps": 0,
+  "activeTime": 97,
+  "deaths": 0,
+  "rankPercent": 42,
+  "avoidableDamageTaken": 0
+}

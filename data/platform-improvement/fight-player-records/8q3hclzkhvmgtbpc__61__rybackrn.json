@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:fury",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__61__rybackrn",
+  "fightKey": "8q3hcLzkHVmGtbpC__61",
+  "actorId": 355,
+  "name": "Rybackrn",
+  "role": "dps",
+  "className": "Warrior",
+  "spec": "Fury",
+  "talents": [],
+  "itemLevel": 263,
+  "server": "Sargeras",
+  "dps": 81075,
+  "hps": 9185,
+  "dtps": 0,
+  "activeTime": 98,
+  "deaths": 1,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

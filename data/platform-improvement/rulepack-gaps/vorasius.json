@@ -1,0 +1,33 @@
+{
+  "key": "vorasius",
+  "bossName": "Vorasius",
+  "status": "stable",
+  "payload": {
+    "coverage": {
+      "totalPulls": 173,
+      "kills": 41,
+      "wipes": 132,
+      "bestWipeHP": 0,
+      "goodAssignmentSignal": 64,
+      "poorDataQuality": 92
+    },
+    "reviewedFixtureCount": 2,
+    "expectedMechanics": [
+      "Void Scream",
+      "Consume Essence",
+      "Shadow Feast"
+    ],
+    "expectedAssignmentTypes": [
+      "interrupt",
+      "soak",
+      "raid_cd"
+    ],
+    "calibration": {
+      "passed": true,
+      "score": 100,
+      "findings": []
+    },
+    "nextPriority": "Improve public coverage quality before adding deeper rules."
+  },
+  "updatedAt": "2026-03-27T14:17:32.963Z"
+}

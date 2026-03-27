@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:havoc",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__38__apocforlife",
+  "fightKey": "8q3hcLzkHVmGtbpC__38",
+  "actorId": 19,
+  "name": "Apocforlife",
+  "role": "dps",
+  "className": "DemonHunter",
+  "spec": "Havoc",
+  "talents": [],
+  "itemLevel": 250,
+  "server": "Sargeras",
+  "dps": 53994,
+  "hps": 9042,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 46,
+  "avoidableDamageTaken": 0
+}

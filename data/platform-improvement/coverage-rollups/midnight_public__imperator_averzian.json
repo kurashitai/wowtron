@@ -1,0 +1,43 @@
+{
+  "key": "midnight_public__imperator_averzian",
+  "scope": "midnight_public",
+  "bossName": "Imperator Averzian",
+  "zone": "Midnight",
+  "payload": {
+    "bossName": "Imperator Averzian",
+    "zone": "Midnight",
+    "totalReports": 19,
+    "totalPulls": 192,
+    "wipes": 155,
+    "kills": 37,
+    "firstPhaseWipes": 129,
+    "latePhaseWipes": 0,
+    "finalPhaseWipes": 26,
+    "goodAssignmentSignal": 53,
+    "poorDataQuality": 131,
+    "bestWipeHP": 0,
+    "longestPullSec": 440,
+    "reportCodes": [
+      "mQq8WxapY1KDPjJc",
+      "FyVd2B7LhMjA9vJ6",
+      "LCNYzTVZXPpmagr8",
+      "vRFfW91GMDQ7pLNH",
+      "rgYH7cLnZwxtQNCJ",
+      "TBMjVfX61hJHzy3Z",
+      "4wtkBjDbRQWvxYK7",
+      "9wCT2vNXRgAbFWJt",
+      "r3xjWwKB6X7F8ALT",
+      "cFVb6faqnN2kMrQ9",
+      "8q3hcLzkHVmGtbpC",
+      "RCHty67paNVgLjhv",
+      "ABfKXjM3x72pbPDr",
+      "Qz9pXhf4TnAbtZ2Y",
+      "GwcjYN3DB2mvFhtW",
+      "jaJXqpF9DRTyc2kz",
+      "bTK8YtW1kgDJmcX3",
+      "MXmQ1VaTWbPYkF9c",
+      "f46adXpmzJtDHynT"
+    ]
+  },
+  "generatedAt": "2026-03-27T14:17:11.569Z"
+}

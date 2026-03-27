@@ -1,0 +1,39 @@
+{
+  "key": "4wtkBjDbRQWvxYK7__39__vaelgor_ezzorak",
+  "bossName": "Vaelgor & Ezzorak",
+  "reportCode": "4wtkBjDbRQWvxYK7",
+  "fightId": 39,
+  "fixtureType": "kill_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Duplicate",
+      "Twisted Fusion",
+      "Shadow Nova",
+      "Phase 2"
+    ],
+    "expectedCauseChainIncludes": [
+      "duplicate control",
+      "beam discipline",
+      "raid-CD",
+      "clean sync"
+    ],
+    "expectedOwners": [
+      "Raid",
+      "Healers + RL",
+      "Tanks"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "unavoidable deaths",
+      "luck"
+    ],
+    "reviewerNotes": "This kill should read as successful duplicate control, beam discipline, and planned raid-CD coverage into the synchronized second phase."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

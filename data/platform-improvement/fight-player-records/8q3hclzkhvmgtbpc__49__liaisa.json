@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:shadow",
+  "buildSource": "spec_fallback",
+  "key": "8q3hcLzkHVmGtbpC__49__liaisa",
+  "fightKey": "8q3hcLzkHVmGtbpC__49",
+  "actorId": 5,
+  "name": "Liaisa",
+  "role": "dps",
+  "className": "Priest",
+  "spec": "Shadow",
+  "talents": [],
+  "itemLevel": 255,
+  "server": "Stormrage",
+  "dps": 96700,
+  "hps": 17145,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 67,
+  "avoidableDamageTaken": 0
+}

@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:holy",
+  "buildSource": "spec_fallback",
+  "key": "4wtkBjDbRQWvxYK7__39__tanishalfelf",
+  "fightKey": "4wtkBjDbRQWvxYK7__39",
+  "actorId": 870,
+  "name": "Tanishalfelf",
+  "role": "healer",
+  "className": "Paladin",
+  "spec": "Holy",
+  "talents": [],
+  "itemLevel": 238,
+  "server": "Stormrage",
+  "dps": 2562,
+  "hps": 53445,
+  "dtps": 0,
+  "activeTime": 76,
+  "deaths": 0,
+  "rankPercent": 42,
+  "avoidableDamageTaken": 0
+}

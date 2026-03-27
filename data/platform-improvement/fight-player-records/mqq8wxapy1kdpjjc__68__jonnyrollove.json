@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__68__jonnyrollove",
+  "fightKey": "mQq8WxapY1KDPjJc__68",
+  "actorId": 485,
+  "name": "Jonnyrollove",
+  "role": "dps",
+  "className": "Warlock",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 241,
+  "server": "Area52",
+  "dps": 0,
+  "hps": 979,
+  "dtps": 0,
+  "activeTime": 42,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

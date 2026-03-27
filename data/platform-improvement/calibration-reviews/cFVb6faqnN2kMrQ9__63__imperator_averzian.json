@@ -1,0 +1,39 @@
+{
+  "key": "cFVb6faqnN2kMrQ9__63__imperator_averzian",
+  "bossName": "Imperator Averzian",
+  "reportCode": "cFVb6faqnN2kMrQ9",
+  "fightId": 63,
+  "fixtureType": "kill_reference",
+  "expected": {
+    "expectedTopSummaryIncludes": [
+      "Void Blast",
+      "Imperial Decree",
+      "Phase 2",
+      "clean positioning"
+    ],
+    "expectedCauseChainIncludes": [
+      "raid-CD map",
+      "Void Blast",
+      "Decree handling",
+      "clean push"
+    ],
+    "expectedOwners": [
+      "Healers + RL",
+      "Raid",
+      "Tanks"
+    ],
+    "bannedSummaryIncludes": [
+      "pure DPS wall",
+      "gear issue",
+      "random deaths"
+    ],
+    "reviewerNotes": "Averzian kill should be framed as successful raid-CD coverage on Void Blast, controlled positioning for Imperial Decree, and stable tank handling through the dangerous middle phase rather than raw throughput alone."
+  },
+  "failureReason": "",
+  "tags": [
+    "reviewed_fixture",
+    "needs_attention"
+  ],
+  "reviewedAt": "2026-03-27T04:47:44.448Z",
+  "source": "reviewed_fixture"
+}

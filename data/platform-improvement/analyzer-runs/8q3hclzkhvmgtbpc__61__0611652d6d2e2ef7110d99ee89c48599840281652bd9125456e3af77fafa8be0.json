@@ -1,0 +1,1824 @@
+{
+  "key": "8q3hcLzkHVmGtbpC__61__0611652d6d2e2ef7110d99ee89c48599840281652bd9125456e3af77fafa8be0",
+  "fightKey": "8q3hcLzkHVmGtbpC__61",
+  "reportCode": "8q3hcLzkHVmGtbpC",
+  "fightId": 61,
+  "bossName": "Imperator Averzian",
+  "source": "calibration_api",
+  "analyzerVersion": "phase1-shared-engine-v1",
+  "recordedAt": "2026-03-27T06:37:02.930Z",
+  "summaryText": "Phase 3: Desperation is the progression breakpoint for this pull.",
+  "topOwner": "Raid",
+  "topPhase": "Phase 3: Desperation",
+  "snapshotQuality": {
+    "hasCommandView": true,
+    "hasPhaseReadiness": true,
+    "hasAssignmentPlanOverview": true,
+    "hasCauseChain": true,
+    "hasRoleCoaching": true,
+    "hasReliabilityEntries": true
+  },
+  "snapshot": {
+    "key": "imperator averzian::61",
+    "fightId": 61,
+    "bossName": "Imperator Averzian",
+    "reportCode": "8q3hcLzkHVmGtbpC",
+    "recordedAt": "2026-03-27T06:37:02.697Z",
+    "kill": false,
+    "bossHP": 0,
+    "duration": 440,
+    "briefInsights": [
+      {
+        "id": "phase-Phase 3: Desperation",
+        "kind": "raid_strategy",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 237,
+        "owner": "Raid",
+        "phase": "Phase 3: Desperation",
+        "summary": "Phase 3: Desperation is the progression breakpoint for this pull.",
+        "evidence": "19 death(s), 0 avoidable death(s), dominant cause: throughput.",
+        "confidenceReasons": [
+          "19 deaths occurred in Phase 3: Desperation.",
+          "0 of those deaths were avoidable.",
+          "The dominant cause for the phase is throughput."
+        ],
+        "recommendation": "All CDs, ignore some mechanics if needed",
+        "category": "strategy"
+      },
+      {
+        "id": "bossrule-averzian-void-blast",
+        "kind": "raid_cooldown",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 150,
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Desperation",
+        "summary": "Empowered Void Blast needs a fixed raid-CD map on Averzian.",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "Averzian uses Void Blast as the primary raid-damage checkpoint.",
+          "The static boss rules explicitly call for raid CDs on empowered blasts.",
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map one named raid cooldown to every Void Blast in the dangerous phases before pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "assignment-assignment-tanks-void_cleave",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "summary": "Void Cleave needs a clearer assignment plan.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Brewforlife, Jumbobear."
+        ],
+        "recommendation": "Swap at 3 stacks, use personal CDs for 4th stack if needed",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Apoctaliptic, Rybackrn",
+        "phase": "Phase 3: Desperation",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "204K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "204K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 3: Desperation."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 132,
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull.",
+          "2 tank death(s) were recorded.",
+          "Brewforlife reliability score: 49."
+        ],
+        "recommendation": "Swap at 3 stacks, use personal CDs for 4th stack if needed",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-dispel",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Yaennah, Sariphena",
+        "phase": "Phase 3: Desperation",
+        "summary": "Dispel ownership is still too loose for this phase.",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Stay close to linked players, dispel once stacked",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-melee-Apoctaliptic",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Apoctaliptic",
+        "phase": "Phase 3: Desperation",
+        "summary": "Apoctaliptic needs cleaner melee uptime without greedy deaths.",
+        "evidence": "100% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Apoctaliptic active time is 100%.",
+          "Apoctaliptic died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Aqv",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Aqv",
+        "phase": "Phase 3: Desperation",
+        "summary": "Aqv needs cleaner movement and uptime discipline.",
+        "evidence": "68% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Aqv active time is 68%.",
+          "Aqv died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Rybackrn",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 60,
+        "owner": "Rybackrn",
+        "phase": "Phase 3: Desperation",
+        "summary": "Rybackrn needs a throughput cleanup.",
+        "evidence": "99K below the expected DPS target.",
+        "confidenceReasons": [
+          "99K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Eregor",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 60,
+        "owner": "Eregor",
+        "phase": "Phase 3: Desperation",
+        "summary": "Eregor needs a throughput cleanup.",
+        "evidence": "95K below the expected DPS target.",
+        "confidenceReasons": [
+          "95K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-void_cleave",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "mechanic": "Void Cleave",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Brewforlife, Jumbobear."
+        ],
+        "recommendation": "Swap at 3 stacks, use personal CDs for 4th stack if needed",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-void_blast",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Desperation",
+        "mechanic": "Void Blast",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Use raid CDs here, especially on empowered casts",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-dispel-shadow_chains",
+        "category": "dispel",
+        "status": "at_risk",
+        "owner": "Yaennah, Sariphena",
+        "phase": "Phase 3: Desperation",
+        "mechanic": "Shadow Chains",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Stay close to linked players, dispel once stacked",
+        "confidence": "medium"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: The Emperor's Might",
+        "status": "at_risk",
+        "summary": "Phase 1: The Emperor's Might is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Void Cleave, Darkened Wake, Void Blast."
+      },
+      {
+        "phase": "Phase 2: Imperial Wrath",
+        "status": "at_risk",
+        "summary": "Phase 2: Imperial Wrath is close, but Decree handling is not fully clean yet.",
+        "evidence": "Key checks: Void Cleave, Imperial Decree, Void Blast, Shadow Chains. Deaths 1, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Desperation",
+        "status": "at_risk",
+        "summary": "Phase 3: Desperation is close, but still leaks execution.",
+        "evidence": "Deaths: 19, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Void Cleave, Darkened Wake, Void Blast."
+      }
+    ],
+    "causeChains": [
+      "Void Blast pressure built up -> Imperial Decree positioning broke down -> the raid lost control before the kill.",
+      "Void Cleave assignment slipped in Phase 3: Desperation. -> Bokkievoker died to Umbral Collapse at 0:37. -> The raid did not recover the failed assignment cleanly. -> Phase 1: The Emperor's Might stayed close, so the pull converted into a wipe there."
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: The Emperor's Might",
+        "status": "close",
+        "summary": "Phase 1: The Emperor's Might is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Imperial Wrath",
+        "status": "close",
+        "summary": "Phase 2: Imperial Wrath is close, but Decree handling is not fully clean yet.",
+        "blocker": "Void Blast map and Decree reactions are stable enough.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 3: Desperation",
+        "status": "close",
+        "summary": "Phase 3: Desperation is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Phase 3: Desperation is the progression breakpoint for this pull.",
+        "owner": "Raid",
+        "phase": "Phase 3: Desperation",
+        "reason": "19 death(s), 0 avoidable death(s), dominant cause: throughput."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Void Cleave is the most likely repeat wipe point.",
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    },
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 3,
+      "missingCategories": [
+        "Dispels",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/3 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Dispels, Raid CDs, Tank swaps before the next pull."
+    },
+    "avgReliability": 54,
+    "killProbability": 85,
+    "totalDeaths": 21,
+    "avoidableDeaths": 0,
+    "players": [
+      {
+        "name": "Roldyy",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Zimydh",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Hungnuts",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Eregor",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Ghwost",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Fitshin",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 100,
+        "deaths": 1
+      },
+      {
+        "name": "Rybackrn",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Bjormani",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Liaisa",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 98,
+        "deaths": 1
+      },
+      {
+        "name": "Frostrend",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Kramdudu",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Phoenìxr",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 95,
+        "deaths": 1
+      },
+      {
+        "name": "Aqv",
+        "role": "dps",
+        "reliabilityScore": 35,
+        "activeTime": 68,
+        "deaths": 1
+      },
+      {
+        "name": "Apoctaliptic",
+        "role": "dps",
+        "reliabilityScore": 62,
+        "activeTime": 100,
+        "deaths": 1
+      },
+      {
+        "name": "Jumbobear",
+        "role": "tank",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Brewforlife",
+        "role": "tank",
+        "reliabilityScore": 49,
+        "activeTime": 82,
+        "deaths": 1
+      },
+      {
+        "name": "Groovey",
+        "role": "healer",
+        "reliabilityScore": 62,
+        "activeTime": 99,
+        "deaths": 1
+      },
+      {
+        "name": "Yaennah",
+        "role": "healer",
+        "reliabilityScore": 48,
+        "activeTime": 81,
+        "deaths": 1
+      },
+      {
+        "name": "Bokkievoker",
+        "role": "healer",
+        "reliabilityScore": 15,
+        "activeTime": 68,
+        "deaths": 2
+      },
+      {
+        "name": "Sariphena",
+        "role": "healer",
+        "reliabilityScore": 12,
+        "activeTime": 45,
+        "deaths": 1
+      }
+    ]
+  },
+  "analysis": {
+    "summary": {
+      "killPotential": 0,
+      "whyWiped": [
+        "Bokkievoker died early at 0:37, starting the collapse.",
+        "Roughly 3.7M DPS was lost to prep gaps.",
+        "14 players were below the expected output."
+      ],
+      "keyIssues": []
+    },
+    "deaths": {
+      "avoidable": [],
+      "unavoidable": [
+        {
+          "player": "Bokkievoker",
+          "ability": "Umbral Collapse",
+          "time": 37,
+          "avoidable": false,
+          "phase": "Early",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "low"
+        },
+        {
+          "player": "Apoctaliptic",
+          "ability": "Dark Barrage",
+          "time": 268,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Aqv",
+          "ability": "Umbral Collapse",
+          "time": 303,
+          "avoidable": false,
+          "phase": "Late",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "medium"
+        },
+        {
+          "player": "Brewforlife",
+          "ability": "Melee",
+          "time": 354,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Liaisa",
+          "ability": "Umbral Collapse",
+          "time": 407,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Jumbobear",
+          "ability": "Umbral Collapse",
+          "time": 415,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Sariphena",
+          "ability": "Melee",
+          "time": 429,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Zimydh",
+          "ability": "March of the Endless",
+          "time": 431,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Yaennah",
+          "ability": "Dark Upheaval",
+          "time": 433,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Ghwost",
+          "ability": "Dark Upheaval",
+          "time": 433,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Rybackrn",
+          "ability": "Dark Upheaval",
+          "time": 433,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Bjormani",
+          "ability": "Dark Upheaval",
+          "time": 433,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Bokkievoker",
+          "ability": "Dark Upheaval",
+          "time": 433,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Roldyy",
+          "ability": "Dark Upheaval",
+          "time": 434,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Hungnuts",
+          "ability": "Melee",
+          "time": 435,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Kramdudu",
+          "ability": "Melee",
+          "time": 435,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Groovey",
+          "ability": "Dark Upheaval",
+          "time": 435,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Eregor",
+          "ability": "Melee",
+          "time": 436,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Frostrend",
+          "ability": "Melee",
+          "time": 437,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Phoenìxr",
+          "ability": "Dark Upheaval",
+          "time": 437,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        },
+        {
+          "player": "Fitshin",
+          "ability": "March of the Endless",
+          "time": 439,
+          "avoidable": false,
+          "phase": "Final",
+          "tip": "Check the boss guide for this mechanic",
+          "impact": "high"
+        }
+      ]
+    },
+    "performance": {
+      "raidDPS": 1242012,
+      "raidHPS": 662220,
+      "requiredDPS": 2300000,
+      "dpsGap": 1186954,
+      "lowPerformers": [
+        {
+          "player": "Apoctaliptic",
+          "class": "Paladin",
+          "expectedDPS": 165000,
+          "actualDPS": 59641,
+          "gap": 105359,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Rybackrn",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 81075,
+          "gap": 98925,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Eregor",
+          "class": "Warrior",
+          "expectedDPS": 180000,
+          "actualDPS": 84765,
+          "gap": 95235,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Frostrend",
+          "class": "Hunter",
+          "expectedDPS": 170000,
+          "actualDPS": 77357,
+          "gap": 92643,
+          "reason": "No potion used"
+        },
+        {
+          "player": "Kramdudu",
+          "class": "Druid",
+          "expectedDPS": 165000,
+          "actualDPS": 74991,
+          "gap": 90009,
+          "reason": "No potion used"
+        }
+      ]
+    },
+    "players": [
+      {
+        "name": "Roldyy",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "role": "dps",
+        "dps": 92457,
+        "hps": 10852,
+        "rankPercent": 100,
+        "itemLevel": 261,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Zimydh",
+        "class": "DemonHunter",
+        "spec": "Devourer",
+        "role": "dps",
+        "dps": 91739,
+        "hps": 13647,
+        "rankPercent": 92,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Hungnuts",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "role": "dps",
+        "dps": 90040,
+        "hps": 4953,
+        "rankPercent": 85,
+        "itemLevel": 264,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Eregor",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 84765,
+        "hps": 8627,
+        "rankPercent": 77,
+        "itemLevel": 264,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Ghwost",
+        "class": "Mage",
+        "spec": "Frost",
+        "role": "dps",
+        "dps": 83242,
+        "hps": 8535,
+        "rankPercent": 69,
+        "itemLevel": 257,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Fitshin",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "role": "dps",
+        "dps": 81711,
+        "hps": 12241,
+        "rankPercent": 62,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 100,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Rybackrn",
+        "class": "Warrior",
+        "spec": "Fury",
+        "role": "dps",
+        "dps": 81075,
+        "hps": 9185,
+        "rankPercent": 54,
+        "itemLevel": 263,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Bjormani",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "role": "dps",
+        "dps": 79048,
+        "hps": 4102,
+        "rankPercent": 46,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Liaisa",
+        "class": "Priest",
+        "spec": "Shadow",
+        "role": "dps",
+        "dps": 78952,
+        "hps": 21345,
+        "rankPercent": 38,
+        "itemLevel": 265,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 98,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Frostrend",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "role": "dps",
+        "dps": 77357,
+        "hps": 13456,
+        "rankPercent": 31,
+        "itemLevel": 260,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Kramdudu",
+        "class": "Druid",
+        "spec": "Balance",
+        "role": "dps",
+        "dps": 74991,
+        "hps": 4501,
+        "rankPercent": 23,
+        "itemLevel": 263,
+        "server": "Area52",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Phoenìxr",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "role": "dps",
+        "dps": 71212,
+        "hps": 7114,
+        "rankPercent": 15,
+        "itemLevel": 261,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 95,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Aqv",
+        "class": "Evoker",
+        "spec": "Devastation",
+        "role": "dps",
+        "dps": 66816,
+        "hps": 3940,
+        "rankPercent": 8,
+        "itemLevel": 258,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 68,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 35,
+        "improvementFocus": "Low activity: 68%"
+      },
+      {
+        "name": "Apoctaliptic",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "role": "dps",
+        "dps": 59641,
+        "hps": 9101,
+        "rankPercent": 0,
+        "itemLevel": 260,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 100,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Jumbobear",
+        "class": "Druid",
+        "spec": "Guardian",
+        "role": "tank",
+        "dps": 49113,
+        "hps": 30469,
+        "rankPercent": 0,
+        "itemLevel": 259,
+        "server": "Illidan",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Brewforlife",
+        "class": "Monk",
+        "spec": "Brewmaster",
+        "role": "tank",
+        "dps": 35910,
+        "hps": 33713,
+        "rankPercent": 0,
+        "itemLevel": 258,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 82,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 49,
+        "improvementFocus": "Low activity: 82%"
+      },
+      {
+        "name": "Groovey",
+        "class": "Priest",
+        "spec": "Discipline",
+        "role": "healer",
+        "dps": 21845,
+        "hps": 146297,
+        "rankPercent": 0,
+        "itemLevel": 261,
+        "server": "Thrall",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 99,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 62,
+        "improvementFocus": "No potion used"
+      },
+      {
+        "name": "Yaennah",
+        "class": "Monk",
+        "spec": "Mistweaver",
+        "role": "healer",
+        "dps": 9844,
+        "hps": 115309,
+        "rankPercent": 0,
+        "itemLevel": 262,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 81,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 48,
+        "improvementFocus": "Low activity: 81%"
+      },
+      {
+        "name": "Bokkievoker",
+        "class": "Evoker",
+        "spec": "Preservation",
+        "role": "healer",
+        "dps": 9194,
+        "hps": 110574,
+        "rankPercent": 0,
+        "itemLevel": 262,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 68,
+        "deaths": 2,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 15,
+        "improvementFocus": "Low activity: 68%"
+      },
+      {
+        "name": "Sariphena",
+        "class": "Paladin",
+        "spec": "Holy",
+        "role": "healer",
+        "dps": 3060,
+        "hps": 94259,
+        "rankPercent": 0,
+        "itemLevel": 259,
+        "server": "Sargeras",
+        "flaskUsed": false,
+        "foodUsed": false,
+        "potionUsed": false,
+        "runeUsed": false,
+        "activeTime": 45,
+        "deaths": 1,
+        "dtps": 0,
+        "avoidableDamageTaken": 0,
+        "reliabilityScore": 12,
+        "improvementFocus": "Low activity: 45%"
+      }
+    ],
+    "consumables": {
+      "missingFlask": [
+        "Yaennah",
+        "Apoctaliptic",
+        "Sariphena",
+        "Zimydh",
+        "Hungnuts",
+        "Aqv",
+        "Fitshin",
+        "Liaisa",
+        "Brewforlife",
+        "Frostrend",
+        "Phoenìxr",
+        "Ghwost",
+        "Eregor",
+        "Kramdudu",
+        "Groovey",
+        "Rybackrn",
+        "Bjormani",
+        "Roldyy",
+        "Bokkievoker",
+        "Jumbobear"
+      ],
+      "missingFood": [
+        "Yaennah",
+        "Apoctaliptic",
+        "Sariphena",
+        "Zimydh",
+        "Hungnuts",
+        "Aqv",
+        "Fitshin",
+        "Liaisa",
+        "Brewforlife",
+        "Frostrend",
+        "Phoenìxr",
+        "Ghwost",
+        "Eregor",
+        "Kramdudu",
+        "Groovey",
+        "Rybackrn",
+        "Bjormani",
+        "Roldyy",
+        "Bokkievoker",
+        "Jumbobear"
+      ],
+      "missingPotion": [
+        "Yaennah",
+        "Apoctaliptic",
+        "Sariphena",
+        "Zimydh",
+        "Hungnuts",
+        "Aqv",
+        "Fitshin",
+        "Liaisa",
+        "Brewforlife",
+        "Frostrend",
+        "Phoenìxr",
+        "Ghwost",
+        "Eregor",
+        "Kramdudu",
+        "Groovey",
+        "Rybackrn",
+        "Bjormani",
+        "Roldyy",
+        "Bokkievoker",
+        "Jumbobear"
+      ],
+      "missingRune": [
+        "Yaennah",
+        "Apoctaliptic",
+        "Sariphena",
+        "Zimydh",
+        "Hungnuts",
+        "Aqv",
+        "Fitshin",
+        "Liaisa",
+        "Brewforlife",
+        "Frostrend",
+        "Phoenìxr",
+        "Ghwost",
+        "Eregor",
+        "Kramdudu",
+        "Groovey",
+        "Rybackrn",
+        "Bjormani",
+        "Roldyy",
+        "Bokkievoker",
+        "Jumbobear"
+      ],
+      "estimatedDPSLoss": 3700000
+    },
+    "raidBuffs": [
+      {
+        "name": "Bloodlust",
+        "present": true,
+        "source": "Hungnuts",
+        "missingImpact": "+30% haste"
+      },
+      {
+        "name": "Fortitude",
+        "present": true,
+        "source": "Liaisa",
+        "missingImpact": "+10% stamina"
+      },
+      {
+        "name": "Battle Shout",
+        "present": true,
+        "source": "Eregor",
+        "missingImpact": "+10% AP"
+      },
+      {
+        "name": "Arcane Intellect",
+        "present": true,
+        "source": "Ghwost",
+        "missingImpact": "+10% intellect"
+      },
+      {
+        "name": "Mark of the Wild",
+        "present": true,
+        "source": "Kramdudu",
+        "missingImpact": "+5% stats"
+      },
+      {
+        "name": "Chaos Brand",
+        "present": false,
+        "missingImpact": "+5% magic dmg"
+      },
+      {
+        "name": "Mystic Touch",
+        "present": true,
+        "source": "Yaennah",
+        "missingImpact": "+5% phys dmg"
+      }
+    ],
+    "cooldowns": {
+      "defensives": [],
+      "raidCooldowns": []
+    },
+    "talents": [],
+    "raidEfficiency": {
+      "overall": 43,
+      "dps": 54,
+      "survival": 0,
+      "mechanics": 100,
+      "consumables": 0,
+      "grade": "D"
+    },
+    "bossInsight": {
+      "dpsCheckMet": false,
+      "healingIntensity": "low",
+      "movementRequired": "chaotic",
+      "keyMechanics": []
+    },
+    "deathCascade": {
+      "rootDeath": {
+        "player": "Bokkievoker",
+        "role": "healer",
+        "ability": "Umbral Collapse",
+        "time": 37,
+        "impact": "critical"
+      },
+      "chainDeaths": [],
+      "timeToWipe": 403,
+      "recoveryPossible": true,
+      "recommendation": "A healer died early. Positioning or defensive usage likely broke down."
+    },
+    "causeChains": [
+      "Void Blast pressure built up -> Imperial Decree positioning broke down -> the raid lost control before the kill.",
+      "Void Cleave assignment slipped in Phase 3: Desperation. -> Bokkievoker died to Umbral Collapse at 0:37. -> The raid did not recover the failed assignment cleanly. -> Phase 1: The Emperor's Might stayed close, so the pull converted into a wipe there."
+    ],
+    "causeChainDetails": [
+      {
+        "id": "chain-assignment-assignment-tanks-void_cleave",
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "steps": [
+          {
+            "label": "first_failure",
+            "text": "Void Cleave assignment slipped in Phase 3: Desperation."
+          },
+          {
+            "label": "immediate_consequence",
+            "text": "Bokkievoker died to Umbral Collapse at 0:37."
+          },
+          {
+            "label": "failed_recovery",
+            "text": "The raid did not recover the failed assignment cleanly."
+          },
+          {
+            "label": "wipe_conversion",
+            "text": "Phase 1: The Emperor's Might stayed close, so the pull converted into a wipe there."
+          }
+        ]
+      }
+    ],
+    "cooldownGaps": [],
+    "burstWindows": [],
+    "nextPullActions": [
+      {
+        "priority": 1,
+        "title": "Phase 3: Desperation is the progression breakpoint for this pull.",
+        "owner": "Raid",
+        "reason": "19 death(s), 0 avoidable death(s), dominant cause: throughput. All CDs, ignore some mechanics if needed"
+      },
+      {
+        "priority": 2,
+        "title": "Empowered Void Blast needs a fixed raid-CD map on Averzian.",
+        "owner": "Healers + RL",
+        "reason": "No raid-cooldown plan is defined for this boss. Map one named raid cooldown to every Void Blast in the dangerous phases before pull."
+      },
+      {
+        "priority": 3,
+        "title": "Void Cleave needs a clearer assignment plan.",
+        "owner": "Brewforlife, Jumbobear",
+        "reason": "No explicit tank swap or external plan is defined. Swap at 3 stacks, use personal CDs for 4th stack if needed"
+      }
+    ],
+    "wipeCause": {
+      "primary": "throughput",
+      "details": "Effective damage and healing stayed below what the checkpoint required."
+    },
+    "repeatedMistakes": [],
+    "phaseCausality": [
+      {
+        "phase": "Phase 1: The Emperor's Might",
+        "start": 0,
+        "end": 146,
+        "deaths": 1,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      },
+      {
+        "phase": "Phase 2: Imperial Wrath",
+        "start": 146,
+        "end": 293,
+        "deaths": 1,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      },
+      {
+        "phase": "Phase 3: Desperation",
+        "start": 293,
+        "end": 440,
+        "deaths": 19,
+        "avoidableDeaths": 0,
+        "dominantCause": "throughput"
+      }
+    ],
+    "phaseSuccessCriteria": [
+      {
+        "phase": "Phase 1: The Emperor's Might",
+        "status": "at_risk",
+        "summary": "Phase 1: The Emperor's Might is close, but still leaks execution.",
+        "evidence": "Deaths: 1, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Void Cleave, Darkened Wake, Void Blast."
+      },
+      {
+        "phase": "Phase 2: Imperial Wrath",
+        "status": "at_risk",
+        "summary": "Phase 2: Imperial Wrath is close, but Decree handling is not fully clean yet.",
+        "evidence": "Key checks: Void Cleave, Imperial Decree, Void Blast, Shadow Chains. Deaths 1, avoidable 0, raid-CD gaps 0."
+      },
+      {
+        "phase": "Phase 3: Desperation",
+        "status": "at_risk",
+        "summary": "Phase 3: Desperation is close, but still leaks execution.",
+        "evidence": "Deaths: 19, avoidable: 0, raid-CD gaps: 0. Key mechanics in this phase: Void Cleave, Darkened Wake, Void Blast."
+      }
+    ],
+    "roleScores": {
+      "tanks": 44,
+      "healers": 4,
+      "dps": 0
+    },
+    "mechanicScores": [
+      {
+        "mechanic": "Interrupts",
+        "events": 0,
+        "severity": "critical",
+        "score": 0
+      }
+    ],
+    "regressionAlerts": [],
+    "bestPullChanges": [],
+    "cooldownPlanner": [],
+    "assignmentAssessments": [
+      {
+        "id": "assignment-tanks-void_cleave",
+        "category": "tank_swap",
+        "status": "at_risk",
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "mechanic": "Void Cleave",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Brewforlife, Jumbobear."
+        ],
+        "recommendation": "Swap at 3 stacks, use personal CDs for 4th stack if needed",
+        "confidence": "medium"
+      },
+      {
+        "id": "assignment-raidcd-void_blast",
+        "category": "raid_cd",
+        "status": "at_risk",
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Desperation",
+        "mechanic": "Void Blast",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Use raid CDs here, especially on empowered casts",
+        "confidence": "high"
+      },
+      {
+        "id": "assignment-dispel-shadow_chains",
+        "category": "dispel",
+        "status": "at_risk",
+        "owner": "Yaennah, Sariphena",
+        "phase": "Phase 3: Desperation",
+        "mechanic": "Shadow Chains",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Stay close to linked players, dispel once stacked",
+        "confidence": "medium"
+      }
+    ],
+    "assignmentPlanOverview": {
+      "status": "missing",
+      "coverage": "mixed",
+      "explicitCategoryCount": 0,
+      "requiredCategoryCount": 3,
+      "missingCategories": [
+        "Dispels",
+        "Raid CDs",
+        "Tank swaps"
+      ],
+      "categories": [
+        {
+          "key": "interrupt",
+          "label": "Interrupts",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "soak",
+          "label": "Soaks",
+          "required": false,
+          "hasPlan": false,
+          "execution": "not_applicable",
+          "summary": "Not a key assignment category for this boss."
+        },
+        {
+          "key": "dispel",
+          "label": "Dispels",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "raid_cd",
+          "label": "Raid CDs",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        },
+        {
+          "key": "tank_swap",
+          "label": "Tank swaps",
+          "required": true,
+          "hasPlan": false,
+          "execution": "at_risk",
+          "summary": "No explicit plan saved."
+        }
+      ],
+      "summary": "0/3 key assignment categories are explicitly planned.",
+      "recommendation": "Add explicit plan lines for Dispels, Raid CDs, Tank swaps before the next pull."
+    },
+    "assignmentBreaks": [
+      {
+        "owner": "Apoctaliptic",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Zimydh",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Hungnuts",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Aqv",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Fitshin",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      },
+      {
+        "owner": "Liaisa",
+        "failure": "No interrupts recorded on this pull",
+        "count": 1
+      }
+    ],
+    "killProbability": 85,
+    "bossProgression": [],
+    "briefInsights": [
+      {
+        "id": "phase-Phase 3: Desperation",
+        "kind": "raid_strategy",
+        "severity": "warning",
+        "confidence": "high",
+        "priorityScore": 237,
+        "owner": "Raid",
+        "phase": "Phase 3: Desperation",
+        "summary": "Phase 3: Desperation is the progression breakpoint for this pull.",
+        "evidence": "19 death(s), 0 avoidable death(s), dominant cause: throughput.",
+        "confidenceReasons": [
+          "19 deaths occurred in Phase 3: Desperation.",
+          "0 of those deaths were avoidable.",
+          "The dominant cause for the phase is throughput."
+        ],
+        "recommendation": "All CDs, ignore some mechanics if needed",
+        "category": "strategy"
+      },
+      {
+        "id": "bossrule-averzian-void-blast",
+        "kind": "raid_cooldown",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 150,
+        "owner": "Healers + RL",
+        "phase": "Phase 3: Desperation",
+        "summary": "Empowered Void Blast needs a fixed raid-CD map on Averzian.",
+        "evidence": "No raid-cooldown plan is defined for this boss.",
+        "confidenceReasons": [
+          "Averzian uses Void Blast as the primary raid-damage checkpoint.",
+          "The static boss rules explicitly call for raid CDs on empowered blasts.",
+          "No raid cooldown plan is saved for this boss."
+        ],
+        "recommendation": "Map one named raid cooldown to every Void Blast in the dangerous phases before pull.",
+        "category": "cooldowns"
+      },
+      {
+        "id": "assignment-assignment-tanks-void_cleave",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 87,
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "summary": "Void Cleave needs a clearer assignment plan.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "No explicit tank assignment plan is saved.",
+          "Planned tank owners: Brewforlife, Jumbobear."
+        ],
+        "recommendation": "Swap at 3 stacks, use personal CDs for 4th stack if needed",
+        "category": "strategy"
+      },
+      {
+        "id": "throughput-gap",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 78,
+        "owner": "Apoctaliptic, Rybackrn",
+        "phase": "Phase 3: Desperation",
+        "summary": "Throughput is below the level needed for a clean progression pull.",
+        "evidence": "204K estimated DPS gap across the biggest underperformers.",
+        "confidenceReasons": [
+          "2 low performers are driving the gap.",
+          "204K total estimated DPS is missing from the top offenders.",
+          "The throughput pressure is most relevant in Phase 3: Desperation."
+        ],
+        "recommendation": "Review uptime, potion usage, and burst alignment before the next pull.",
+        "category": "throughput"
+      }
+    ],
+    "deltaInsights": [],
+    "playerCoaching": [
+      {
+        "id": "coach-role-tank",
+        "kind": "raid_assignment",
+        "severity": "critical",
+        "confidence": "high",
+        "priorityScore": 132,
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "summary": "Tank swap and external timing still need cleanup.",
+        "evidence": "No explicit tank swap or external plan is defined.",
+        "confidenceReasons": [
+          "A tank-assignment failure was detected in the pull.",
+          "2 tank death(s) were recorded.",
+          "Brewforlife reliability score: 49."
+        ],
+        "recommendation": "Swap at 3 stacks, use personal CDs for 4th stack if needed",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-utility-dispel",
+        "kind": "raid_assignment",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 112,
+        "owner": "Yaennah, Sariphena",
+        "phase": "Phase 3: Desperation",
+        "summary": "Dispel ownership is still too loose for this phase.",
+        "evidence": "0 total dispels recorded on this pull. No matching dispel line is defined in the plan.",
+        "confidenceReasons": [
+          "No dispel plan line matches this mechanic or phase."
+        ],
+        "recommendation": "Stay close to linked players, dispel once stacked",
+        "category": "strategy"
+      },
+      {
+        "id": "coach-role-melee-Apoctaliptic",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 86,
+        "owner": "Apoctaliptic",
+        "phase": "Phase 3: Desperation",
+        "summary": "Apoctaliptic needs cleaner melee uptime without greedy deaths.",
+        "evidence": "100% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Apoctaliptic active time is 100%.",
+          "Apoctaliptic died 1 time(s)."
+        ],
+        "recommendation": "Keep uptime high, but stop trading melee greed for deaths or dropped mechanics.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-role-ranged-Aqv",
+        "kind": "player_execution",
+        "severity": "warning",
+        "confidence": "medium",
+        "priorityScore": 84,
+        "owner": "Aqv",
+        "phase": "Phase 3: Desperation",
+        "summary": "Aqv needs cleaner movement and uptime discipline.",
+        "evidence": "68% active time, 1 death(s).",
+        "confidenceReasons": [
+          "Aqv active time is 68%.",
+          "Aqv died 1 time(s)."
+        ],
+        "recommendation": "Move earlier, keep casting lanes cleaner, and stop losing uptime to late reactions.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Rybackrn",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 60,
+        "owner": "Rybackrn",
+        "phase": "Phase 3: Desperation",
+        "summary": "Rybackrn needs a throughput cleanup.",
+        "evidence": "99K below the expected DPS target.",
+        "confidenceReasons": [
+          "99K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      },
+      {
+        "id": "coach-throughput-Eregor",
+        "kind": "player_execution",
+        "severity": "info",
+        "confidence": "medium",
+        "priorityScore": 60,
+        "owner": "Eregor",
+        "phase": "Phase 3: Desperation",
+        "summary": "Eregor needs a throughput cleanup.",
+        "evidence": "95K below the expected DPS target.",
+        "confidenceReasons": [
+          "95K DPS below the expected target.",
+          "Current issue marker: No potion used."
+        ],
+        "recommendation": "Check uptime, cooldown alignment, and consumables. Current issue: No potion used.",
+        "category": "throughput"
+      }
+    ],
+    "phaseReadiness": [
+      {
+        "phase": "Phase 1: The Emperor's Might",
+        "status": "close",
+        "summary": "Phase 1: The Emperor's Might is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 2: Imperial Wrath",
+        "status": "close",
+        "summary": "Phase 2: Imperial Wrath is close, but Decree handling is not fully clean yet.",
+        "blocker": "Void Blast map and Decree reactions are stable enough.",
+        "owner": "DPS Core"
+      },
+      {
+        "phase": "Phase 3: Desperation",
+        "status": "close",
+        "summary": "Phase 3: Desperation is close, but still leaks execution.",
+        "blocker": "The raid still needs more stable output here.",
+        "owner": "DPS Core"
+      }
+    ],
+    "commandView": {
+      "biggestBlocker": {
+        "summary": "Phase 3: Desperation is the progression breakpoint for this pull.",
+        "owner": "Raid",
+        "phase": "Phase 3: Desperation",
+        "reason": "19 death(s), 0 avoidable death(s), dominant cause: throughput."
+      },
+      "mostLikelyNextWipe": {
+        "summary": "Void Cleave is the most likely repeat wipe point.",
+        "owner": "Brewforlife, Jumbobear",
+        "phase": "Phase 3: Desperation",
+        "reason": "No explicit tank swap or external plan is defined."
+      }
+    }
+  }
+}

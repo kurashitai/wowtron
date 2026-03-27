@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-03-27T13:43:13.429Z",
+  "count": 9,
+  "highestPriority": {
+    "key": "fallen_king_salhadaar__rulepack_depth",
+    "category": "rulepack_depth",
+    "status": "queued",
+    "priorityScore": 193,
+    "bossName": "Fallen-King Salhadaar",
+    "title": "Deepen Fallen-King Salhadaar rulepack",
+    "rationale": "Improve public coverage quality before adding deeper rules.",
+    "payload": {
+      "gapStatus": "ready_for_rules",
+      "coveragePulls": 104,
+      "calibrationScore": 100,
+      "goodAssignmentSignal": 42
+    },
+    "generatedAt": "2026-03-27T13:43:13.429Z"
+  },
+  "items": [
+    {
+      "key": "fallen_king_salhadaar__rulepack_depth",
+      "category": "rulepack_depth",
+      "status": "queued",
+      "priorityScore": 193,
+      "bossName": "Fallen-King Salhadaar",
+      "title": "Deepen Fallen-King Salhadaar rulepack",
+      "rationale": "Improve public coverage quality before adding deeper rules.",
+      "payload": {
+        "gapStatus": "ready_for_rules",
+        "coveragePulls": 104,
+        "calibrationScore": 100,
+        "goodAssignmentSignal": 42
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "fixture_expansion__midnight",
+      "category": "fixture_expansion",
+      "status": "queued",
+      "priorityScore": 160,
+      "title": "Expand reviewed fixtures beyond the current Midnight core",
+      "rationale": "The analyzer is stable on the current fixture set, so the next gain comes from adding more reviewed pulls and deeper phase bands.",
+      "payload": {
+        "currentFixtures": 9,
+        "target": 20
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "imperator_averzian__coverage_quality",
+      "category": "coverage_quality",
+      "status": "queued",
+      "priorityScore": 124,
+      "bossName": "Imperator Averzian",
+      "title": "Improve Imperator Averzian public coverage quality",
+      "rationale": "Public pulls for this boss still have too much partial or weak-quality data compared with useful assignment signal.",
+      "payload": {
+        "poorDataQuality": 104,
+        "goodAssignmentSignal": 40,
+        "kills": 22
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "output_quality__cross_session",
+      "category": "output_quality",
+      "status": "queued",
+      "priorityScore": 120,
+      "title": "Add human-reviewed output quality samples for session-level summaries",
+      "rationale": "Heuristic output quality checks are useful, but the next step is comparing them against explicit officer/RL review.",
+      "payload": {
+        "currentHeuristicReviews": 9
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "lightblinded_vanguard__rulepack_depth",
+      "category": "rulepack_depth",
+      "status": "queued",
+      "priorityScore": 119,
+      "bossName": "Lightblinded Vanguard",
+      "title": "Deepen Lightblinded Vanguard rulepack",
+      "rationale": "Deepen encounter-specific rule checks and success criteria.",
+      "payload": {
+        "gapStatus": "ready_for_rules",
+        "coveragePulls": 61,
+        "calibrationScore": 100,
+        "goodAssignmentSignal": 34
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "crown_of_the_cosmos__rulepack_depth",
+      "category": "rulepack_depth",
+      "status": "queued",
+      "priorityScore": 113,
+      "bossName": "Crown of the Cosmos",
+      "title": "Deepen Crown of the Cosmos rulepack",
+      "rationale": "Deepen encounter-specific rule checks and success criteria.",
+      "payload": {
+        "gapStatus": "ready_for_rules",
+        "coveragePulls": 72,
+        "calibrationScore": 100,
+        "goodAssignmentSignal": 51
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "fallen_king_salhadaar__coverage_quality",
+      "category": "coverage_quality",
+      "status": "queued",
+      "priorityScore": 104,
+      "bossName": "Fallen-King Salhadaar",
+      "title": "Improve Fallen-King Salhadaar public coverage quality",
+      "rationale": "Public pulls for this boss still have too much partial or weak-quality data compared with useful assignment signal.",
+      "payload": {
+        "poorDataQuality": 54,
+        "goodAssignmentSignal": 42,
+        "kills": 25
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "vorasius__coverage_quality",
+      "category": "coverage_quality",
+      "status": "queued",
+      "priorityScore": 97,
+      "bossName": "Vorasius",
+      "title": "Improve Vorasius public coverage quality",
+      "rationale": "Public pulls for this boss still have too much partial or weak-quality data compared with useful assignment signal.",
+      "payload": {
+        "poorDataQuality": 65,
+        "goodAssignmentSignal": 45,
+        "kills": 26
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    },
+    {
+      "key": "vorasius__phase_success_depth",
+      "category": "phase_success_depth",
+      "status": "queued",
+      "priorityScore": 92,
+      "bossName": "Vorasius",
+      "title": "Tighten Vorasius phase success criteria",
+      "rationale": "Calibration is passing, but the score says the phase-level diagnosis still leaves precision on the table.",
+      "payload": {
+        "calibrationScore": 88,
+        "calibrationPassRate": 100
+      },
+      "generatedAt": "2026-03-27T13:43:13.429Z"
+    }
+  ]
+}

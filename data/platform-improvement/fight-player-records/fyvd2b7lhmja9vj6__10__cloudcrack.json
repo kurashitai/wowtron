@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:elemental",
+  "buildSource": "spec_fallback",
+  "key": "FyVd2B7LhMjA9vJ6__10__cloudcrack",
+  "fightKey": "FyVd2B7LhMjA9vJ6__10",
+  "actorId": 5,
+  "name": "Cloudcrack",
+  "role": "dps",
+  "className": "Shaman",
+  "spec": "Elemental",
+  "talents": [],
+  "itemLevel": 261,
+  "server": "Moonrunner",
+  "dps": 0,
+  "hps": 2415,
+  "dtps": 0,
+  "activeTime": 84,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}

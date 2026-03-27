@@ -1,0 +1,21 @@
+{
+  "buildSignature": "spec:unknown",
+  "buildSource": "spec_fallback",
+  "key": "mQq8WxapY1KDPjJc__14__tobobigly",
+  "fightKey": "mQq8WxapY1KDPjJc__14",
+  "actorId": 42,
+  "name": "Tobobigly",
+  "role": "dps",
+  "className": "Priest",
+  "spec": "Unknown",
+  "talents": [],
+  "itemLevel": 245,
+  "server": "Illidan",
+  "dps": 3,
+  "hps": 3459,
+  "dtps": 0,
+  "activeTime": 99,
+  "deaths": 0,
+  "rankPercent": 0,
+  "avoidableDamageTaken": 0
+}
