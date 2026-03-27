@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { getClassColor } from '@/lib/wow-data';
+import { cn } from '@/lib/utils';
 import { buildInsightSnapshot, exportInsightSnapshots, loadInsightSnapshots, loadInsightSnapshotsForReport, persistInsightSnapshot } from '@/lib/analysis/insight-snapshots';
 import {
   buildBossMemory,
@@ -470,6 +471,7 @@ const getCoverageBadgeClass = (coverage: 'weak' | 'mixed' | 'strong'): string =>
 
 // Main Component
 export default function LogAnalysis() {
+  const [analysisMode, setAnalysisMode] = useState<'direct' | 'deep'>('direct');
   const [logUrl, setLogUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [report, setReport] = useState<ReportData | null>(null);
@@ -477,13 +479,14 @@ export default function LogAnalysis() {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [fightData, setFightData] = useState<FightData | null>(null);
   const [currentFight, setCurrentFight] = useState<any>(null);
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const [assignmentPlan, setAssignmentPlan] = useState<AssignmentPlan>(EMPTY_ASSIGNMENT_PLAN);
   const [savedSnapshots, setSavedSnapshots] = useState<InsightSnapshot[]>([]);
   const [buildSignificance, setBuildSignificance] = useState<BuildSignificanceResponse | null>(null);
   const [isLoadingBuildSignificance, setIsLoadingBuildSignificance] = useState(false);
   const historicalFightsRef = useRef<any[]>([]);
   const persistedRunSignatureRef = useRef<string>('');
+  const showAdvanced = analysisMode === 'deep';
+  const isDirectMode = analysisMode === 'direct';
 
   const generateAnalysis = useCallback((fight: any, historicalFights: any[] = [], assignmentPlanInput: AssignmentPlan = EMPTY_ASSIGNMENT_PLAN): AnalysisResult => {
     return analyzeLogFight({
@@ -1096,7 +1099,7 @@ export default function LogAnalysis() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="text-lg font-bold text-tron-silver-200">{report.title}</h2>
-              <p className="text-sm text-tron-silver-400">{report.zone} • {report.fights.length} fights</p>
+              <p className="text-sm text-tron-silver-400">{report.zone} / {report.fights.length} fights</p>
             </div>
           </div>
 
@@ -1116,7 +1119,7 @@ export default function LogAnalysis() {
                   <span className="text-sm font-medium text-tron-silver-200 truncate">{fight.bossName.split(' ')[0]}</span>
                 </div>
                 <div className="text-xs text-tron-silver-400">
-                  {fight.difficulty.charAt(0)} • {formatTime(fight.duration)}
+                  {fight.difficulty.charAt(0)} / {formatTime(fight.duration)}
                 </div>
               </div>
             ))}
@@ -1126,80 +1129,122 @@ export default function LogAnalysis() {
 
       {/* Analysis Results */}
       {analysis && fightData && !isLoading && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {/* Header Row */}
-          <div className="grid grid-cols-12 gap-4">
+          <SurfaceCard className="p-4">
             {/* Boss Info + Grade */}
-            <div className="col-span-12 lg:col-span-3 flex items-center gap-4 p-4 bg-dark-800/50 rounded-lg border border-dark-700">
-              <div className={`w-20 h-20 rounded-lg bg-gradient-to-br ${getGradeBg(analysis.raidEfficiency?.grade || 'C')} border flex flex-col items-center justify-center`}>
-                <span className="text-4xl font-bold">{analysis.raidEfficiency?.grade || '?'}</span>
-                <span className="text-xs opacity-70">{analysis.raidEfficiency?.overall}%</span>
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+              <div className="flex min-w-0 items-start gap-3 sm:gap-4 xl:max-w-[62%]">
+                <div className={`h-16 w-16 shrink-0 rounded-lg bg-gradient-to-br ${getGradeBg(analysis.raidEfficiency?.grade || 'C')} border flex flex-col items-center justify-center`}>
+                  <span className="text-3xl font-bold">{analysis.raidEfficiency?.grade || '?'}</span>
+                  <span className="text-[11px] opacity-70">{analysis.raidEfficiency?.overall}%</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-lg font-bold text-wow-gold sm:text-xl">{fightData.bossName}</h2>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-tron-silver-300 sm:text-sm">
+                    <span>{fightData.difficulty}</span>
+                    <span>/</span>
+                    <span>{formatTime(fightData.duration)}</span>
+                    <span>/</span>
+                    <span>{analysis.players.length} players</span>
+                    {fightData.kill ? (
+                      <Badge className="bg-green-500/20 text-green-400 text-xs">KILL</Badge>
+                    ) : (
+                      <Badge className="bg-red-500/20 text-red-400 text-xs">WIPE @ {fightData.bossHP}%</Badge>
+                    )}
+                  </div>
+                  {analysis.commandView?.headline ? (
+                    <div className="mt-3 rounded-md border border-cyan-500/20 bg-cyan-500/5 px-3 py-2.5">
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-cyan-300/80 sm:text-[11px]">
+                        {isDirectMode ? 'Start Here' : 'Command Read'}
+                      </p>
+                      <p className="mt-1 text-sm font-medium leading-5 text-tron-silver-100">{analysis.commandView.headline}</p>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="text-xl font-bold text-wow-gold truncate">{fightData.bossName}</h2>
-                <div className="flex flex-wrap items-center gap-2 text-sm text-tron-silver-400 mt-1">
-                  <span>{fightData.difficulty}</span>
-                  <span>•</span>
-                  <span>{formatTime(fightData.duration)}</span>
-                  {fightData.kill ? (
-                    <Badge className="bg-green-500/20 text-green-400 text-xs ml-1">KILL</Badge>
-                  ) : (
-                    <Badge className="bg-red-500/20 text-red-400 text-xs ml-1">WIPE @ {fightData.bossHP}%</Badge>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2 mt-3">
-                  <Button variant="outline" size="sm" onClick={copyNormalizedRaidBrief} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
-                    <Sparkles className="h-3.5 w-3.5 mr-1.5" /> Brief
-                  </Button>
-                  {sessionCommandCenter && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={copySessionCommandBrief}
-                      className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
-                    >
-                      <Clock4 className="h-3.5 w-3.5 mr-1.5" />
-                      Session Brief
-                    </Button>
-                  )}
-                  {sessionRecap && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={copyNightRecap}
-                      className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
-                    >
-                      <Download className="h-3.5 w-3.5 mr-1.5" />
-                      Night Recap
-                    </Button>
-                  )}
+              <div className="flex flex-wrap gap-2 xl:max-w-[34rem] xl:justify-end">
+                <Button variant="outline" size="sm" onClick={copyNormalizedRaidBrief} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-300 hover:text-wow-gold">
+                  <Sparkles className="h-3.5 w-3.5 mr-1.5" /> Brief
+                </Button>
+                {sessionCommandCenter && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={copyAnalysisSummary}
-                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                    onClick={copySessionCommandBrief}
+                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-300 hover:text-wow-gold"
                   >
-                    <Send className="h-3.5 w-3.5 mr-1.5" />
-                    Summary
+                    <Clock4 className="h-3.5 w-3.5 mr-1.5" />
+                    Session Brief
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => { setSelectedFight(null); setAnalysis(null); }} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold">
-                    <RefreshCw className="h-3.5 w-3.5 mr-1.5" /> New
-                  </Button>
+                )}
+                {sessionRecap && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setShowAdvanced((v) => !v)}
-                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-400 hover:text-wow-gold"
+                    onClick={copyNightRecap}
+                    className="h-8 text-xs px-3 border-dark-600 text-tron-silver-300 hover:text-wow-gold"
                   >
-                    <BarChart3 className="h-3.5 w-3.5 mr-1.5" /> {showAdvanced ? 'Simple View' : 'Advanced View'}
+                    <Download className="h-3.5 w-3.5 mr-1.5" />
+                    Night Recap
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={copyAnalysisSummary}
+                  className="h-8 text-xs px-3 border-dark-600 text-tron-silver-300 hover:text-wow-gold"
+                >
+                  <Send className="h-3.5 w-3.5 mr-1.5" />
+                  Summary
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => { setSelectedFight(null); setAnalysis(null); }} className="h-8 text-xs px-3 border-dark-600 text-tron-silver-300 hover:text-wow-gold">
+                  <RefreshCw className="h-3.5 w-3.5 mr-1.5" /> New
+                </Button>
+                <div className="flex w-full items-center rounded-md border border-dark-600 bg-dark-900/70 p-1 sm:w-auto">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setAnalysisMode('direct')}
+                    className={cn(
+                      'h-8 flex-1 px-2.5 text-[11px] sm:h-7 sm:flex-none',
+                      isDirectMode
+                        ? 'bg-cyan-500/15 text-cyan-300 hover:bg-cyan-500/20'
+                        : 'text-tron-silver-400 hover:text-wow-gold'
+                    )}
+                  >
+                    <Gauge className="mr-1.5 h-3.5 w-3.5" /> Direct
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setAnalysisMode('deep')}
+                    className={cn(
+                      'h-8 flex-1 px-2.5 text-[11px] sm:h-7 sm:flex-none',
+                      showAdvanced
+                        ? 'bg-fuchsia-500/15 text-fuchsia-300 hover:bg-fuchsia-500/20'
+                        : 'text-tron-silver-400 hover:text-wow-gold'
+                    )}
+                  >
+                    <BarChart3 className="mr-1.5 h-3.5 w-3.5" /> Deep
                   </Button>
                 </div>
+              </div>
             </div>
-          </div>
-          </div>
+            <div className="mt-3 flex flex-wrap items-start gap-2 text-[11px] leading-5 text-tron-silver-400">
+              <Badge className={isDirectMode ? 'bg-cyan-500/20 text-cyan-300' : 'bg-fuchsia-500/20 text-fuchsia-300'}>
+                {isDirectMode ? 'Direct mode' : 'Deep mode'}
+              </Badge>
+              <span>
+                {isDirectMode
+                  ? 'Shows only the next call, owner, readiness, and the shortest evidence.'
+                  : 'Shows the full diagnostic view, session memory, build analysis, and advanced evidence.'}
+              </span>
+            </div>
+          </SurfaceCard>
 
           {showAdvanced && (
-          <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+          <SurfaceCard className="p-4">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div>
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2">
@@ -1270,18 +1315,14 @@ export default function LogAnalysis() {
                 />
               </div>
             </div>
-          </div>
+          </SurfaceCard>
           )}
 
           {/* Stats Grid */}
-          <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-3">
-              <StatCard icon={<Swords className="h-4 w-4" />} label="Raid DPS" value={formatNumber(analysis.performance.raidDPS)} helpText="How much damage the whole raid is doing each second. Bigger is better if people are still alive." />
-              <StatCard icon={<Heart className="h-4 w-4" />} label="Raid HPS" value={formatNumber(analysis.performance.raidHPS)} helpText="How much healing the whole raid is doing each second. Bigger helps only if it keeps people alive at the right time." />
+          <SurfaceCard className="p-3">
+            <div className={cn('grid gap-2.5', isDirectMode ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-2 md:grid-cols-4 xl:grid-cols-7')}>
               <StatCard icon={<Skull className="h-4 w-4" />} label="Deaths" value={String(analysis.deaths.avoidable.length + analysis.deaths.unavoidable.length)} valueClass="text-red-400" />
               <StatCard icon={<AlertTriangle className="h-4 w-4" />} label="Avoidable" value={String(analysis.deaths.avoidable.length)} valueClass="text-amber-400" helpText="Deaths or hits that usually should not happen. Lower is better." />
-              <StatCard icon={<TrendingDown className="h-4 w-4" />} label="DPS Lost" value={formatNumber(analysis.consumables.estimatedDPSLoss)} valueClass="text-orange-400" />
-              <StatCard icon={<Users className="h-4 w-4" />} label="Players" value={String(analysis.players.length)} />
               <StatCard
                 icon={<Gauge className="h-4 w-4" />}
                 label="Avg Reliability"
@@ -1289,20 +1330,22 @@ export default function LogAnalysis() {
                 valueClass="text-emerald-400"
                 helpText="A simple trust score. Higher means the raid was more stable and made fewer costly mistakes."
               />
+              <StatCard icon={<Users className="h-4 w-4" />} label="Players" value={String(analysis.players.length)} />
+              {showAdvanced && (
+                <>
+                  <StatCard icon={<Swords className="h-4 w-4" />} label="Raid DPS" value={formatNumber(analysis.performance.raidDPS)} helpText="How much damage the whole raid is doing each second. Bigger is better if people are still alive." />
+                  <StatCard icon={<Heart className="h-4 w-4" />} label="Raid HPS" value={formatNumber(analysis.performance.raidHPS)} helpText="How much healing the whole raid is doing each second. Bigger helps only if it keeps people alive at the right time." />
+                  <StatCard icon={<TrendingDown className="h-4 w-4" />} label="DPS Lost" value={formatNumber(analysis.consumables.estimatedDPSLoss)} valueClass="text-orange-400" />
+                </>
+              )}
             </div>
-          </div>
+          </SurfaceCard>
 
           {(analysis.commandView?.biggestBlocker || analysis.commandView?.mostLikelyNextWipe || (analysis.nextPullActions && analysis.nextPullActions.length > 0)) && (
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-              {analysis.commandView?.headline ? (
-                <div className="xl:col-span-3 rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-cyan-300/80">Command Read</p>
-                  <p className="mt-2 text-sm font-medium text-tron-silver-200">{analysis.commandView.headline}</p>
-                </div>
-              ) : null}
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-red-500/20">
+            <div className={cn('grid gap-3', isDirectMode ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,1.15fr)]')}>
+              <SurfaceCard className="p-3" tone="danger">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <AlertCircle className="h-5 w-5 text-red-400" /> {analysis.commandView?.biggestBlockerLabel || 'Biggest Blocker'}
+                  <AlertCircle className="h-5 w-5 text-red-400" /> {isDirectMode ? 'Main Problem Right Now' : (analysis.commandView?.biggestBlockerLabel || 'Biggest Blocker')}
                 </h3>
                 <p className="text-sm font-semibold text-tron-silver-200">
                   {analysis.commandView?.biggestBlocker?.summary || 'No clear blocker detected.'}
@@ -1314,11 +1357,11 @@ export default function LogAnalysis() {
                 <p className="text-xs text-tron-silver-400 mt-2">
                   {analysis.commandView?.biggestBlocker?.reason || 'No blocker reason recorded.'}
                 </p>
-              </div>
+              </SurfaceCard>
 
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-amber-500/20">
+              <SurfaceCard className="p-3" tone="warn">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <ShieldAlert className="h-5 w-5 text-amber-400" /> {analysis.commandView?.mostLikelyNextWipeLabel || 'Most Likely Next Wipe'}
+                  <ShieldAlert className="h-5 w-5 text-amber-400" /> {isDirectMode ? 'If Nothing Changes' : (analysis.commandView?.mostLikelyNextWipeLabel || 'Most Likely Next Wipe')}
                 </h3>
                 <p className="text-sm font-semibold text-tron-silver-200">
                   {analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}
@@ -1330,15 +1373,15 @@ export default function LogAnalysis() {
                 <p className="text-xs text-tron-silver-400 mt-2">
                   {analysis.commandView?.mostLikelyNextWipe?.reason || 'No repeat wipe reason recorded.'}
                 </p>
-              </div>
+              </SurfaceCard>
 
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-wow-gold/20">
+              <SurfaceCard className="p-3" tone="gold">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <Target className="h-5 w-5 text-wow-gold" /> {analysis.commandView?.nextActionsLabel || 'Next Pull Plan'}
+                  <Target className="h-5 w-5 text-wow-gold" /> {isDirectMode ? 'What To Change Next Pull' : (analysis.commandView?.nextActionsLabel || 'Next Pull Plan')}
                 </h3>
                 <div className="space-y-2">
                   {(analysis.nextPullActions || []).slice(0, 3).map((action) => (
-                    <div key={`${action.priority}-${action.title}`} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                    <div key={`${action.priority}-${action.title}`} className="rounded-md bg-dark-700/40 p-2.5 text-sm">
                       <p className="font-semibold text-tron-silver-200">P{action.priority}. {action.title}</p>
                       <p className="text-xs text-tron-silver-400 mt-1">{action.owner}</p>
                       <p className="text-xs text-wow-gold mt-1">{action.reason}</p>
@@ -1348,16 +1391,16 @@ export default function LogAnalysis() {
                     <p className="text-sm text-tron-silver-400">No explicit next-pull actions were generated.</p>
                   )}
                 </div>
-              </div>
+              </SurfaceCard>
             </div>
           )}
 
           {(analysis.assignmentPlanOverview || (analysis.phaseReadiness && analysis.phaseReadiness.length > 0)) && (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div className={cn('grid gap-3', isDirectMode ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]')}>
               {analysis.assignmentPlanOverview && (
-                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <SurfaceCard className="p-3">
                   <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                    <ShieldCheck className="h-5 w-5 text-fuchsia-400" /> Plan vs Execution <InlineHelp text="Checks whether the key jobs for this boss were planned clearly and actually covered in the pull." />
+                    <ShieldCheck className="h-5 w-5 text-fuchsia-400" /> {isDirectMode ? 'Assignments' : 'Plan vs Execution'} <InlineHelp text="Checks whether the key jobs for this boss were planned clearly and actually covered in the pull." />
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-3">
                     <Badge className={getPlanStatusBadgeClass(analysis.assignmentPlanOverview.status)}>
@@ -1370,8 +1413,8 @@ export default function LogAnalysis() {
                   <p className="text-sm text-tron-silver-300">{analysis.assignmentPlanOverview.summary}</p>
                   <p className="text-xs text-wow-gold mt-2">{analysis.assignmentPlanOverview.recommendation}</p>
                   <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {analysis.assignmentPlanOverview.categories.filter((category) => category.required).map((category) => (
-                      <div key={category.key} className="rounded-md bg-dark-700/40 p-3 text-xs">
+                    {analysis.assignmentPlanOverview.categories.filter((category) => category.required).slice(0, isDirectMode ? 2 : undefined).map((category) => (
+                      <div key={category.key} className="rounded-md bg-dark-700/40 p-2.5 text-xs">
                         <div className="flex items-center justify-between gap-2">
                           <p className="font-semibold text-tron-silver-200">{category.label}</p>
                           <Badge className={
@@ -1388,17 +1431,17 @@ export default function LogAnalysis() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </SurfaceCard>
               )}
 
               {analysis.phaseReadiness && analysis.phaseReadiness.length > 0 && (
-                <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+                <SurfaceCard className="p-3">
                   <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                    <Award className="h-5 w-5 text-emerald-400" /> Phase Readiness <InlineHelp text="Tells you if a phase already looks ready to progress, almost ready, or still not ready." />
+                    <Award className="h-5 w-5 text-emerald-400" /> {isDirectMode ? 'Are We Ready?' : 'Phase Readiness'} <InlineHelp text="Tells you if a phase already looks ready to progress, almost ready, or still not ready." />
                   </h3>
-                  <div className="space-y-2">
-                    {analysis.phaseReadiness.map((phase) => (
-                      <div key={phase.phase} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {analysis.phaseReadiness.slice(0, isDirectMode ? 2 : undefined).map((phase) => (
+                      <div key={phase.phase} className="rounded-md bg-dark-700/40 p-2.5 text-sm">
                         <div className="flex items-center justify-between gap-2">
                           <p className="font-semibold text-tron-silver-200">{phase.phase}</p>
                           <Badge className={getReadinessBadgeClass(phase.status)}>
@@ -1411,12 +1454,107 @@ export default function LogAnalysis() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </SurfaceCard>
               )}
             </div>
           )}
 
-          {(sessionRecap || sessionCommandCenter || sessionReview || bossMemory || reliabilityTrends.length > 0 || nightComparison || guildBossKnowledge || playerBossCoachingMemory.length > 0 || buildSignificance || isLoadingBuildSignificance) && (
+          {showAdvanced && (sessionCommandCenter || sessionRecap || nightComparison || guildBossKnowledge || bossMemory || buildSignificance || isLoadingBuildSignificance) && (
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
+              {(sessionCommandCenter || sessionRecap) && (
+                <SurfaceCard className="p-3" tone="info">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-2">
+                    <Clock4 className="h-5 w-5 text-cyan-400" /> Raid Night Context
+                  </h3>
+                  <p className="text-sm font-semibold text-tron-silver-100">
+                    {sessionCommandCenter?.headline || sessionRecap?.oneSentenceSummary || 'No night context recorded yet.'}
+                  </p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    {sessionCommandCenter ? (
+                      <>
+                        <div className="rounded-md bg-dark-700/40 p-2.5">
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Tonight call</p>
+                          <p className="mt-1 text-tron-silver-200">{sessionCommandCenter.tonightCalls[0] || 'No main call recorded.'}</p>
+                        </div>
+                        <div className="rounded-md bg-dark-700/40 p-2.5">
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Escalation risk</p>
+                          <p className="mt-1 text-wow-gold">{sessionCommandCenter.escalationRisk}</p>
+                        </div>
+                      </>
+                    ) : null}
+                    {sessionRecap ? (
+                      <div className="rounded-md bg-dark-700/40 p-2.5">
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Next night start call</p>
+                        <p className="mt-1 text-tron-silver-200">{sessionRecap.nextNightStartCall}</p>
+                      </div>
+                    ) : null}
+                  </div>
+                </SurfaceCard>
+              )}
+
+              {(guildBossKnowledge || nightComparison || bossMemory) && (
+                <SurfaceCard className="p-3" tone="violet">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-2">
+                    <Crown className="h-5 w-5 text-violet-400" /> Guild Memory
+                  </h3>
+                  <p className="text-sm text-tron-silver-300">
+                    {guildBossKnowledge?.summary || nightComparison?.summary || bossMemory?.summary || 'No stored boss memory yet.'}
+                  </p>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="rounded-md bg-dark-700/40 p-2.5">
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Known blocker</p>
+                      <p className="mt-1 text-tron-silver-200">
+                        {guildBossKnowledge?.knownBlockers?.[0] || bossMemory?.recurringBlocker || 'No repeated blocker recorded yet.'}
+                      </p>
+                    </div>
+                    <div className="rounded-md bg-dark-700/40 p-2.5">
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Compared night</p>
+                      <p className="mt-1 text-tron-silver-200">
+                        {nightComparison?.progressDelta || guildBossKnowledge?.stableKillPattern || 'No previous-night comparison yet.'}
+                      </p>
+                    </div>
+                  </div>
+                </SurfaceCard>
+              )}
+
+              {(buildSignificance || isLoadingBuildSignificance) && (
+                <SurfaceCard className="p-3" tone="violet">
+                  <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-2">
+                    <Medal className="h-5 w-5 text-fuchsia-400" /> Build Significance <span className="text-xs text-tron-silver-500">(Beta)</span>
+                  </h3>
+                  {isLoadingBuildSignificance ? (
+                    <div className="flex items-center gap-2 text-sm text-tron-silver-400">
+                      <Loader2 className="h-4 w-4 animate-spin" /> Building boss-level build comparison...
+                    </div>
+                  ) : buildSignificance ? (
+                    <>
+                      <p className="text-sm text-tron-silver-300">{buildSignificance.datasetSummary.summary}</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.killRecords} kill records</Badge>
+                        <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.talentCoverageRecords} talent-tagged</Badge>
+                        <Badge className={buildSignificance.datasetSummary.scope === 'same_difficulty' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}>
+                          {buildSignificance.datasetSummary.scope === 'same_difficulty' ? 'same difficulty' : 'cross-difficulty'}
+                        </Badge>
+                      </div>
+                      <div className="mt-3 rounded-md bg-dark-700/40 p-2.5 text-sm">
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Top build signal</p>
+                        <p className="mt-1 text-tron-silver-200">
+                          {buildSignificance.insights[0]?.summary || 'No build comparison was generated for this boss yet.'}
+                        </p>
+                        {buildSignificance.insights[0]?.recommendation ? (
+                          <p className="mt-1 text-xs text-wow-gold">{buildSignificance.insights[0].recommendation}</p>
+                        ) : null}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-sm text-tron-silver-400">Build significance is not available yet.</p>
+                  )}
+                </SurfaceCard>
+              )}
+            </div>
+          )}
+
+          {showAdvanced && (sessionRecap || sessionCommandCenter || sessionReview || bossMemory || reliabilityTrends.length > 0 || nightComparison || guildBossKnowledge || playerBossCoachingMemory.length > 0 || buildSignificance || isLoadingBuildSignificance) && (
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
               {sessionRecap && (
                 <div className="bg-dark-800/50 rounded-lg p-4 border border-wow-gold/20">
@@ -1761,21 +1899,18 @@ export default function LogAnalysis() {
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-wow-gold/80">
-            <Crown className="h-3.5 w-3.5" />
-            Pull Brief
-          </div>
+          <SectionHeader icon={<Crown className="h-3.5 w-3.5" />} title={isDirectMode ? 'What To Fix Next' : 'Pull Brief'} tone="gold" />
 
           {/* RAID CALL QUICK PLAN */}
           {(analysis.briefInsights && analysis.briefInsights.length > 0) && (
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-              <div className="xl:col-span-2 bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.95fr)] gap-3">
+              <SurfaceCard className="p-3">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <Crown className="h-5 w-5 text-wow-gold" /> Prioritized Insights
+                  <Crown className="h-5 w-5 text-wow-gold" /> {isDirectMode ? 'Top Problems To Fix' : 'Prioritized Insights'}
                 </h3>
                 <div className="space-y-2">
-                  {analysis.briefInsights.slice(0, showAdvanced ? analysis.briefInsights.length : 3).map((insight, index) => (
-                    <div key={insight.id} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
+                  {analysis.briefInsights.slice(0, showAdvanced ? analysis.briefInsights.length : 2).map((insight, index) => (
+                    <div key={insight.id} className="p-2.5 bg-dark-700/50 rounded-lg border border-dark-600">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="text-xs uppercase tracking-[0.22em] text-tron-silver-500">#{index + 1}</p>
@@ -1796,15 +1931,22 @@ export default function LogAnalysis() {
                           <Badge className="bg-wow-gold/20 text-wow-gold text-xs whitespace-nowrap">{insight.confidence}</Badge>
                         </div>
                       </div>
-                      <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-tron-silver-400">
-                        <span>Priority: <span className="text-tron-silver-200">{insight.priorityScore}</span></span>
-                        <span>Type: <span className="text-tron-silver-200">{insight.kind}</span></span>
-                        <span>Owner: <span className="text-tron-silver-200">{insight.owner}</span></span>
-                        <span>Phase: <span className="text-tron-silver-200">{insight.phase}</span></span>
-                        <span>Category: <span className="text-tron-silver-200">{insight.category}</span></span>
-                      </div>
+                      {showAdvanced ? (
+                        <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-tron-silver-400">
+                          <span>Priority: <span className="text-tron-silver-200">{insight.priorityScore}</span></span>
+                          <span>Type: <span className="text-tron-silver-200">{insight.kind}</span></span>
+                          <span>Owner: <span className="text-tron-silver-200">{insight.owner}</span></span>
+                          <span>Phase: <span className="text-tron-silver-200">{insight.phase}</span></span>
+                          <span>Category: <span className="text-tron-silver-200">{insight.category}</span></span>
+                        </div>
+                      ) : (
+                        <div className="mt-2 grid grid-cols-2 gap-2 text-[11px] text-tron-silver-400">
+                          <span>Owner: <span className="text-tron-silver-200">{insight.owner}</span></span>
+                          <span>Phase: <span className="text-tron-silver-200">{insight.phase}</span></span>
+                        </div>
+                      )}
                       <p className="text-xs text-tron-silver-400 mt-2">{insight.evidence}</p>
-                      {insight.confidenceReasons && insight.confidenceReasons.length > 0 && (
+                      {showAdvanced && insight.confidenceReasons && insight.confidenceReasons.length > 0 && (
                         <div className="mt-2 rounded-md bg-dark-900/60 border border-dark-600 p-2">
                           <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">Why this confidence</p>
                           <div className="mt-1 space-y-1">
@@ -1818,13 +1960,13 @@ export default function LogAnalysis() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </SurfaceCard>
 
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <SurfaceCard className="p-3">
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-cyan-400" /> Pull Summary <InlineHelp text="A short read of what happened in this pull and what most likely mattered." />
+                  <Info className="h-5 w-5 text-cyan-400" /> {isDirectMode ? 'Fast Read' : 'Pull Summary'} <InlineHelp text="A short read of what happened in this pull and what most likely mattered." />
                 </h3>
-                <div className="space-y-2 text-sm">
+                <div className={cn('grid gap-2 text-sm', isDirectMode ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2')}>
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
                     <p className="text-tron-silver-400 text-xs">{fightData.kill ? 'Outcome Read' : 'Primary Cause'}</p>
                     <p className="text-tron-silver-200 font-medium">{analysis.wipeCause?.details || 'No dominant cause detected.'}</p>
@@ -1841,57 +1983,58 @@ export default function LogAnalysis() {
                     <p className="text-tron-silver-400 text-xs">Highest Priority Owner</p>
                     <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.owner || 'Raid'}</p>
                   </div>
-                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Top Issue Type</p>
-                    <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.kind || 'N/A'}</p>
-                  </div>
-                  <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Top Priority Score</p>
-                    <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.priorityScore ?? 'N/A'}</p>
-                  </div>
+                  {showAdvanced && (
+                    <>
+                      <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                        <p className="text-tron-silver-400 text-xs">Top Issue Type</p>
+                        <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.kind || 'N/A'}</p>
+                      </div>
+                      <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
+                        <p className="text-tron-silver-400 text-xs">Top Priority Score</p>
+                        <p className="text-tron-silver-200 font-medium">{analysis.briefInsights[0]?.priorityScore ?? 'N/A'}</p>
+                      </div>
+                    </>
+                  )}
                 </div>
-              </div>
+              </SurfaceCard>
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">
-            <Target className="h-3.5 w-3.5" />
-            Evidence
-          </div>
+          <SectionHeader icon={<Target className="h-3.5 w-3.5" />} title={isDirectMode ? 'Why WoWtron Thinks That' : 'Evidence'} tone="info" />
 
           {analysis.repeatedMistakes && analysis.repeatedMistakes.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+            <SurfaceCard className="p-3" tone="danger">
               <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                <Flame className="h-5 w-5 text-red-400" /> Repeated Mistakes
+                <Flame className="h-5 w-5 text-red-400" /> {isDirectMode ? 'Repeated Problem' : 'Repeated Mistakes'}
               </h3>
               <div className="space-y-2">
-                {analysis.repeatedMistakes.map((mistake, index) => (
-                  <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                {analysis.repeatedMistakes.slice(0, isDirectMode ? 2 : undefined).map((mistake, index) => (
+                  <div key={`${mistake.player}-${mistake.ability}-${index}`} className="p-2.5 bg-red-500/10 border border-red-500/20 rounded-lg">
                     <p className="text-sm text-tron-silver-200">
                       <span className="font-semibold">{mistake.player}</span> died to <span className="text-red-400">{mistake.ability}</span> {mistake.count}x
                     </p>
                   </div>
                 ))}
               </div>
-            </div>
+            </SurfaceCard>
           )}
 
           {/* WIPE CAUSE + PULL DELTA */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {analysis.wipeCause && (
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+              <SurfaceCard className="p-3" tone="warn">
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-amber-400" /> {fightData.kill ? 'Kill Review' : 'Pull Root Cause'}
+                  <AlertCircle className="h-5 w-5 text-amber-400" /> {fightData.kill ? (isDirectMode ? 'What Was Still Risky' : 'Kill Review') : (isDirectMode ? 'What Actually Broke The Pull' : 'Pull Root Cause')}
                 </h3>
                 <Badge className="mb-2 bg-amber-500/20 text-amber-400">
                   {analysis.wipeCause.primary}
                 </Badge>
                 <p className="text-sm text-tron-silver-300">{analysis.wipeCause.details}</p>
-              </div>
+              </SurfaceCard>
             )}
 
-            {analysis.pullDelta && (
-              <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+            {showAdvanced && analysis.pullDelta && (
+              <SurfaceCard className="p-3" tone="gold">
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-wow-gold" /> Pull vs Pull #{analysis.pullDelta.comparedPullId}
                 </h3>
@@ -1927,18 +2070,18 @@ export default function LogAnalysis() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </SurfaceCard>
             )}
           </div>
 
-          {analysis.deltaInsights && analysis.deltaInsights.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+          {showAdvanced && analysis.deltaInsights && analysis.deltaInsights.length > 0 && (
+            <SurfaceCard className="p-3" tone="info">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
                 <GitBranch className="h-5 w-5 text-cyan-400" /> Pull Delta Insight
               </h3>
               <div className="space-y-2">
                 {analysis.deltaInsights.map((insight) => (
-                  <div key={insight.id} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                  <div key={insight.id} className="rounded-md bg-dark-700/40 p-2.5 text-sm">
                     <div className="flex items-center justify-between gap-2">
                       <p className="font-semibold text-tron-silver-200">{insight.summary}</p>
                       <Badge className="bg-cyan-500/20 text-cyan-300">{insight.kind}</Badge>
@@ -1948,11 +2091,11 @@ export default function LogAnalysis() {
                   </div>
                 ))}
               </div>
-            </div>
+            </SurfaceCard>
           )}
 
           {showAdvanced && recentSnapshots.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+            <SurfaceCard className="p-3">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2">
                   <RefreshCw className="h-5 w-5 text-sky-400" /> Saved analysis snapshots
@@ -1964,7 +2107,7 @@ export default function LogAnalysis() {
               </div>
               <div className="space-y-2">
                 {recentSnapshots.map((snapshot) => (
-                  <div key={snapshot.key} className="rounded-md bg-dark-700/40 p-3 text-sm">
+                  <div key={snapshot.key} className="rounded-md bg-dark-700/40 p-2.5 text-sm">
                     <div className="flex items-center justify-between gap-2">
                       <p className="font-semibold text-tron-silver-200">
                         Pull #{snapshot.fightId} {snapshot.kill ? 'Kill' : snapshot.bossHP !== undefined ? `(${snapshot.bossHP}% boss HP)` : ''}
@@ -1980,24 +2123,24 @@ export default function LogAnalysis() {
                   </div>
                 ))}
               </div>
-            </div>
+            </SurfaceCard>
           )}
 
-          {(analysis.causeChainDetails && analysis.causeChainDetails.length > 0) && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+          {showAdvanced && (analysis.causeChainDetails && analysis.causeChainDetails.length > 0) && (
+            <SurfaceCard className="p-3" tone="rose">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
                 <GitBranch className="h-5 w-5 text-rose-400" /> Cause Chain v2
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {analysis.causeChainDetails.map((chain) => (
-                  <div key={chain.id} className="rounded-lg border border-dark-600 bg-dark-700/30 p-3">
+                  <div key={chain.id} className="rounded-lg border border-dark-600 bg-dark-700/30 p-2.5">
                     <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
                       <Badge className="bg-rose-500/20 text-rose-300">{chain.phase}</Badge>
                       <Badge className="bg-dark-700 text-tron-silver-300">{chain.owner}</Badge>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
                       {chain.steps.map((step) => (
-                        <div key={`${chain.id}-${step.label}`} className="rounded-md bg-dark-900/60 border border-dark-600 p-3">
+                        <div key={`${chain.id}-${step.label}`} className="rounded-md bg-dark-900/60 border border-dark-600 p-2.5">
                           <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500">
                             {step.label.replace('_', ' ')}
                           </p>
@@ -2008,28 +2151,25 @@ export default function LogAnalysis() {
                   </div>
                 ))}
               </div>
-            </div>
+            </SurfaceCard>
           )}
 
-          {analysis.causeChains && analysis.causeChains.length > 0 && (
-            <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
+          {showAdvanced && analysis.causeChains && analysis.causeChains.length > 0 && (
+            <SurfaceCard className="p-3">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
                 <GitBranch className="h-5 w-5 text-rose-400" /> Cause Chain Summary
               </h3>
               <div className="space-y-2">
                 {analysis.causeChains.map((chain, index) => (
-                  <div key={`${chain}-${index}`} className="rounded-md bg-dark-700/40 p-3 text-sm text-tron-silver-300">
+                  <div key={`${chain}-${index}`} className="rounded-md bg-dark-700/40 p-2.5 text-sm text-tron-silver-300">
                     {chain}
                   </div>
                 ))}
               </div>
-            </div>
+            </SurfaceCard>
           )}
 
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-tron-silver-400/80">
-            <Users className="h-3.5 w-3.5" />
-            Detail
-          </div>
+          {showAdvanced && <SectionHeader icon={<Users className="h-3.5 w-3.5" />} title="Detail" />}
 
           {showAdvanced && (analysis.phaseSuccessCriteria || analysis.phaseCausality || analysis.pullTrend || analysis.roleScores) && (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -2275,7 +2415,7 @@ export default function LogAnalysis() {
           )}
 
           {/* NEW: DEATH CASCADE ANALYSIS - THE KEY INSIGHT */}
-          {analysis.deathCascade && !fightData.kill && (
+          {showAdvanced && analysis.deathCascade && !fightData.kill && (
             <div className="bg-gradient-to-r from-red-900/20 to-dark-800/50 rounded-lg p-5 border border-red-500/30">
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-lg bg-red-500/20">
@@ -2348,7 +2488,7 @@ export default function LogAnalysis() {
           )}
 
           {/* COOLDOWN GAPS - Valuable Insight */}
-          {analysis.cooldownGaps && analysis.cooldownGaps.length > 0 && (
+          {showAdvanced && analysis.cooldownGaps && analysis.cooldownGaps.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <Collapsible open={expandedSections.cooldownGaps} onOpenChange={() => toggleSection('cooldownGaps')}>
                 <CollapsibleTrigger className="w-full">
@@ -2494,7 +2634,7 @@ export default function LogAnalysis() {
           </div>
           )}
 
-          {analysis.playerCoaching && analysis.playerCoaching.length > 0 && (
+          {showAdvanced && analysis.playerCoaching && analysis.playerCoaching.length > 0 && (
             <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
               <h3 className="text-base font-semibold text-tron-silver-200 mb-3 flex items-center gap-2">
                 <Star className="h-5 w-5 text-amber-400" /> Player Coaching
@@ -2518,7 +2658,7 @@ export default function LogAnalysis() {
                       </div>
                     </div>
                     <p className="text-[11px] uppercase tracking-[0.18em] text-tron-silver-500 mt-2">
-                      {insight.phase} • {insight.confidence} confidence
+                      {insight.phase} / {insight.confidence} confidence
                     </p>
                     <p className="text-tron-silver-300 mt-1">{insight.summary}</p>
                     <p className="text-tron-silver-400 text-xs mt-1">{insight.evidence}</p>
@@ -2646,6 +2786,63 @@ export default function LogAnalysis() {
 }
 
 // Stat Card Component
+type SurfaceTone = 'default' | 'info' | 'gold' | 'danger' | 'warn' | 'violet' | 'rose';
+
+function SurfaceCard({
+  children,
+  className,
+  tone = 'default',
+}: {
+  children: React.ReactNode;
+  className?: string;
+  tone?: SurfaceTone;
+}) {
+  const toneClass = {
+    default: 'border-dark-700 bg-dark-800/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]',
+    info: 'border-cyan-500/20 bg-[linear-gradient(180deg,rgba(34,211,238,0.08),rgba(10,14,24,0.72))] shadow-[inset_0_1px_0_rgba(103,232,249,0.08)]',
+    gold: 'border-wow-gold/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.08),rgba(10,14,24,0.72))] shadow-[inset_0_1px_0_rgba(251,191,36,0.08)]',
+    danger: 'border-red-500/20 bg-[linear-gradient(180deg,rgba(239,68,68,0.08),rgba(10,14,24,0.72))] shadow-[inset_0_1px_0_rgba(252,165,165,0.08)]',
+    warn: 'border-amber-500/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.08),rgba(10,14,24,0.72))] shadow-[inset_0_1px_0_rgba(253,230,138,0.08)]',
+    violet: 'border-violet-500/20 bg-[linear-gradient(180deg,rgba(139,92,246,0.08),rgba(10,14,24,0.72))] shadow-[inset_0_1px_0_rgba(196,181,253,0.08)]',
+    rose: 'border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.08),rgba(10,14,24,0.72))] shadow-[inset_0_1px_0_rgba(253,164,175,0.08)]',
+  }[tone];
+
+  return <div className={cn('rounded-xl border', toneClass, className)}>{children}</div>;
+}
+
+function SectionHeader({
+  icon,
+  title,
+  tone = 'default',
+}: {
+  icon: React.ReactNode;
+  title: string;
+  tone?: 'default' | 'gold' | 'info';
+}) {
+  const textTone =
+    tone === 'gold'
+      ? 'text-wow-gold/80'
+      : tone === 'info'
+        ? 'text-cyan-300/80'
+        : 'text-tron-silver-400/80';
+  const lineTone =
+    tone === 'gold'
+      ? 'from-wow-gold/30'
+      : tone === 'info'
+        ? 'from-cyan-400/30'
+        : 'from-tron-silver-500/20';
+
+  return (
+    <div className="flex items-center gap-3">
+      <div className={cn('flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em]', textTone)}>
+        {icon}
+        {title}
+      </div>
+      <div className={cn('h-px flex-1 bg-gradient-to-r to-transparent', lineTone)} />
+    </div>
+  );
+}
+
 function InlineHelp({ text }: { text: string }) {
   return (
     <Tooltip>
@@ -2663,11 +2860,11 @@ function InlineHelp({ text }: { text: string }) {
 
 function StatCard({ icon, label, value, valueClass = '', helpText }: { icon: React.ReactNode; label: string; value: string; valueClass?: string; helpText?: string }) {
   return (
-    <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700 text-center">
-      <div className="flex items-center justify-center gap-1.5 text-tron-silver-400 text-sm mb-1.5">
-        {icon} {label} {helpText ? <InlineHelp text={helpText} /> : null}
+    <div className="bg-dark-800/50 rounded-lg border border-dark-700 px-3 py-2.5">
+      <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-tron-silver-500">
+        {icon} <span>{label}</span> {helpText ? <InlineHelp text={helpText} /> : null}
       </div>
-      <div className={`text-xl font-bold ${valueClass || 'text-tron-silver-200'}`}>{value}</div>
+      <div className={`mt-1 text-lg font-bold ${valueClass || 'text-tron-silver-200'}`}>{value}</div>
     </div>
   );
 }
@@ -2734,6 +2931,7 @@ function PlayerCard({ player }: { player: PlayerStats }) {
     </div>
   );
 }
+
 
 
 
