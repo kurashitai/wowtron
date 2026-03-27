@@ -27,9 +27,24 @@ function safeTalents(value) {
   return Array.isArray(value) ? value.filter(Boolean) : [];
 }
 
+function isObservedTreeToken(value) {
+  return typeof value === 'string' && value.startsWith('tree:');
+}
+
+async function loadTalentNameCache() {
+  try {
+    return JSON.parse(
+      await fsp.readFile(path.join(process.cwd(), 'data', 'talent-spell-name-cache.json'), 'utf8')
+    );
+  } catch {
+    return { spells: {} };
+  }
+}
+
 async function main() {
   try {
     let buildSourceProbe = null;
+    const talentNameCache = await loadTalentNameCache();
     try {
       buildSourceProbe = JSON.parse(
         await fsp.readFile(path.join(process.cwd(), 'data', 'wcl-build-source-probe.json'), 'utf8')
@@ -70,6 +85,9 @@ async function main() {
 
     const totalRecords = normalized.length;
     const talentTaggedRecords = normalized.filter((row) => row.talents.length > 0).length;
+    const namedTalentRecords = normalized.filter((row) =>
+      row.talents.some((talent) => !isObservedTreeToken(talent) || talentNameCache?.spells?.[String((talent.match(/:spell:(\d+)/)?.[1] || ''))])
+    ).length;
     const killRecords = normalized.filter((row) => row.kill).length;
 
     const grouped = new Map();
@@ -85,6 +103,7 @@ async function main() {
         const [bossName, spec] = key.split('__');
         const killSample = records.filter((record) => record.kill);
         const talentCoverage = records.filter((record) => record.talents.length > 0);
+        const observedTreeCoverage = records.filter((record) => record.buildSource === 'wcl_talent_tree');
         const readyForTalentMode = talentCoverage.length >= 8 && killSample.length >= 4;
         const mode = readyForTalentMode ? 'talent_ready' : records.length >= 6 ? 'beta_fallback' : 'insufficient';
         const weakestReason =
@@ -92,6 +111,8 @@ async function main() {
             ? 'Enough talent-tagged history to trust cautious talent comparisons.'
             : talentCoverage.length === 0
               ? 'No stored talent-tagged pulls yet.'
+              : observedTreeCoverage.length > 0 && observedTreeCoverage.length === talentCoverage.length
+                ? 'Observed tree signatures exist, but named talent labels are still missing.'
               : killSample.length < 4
                 ? 'Too few kill samples for this spec.'
                 : 'Spec fallback still safer than talent mode for now.';
@@ -117,10 +138,16 @@ async function main() {
         return b.totalRecords - a.totalRecords;
       });
 
+    const blizzardConfigured = Boolean(process.env.BLIZZARD_CLIENT_ID && process.env.BLIZZARD_CLIENT_SECRET);
+    const resolvedSpellNames = Object.keys(talentNameCache?.spells || {}).length;
+    const blizzardResolvedSpellNames = Number(talentNameCache?.blizzardResolvedCount || 0);
+    const localResolvedSpellNames = Number(talentNameCache?.localResolvedCount || 0);
+
     const summary = {
       totalRecords,
       killRecords,
       talentTaggedRecords,
+      namedTalentRecords,
       talentCoverageRate: totalRecords > 0 ? Math.round((talentTaggedRecords / totalRecords) * 100) : 0,
       bossSpecPairs: bossSpecs.length,
       talentReadyPairs: bossSpecs.filter((item) => item.mode === 'talent_ready').length,
@@ -133,11 +160,25 @@ async function main() {
           : undefined,
       nextAction:
         talentTaggedRecords === 0
-          ? buildSourceProbe?.summary?.bundlesWithSpecCoverage > 0
-            ? 'Role/spec identity is arriving, but WCL build detail is still empty. Add another enrichment source or a dedicated build query before forcing talent-mode comparisons.'
-            : 'Change or enrich the WCL ingestion path so player builds arrive with real talent data.'
-          : 'Keep collecting talent-tagged pulls until more boss/spec pairs move into talent-ready mode.',
+          ? buildSourceProbe?.summary?.bundlesWithTalentTreeCoverage > 0
+            ? 'Observed tree signatures are arriving from WCL. Persist them, rebuild the corpus, and only then decide whether named-talent enrichment is still needed.'
+            : buildSourceProbe?.summary?.bundlesWithSpecCoverage > 0
+              ? 'Role/spec identity is arriving, but WCL build detail is still empty. Add another enrichment source or a dedicated build query before forcing talent-mode comparisons.'
+              : 'Change or enrich the WCL ingestion path so player builds arrive with real talent data.'
+          : namedTalentRecords === 0 && !blizzardConfigured
+            ? 'Observed trees are arriving, but Blizzard spell enrichment is not configured yet. Add Blizzard API credentials to improve human-readable talent labels.'
+            : namedTalentRecords < talentTaggedRecords
+              ? 'Keep collecting observed-tree pulls and run Blizzard spell enrichment regularly to convert more of them into human-readable labels.'
+          : buildSourceProbe?.summary?.bundlesWithTalentTreeCoverage > 0
+            ? 'Keep collecting observed-tree pulls and promote boss/spec pairs once enough kill history exists.'
+            : 'Keep collecting talent-tagged pulls until more boss/spec pairs move into talent-ready mode.',
       sourceEvidence: buildSourceProbe?.summary || undefined,
+      talentNameCache: {
+        resolvedSpellNames,
+        localResolvedSpellNames,
+        blizzardResolvedSpellNames,
+        blizzardConfigured,
+      },
     };
 
     const collectionPriorities = bossSpecs

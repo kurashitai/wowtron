@@ -8,6 +8,7 @@
   "role": "dps",
   "className": "DemonHunter",
   "spec": "Devourer",
+  "region": "US",
   "talents": [],
   "itemLevel": 249,
   "server": "Zul'jin",

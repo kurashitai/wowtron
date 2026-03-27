@@ -8,6 +8,7 @@
   "role": "dps",
   "className": "Priest",
   "spec": "Shadow",
+  "region": "US",
   "talents": [],
   "itemLevel": 245,
   "server": "Illidan",

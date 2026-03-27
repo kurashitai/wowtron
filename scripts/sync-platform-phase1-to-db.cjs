@@ -23,6 +23,66 @@ function loadJson(filePath) {
   return fsp.readFile(filePath, 'utf8').then((raw) => JSON.parse(raw));
 }
 
+async function readJsonFiles(dirPath) {
+  if (!fs.existsSync(dirPath)) return [];
+  const files = (await fsp.readdir(dirPath)).filter((file) => file.endsWith('.json'));
+  const rows = [];
+  for (const file of files) {
+    rows.push(await loadJson(path.join(dirPath, file)));
+  }
+  return rows;
+}
+
+async function syncFightBundles() {
+  const fightDir = path.join(process.cwd(), 'data', 'platform-improvement', 'fight-records');
+  const playerDir = path.join(process.cwd(), 'data', 'platform-improvement', 'fight-player-records');
+  const phaseDir = path.join(process.cwd(), 'data', 'platform-improvement', 'fight-phase-records');
+
+  const fights = await readJsonFiles(fightDir);
+  const players = await readJsonFiles(playerDir);
+  const phases = await readJsonFiles(phaseDir);
+
+  const playersByFightKey = new Map();
+  for (const player of players) {
+    const bucket = playersByFightKey.get(player.fightKey) || [];
+    bucket.push(player);
+    playersByFightKey.set(player.fightKey, bucket);
+  }
+
+  const phasesByFightKey = new Map();
+  for (const phase of phases) {
+    const bucket = phasesByFightKey.get(phase.fightKey) || [];
+    bucket.push(phase);
+    phasesByFightKey.set(phase.fightKey, bucket);
+  }
+
+  for (const fight of fights) {
+    await prisma.fightRecord.upsert({
+      where: { key: fight.key },
+      update: fight,
+      create: fight,
+    });
+
+    await prisma.fightPlayerRecord.deleteMany({ where: { fightKey: fight.key } });
+    const fightPlayers = playersByFightKey.get(fight.key) || [];
+    if (fightPlayers.length > 0) {
+      await prisma.fightPlayerRecord.createMany({ data: fightPlayers });
+    }
+
+    await prisma.fightPhaseRecord.deleteMany({ where: { fightKey: fight.key } });
+    const fightPhases = phasesByFightKey.get(fight.key) || [];
+    if (fightPhases.length > 0) {
+      await prisma.fightPhaseRecord.createMany({ data: fightPhases });
+    }
+  }
+
+  return {
+    fightCount: fights.length,
+    playerCount: players.length,
+    phaseCount: phases.length,
+  };
+}
+
 async function syncCoverage() {
   const summaryPath = path.join(process.cwd(), 'data', 'midnight-public-coverage.json');
   const data = await loadJson(summaryPath);
@@ -252,6 +312,7 @@ async function syncReviewCadence() {
 
 async function main() {
   try {
+    const fightBundleCounts = await syncFightBundles();
     const coverageCount = await syncCoverage();
     const reviewCount = await syncReviews();
     const gapCount = await syncRulepackGaps();
@@ -264,6 +325,7 @@ async function main() {
       JSON.stringify(
         {
           ok: true,
+          fightBundleCounts,
           coverageCount,
           reviewCount,
           gapCount,

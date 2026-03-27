@@ -8,6 +8,7 @@
   "role": "healer",
   "className": "Paladin",
   "spec": "Holy",
+  "region": "US",
   "talents": [],
   "itemLevel": 242,
   "server": "Illidan",

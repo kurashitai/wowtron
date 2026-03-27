@@ -8,6 +8,7 @@
   "role": "healer",
   "className": "Shaman",
   "spec": "Restoration",
+  "region": "US",
   "talents": [],
   "itemLevel": 242,
   "server": "Area52",

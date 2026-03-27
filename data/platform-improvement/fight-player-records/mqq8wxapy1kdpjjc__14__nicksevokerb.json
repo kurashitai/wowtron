@@ -8,6 +8,7 @@
   "role": "healer",
   "className": "Evoker",
   "spec": "Preservation",
+  "region": "US",
   "talents": [],
   "itemLevel": 245,
   "server": "Illidan",

@@ -288,6 +288,7 @@ interface PlayerStats {
   dtps?: number;
   reliabilityScore?: number;
   improvementFocus?: string;
+  region?: string;
   server?: string;
 }
 
@@ -366,6 +367,7 @@ interface BuildSignificanceResponse {
     totalRecords: number;
     killRecords: number;
     talentCoverageRecords: number;
+    namedTalentCoverageRecords?: number;
     supportedSpecs: number;
     requestedDifficulty?: string;
     scope: 'same_difficulty' | 'cross_difficulty_fallback';
@@ -481,6 +483,15 @@ export default function LogAnalysis() {
   const [isLoadingBuildSignificance, setIsLoadingBuildSignificance] = useState(false);
   const historicalFightsRef = useRef<any[]>([]);
   const persistedRunSignatureRef = useRef<string>('');
+
+  const generateAnalysis = useCallback((fight: any, historicalFights: any[] = [], assignmentPlanInput: AssignmentPlan = EMPTY_ASSIGNMENT_PLAN): AnalysisResult => {
+    return analyzeLogFight({
+      fight,
+      historicalFights,
+      assignmentPlanInput,
+      reportFights: report?.fights || [],
+    });
+  }, [report?.fights]);
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     deathCascade: true,
@@ -793,15 +804,6 @@ export default function LogAnalysis() {
       setIsLoading(false);
     }
   };
-
-  const generateAnalysis = useCallback((fight: any, historicalFights: any[] = [], assignmentPlanInput: AssignmentPlan = EMPTY_ASSIGNMENT_PLAN): AnalysisResult => {
-  return analyzeLogFight({
-    fight,
-    historicalFights,
-    assignmentPlanInput,
-    reportFights: report?.fights || [],
-  });
-}, [report?.fights]);
 
   const formatBriefInsights = (insights: BriefInsight[] = []) =>
     insights
@@ -1631,6 +1633,9 @@ export default function LogAnalysis() {
                         <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.totalRecords} records</Badge>
                         <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.killRecords} kill records</Badge>
                         <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.talentCoverageRecords} talent-tagged</Badge>
+                        {typeof buildSignificance.datasetSummary.namedTalentCoverageRecords === 'number' ? (
+                          <Badge className="bg-dark-700 text-tron-silver-300">{buildSignificance.datasetSummary.namedTalentCoverageRecords} named-label</Badge>
+                        ) : null}
                         <Badge className={buildSignificance.datasetSummary.scope === 'same_difficulty' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}>
                           {buildSignificance.datasetSummary.scope === 'same_difficulty' ? 'same difficulty' : 'cross-difficulty fallback'}
                         </Badge>
@@ -1643,6 +1648,13 @@ export default function LogAnalysis() {
                       {buildSignificance.datasetSummary.comparedDifficulties.length > 0 ? (
                         <p className="mt-2 text-xs text-tron-silver-500">
                           Compared difficulties: {buildSignificance.datasetSummary.comparedDifficulties.join(', ')}
+                        </p>
+                      ) : null}
+                      {typeof buildSignificance.datasetSummary.namedTalentCoverageRecords === 'number' &&
+                      buildSignificance.datasetSummary.talentCoverageRecords > 0 &&
+                      buildSignificance.datasetSummary.namedTalentCoverageRecords === 0 ? (
+                        <p className="mt-2 text-xs text-amber-300">
+                          WoWtron is seeing observed talent trees here, but most labels are still unresolved. Treat this as build-shape guidance, not a precise talent swap call yet.
                         </p>
                       ) : null}
                       <div className="mt-3 space-y-2 text-sm">
@@ -2661,7 +2673,7 @@ function PlayerCard({ player }: { player: PlayerStats }) {
     <div className={`p-3 rounded-lg border ${hasNoData ? 'bg-dark-700/30 border-dark-600' : getRankBg(player.rankPercent)} flex items-center gap-3`}>
       <div className="flex-1 min-w-0">
         <Link
-          href={`/players/us/${encodeURIComponent((player.server || 'unknown').toLowerCase())}/${encodeURIComponent(player.name.toLowerCase())}`}
+          href={`/players/${encodeURIComponent((player.region || 'us').toLowerCase())}/${encodeURIComponent((player.server || 'unknown').toLowerCase())}/${encodeURIComponent(player.name.toLowerCase())}`}
           className="font-medium text-sm truncate block hover:underline"
           style={{ color: getClassColor(player.class) }}
         >

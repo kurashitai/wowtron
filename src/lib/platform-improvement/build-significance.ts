@@ -1,4 +1,5 @@
 import type { FightPlayerRecord } from './types';
+import { summarizeBuildLabel, countNamedObservedTalents } from './talent-labels';
 
 export interface BuildComparisonPlayerInput {
   name: string;
@@ -16,6 +17,7 @@ export interface BuildComparisonHistoricalRecord {
   role: string;
   className: string;
   spec: string;
+  region?: string;
   difficulty?: string;
   talents?: string[];
   buildSignature?: string;
@@ -64,10 +66,37 @@ function uniqueStrings(values: string[] = []) {
   return Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)));
 }
 
-export function extractTalentNames(rawTalents: unknown): string[] {
-  if (!Array.isArray(rawTalents)) return [];
+function normalizeObservedTreeTokens(rawTalents: unknown): string[] {
+  const records = Array.isArray(rawTalents)
+    ? rawTalents
+    : rawTalents && typeof rawTalents === 'object' && Array.isArray((rawTalents as Record<string, unknown>).talentTree)
+      ? ((rawTalents as Record<string, unknown>).talentTree as unknown[])
+      : [];
+
   return uniqueStrings(
-    rawTalents.flatMap((talent) => {
+    records.flatMap((talent) => {
+      if (!talent || typeof talent !== 'object') return [];
+      const record = talent as Record<string, unknown>;
+      const nodeId = typeof record.nodeID === 'number' ? record.nodeID : undefined;
+      const spellId = typeof record.id === 'number' ? record.id : undefined;
+      const rank = typeof record.rank === 'number' ? record.rank : 1;
+      if (nodeId || spellId) {
+        return [`tree:${nodeId || spellId}:spell:${spellId || 0}:rank:${rank}`];
+      }
+      return [];
+    })
+  );
+}
+
+export function extractTalentNames(rawTalents: unknown): string[] {
+  const namedTalentSource = Array.isArray(rawTalents)
+    ? rawTalents
+    : rawTalents && typeof rawTalents === 'object' && Array.isArray((rawTalents as Record<string, unknown>).talents)
+      ? ((rawTalents as Record<string, unknown>).talents as unknown[])
+      : [];
+
+  const namedTalents = uniqueStrings(
+    namedTalentSource.flatMap((talent) => {
       if (typeof talent === 'string') return [talent];
       if (!talent || typeof talent !== 'object') return [];
       const record = talent as Record<string, unknown>;
@@ -86,6 +115,22 @@ export function extractTalentNames(rawTalents: unknown): string[] {
       return candidates.filter(Boolean);
     })
   );
+
+  if (namedTalents.length > 0) {
+    return namedTalents;
+  }
+
+  return normalizeObservedTreeTokens(rawTalents);
+}
+
+function classifyBuildSource(talents: string[] = []) {
+  if (talents.length === 0) return 'spec_fallback' as const;
+  if (talents.every((talent) => talent.startsWith('tree:'))) return 'wcl_talent_tree' as const;
+  return 'talent_profile' as const;
+}
+
+function areNamedTalents(talents: string[] = []) {
+  return talents.some((talent) => !talent.startsWith('tree:'));
 }
 
 export function deriveBuildSignature(spec: string, talents: string[] = []) {
@@ -93,7 +138,7 @@ export function deriveBuildSignature(spec: string, talents: string[] = []) {
   if (normalizedTalents.length > 0) {
     return {
       buildSignature: `talent:${spec.toLowerCase()}::${normalizedTalents.slice().sort().join('|')}`,
-      buildSource: 'talent_profile' as const,
+      buildSource: classifyBuildSource(normalizedTalents),
     };
   }
 
@@ -104,12 +149,7 @@ export function deriveBuildSignature(spec: string, talents: string[] = []) {
 }
 
 function buildLabel(spec: string, talents: string[] = []) {
-  const normalizedTalents = uniqueStrings(talents);
-  if (normalizedTalents.length === 0) {
-    return `${spec} baseline`;
-  }
-
-  return normalizedTalents.slice(0, 3).join(' / ');
+  return summarizeBuildLabel(spec, talents);
 }
 
 function average(values: number[]) {
@@ -150,7 +190,8 @@ export function buildBuildSignificanceReport(args: {
   const historicalRecords = args.historicalRecords.map(toHistoricalRecord);
   const totalRecords = historicalRecords.length;
   const killRecords = historicalRecords.filter((record) => record.kill).length;
-  const talentCoverageRecords = historicalRecords.filter((record) => record.buildSource === 'talent_profile' && (record.talents?.length || 0) > 0).length;
+  const talentCoverageRecords = historicalRecords.filter((record) => record.buildSource !== 'spec_fallback' && (record.talents?.length || 0) > 0).length;
+  const namedTalentCoverageRecords = historicalRecords.filter((record) => countNamedObservedTalents(record.talents || []) > 0 || areNamedTalents(record.talents || []) ).length;
   const supportedSpecs = new Set(historicalRecords.map((record) => record.spec).filter(Boolean)).size;
   const comparedDifficulties = Array.from(new Set(historicalRecords.map((record) => record.difficulty).filter(Boolean))) as string[];
   const scope: 'same_difficulty' | 'cross_difficulty_fallback' =
@@ -185,7 +226,7 @@ export function buildBuildSignificanceReport(args: {
       }
 
       const currentBuild = deriveBuildSignature(player.spec, player.talents || []);
-      const specHasTalentCoverage = relevantRecords.filter((record) => record.buildSource === 'talent_profile').length >= 6;
+      const specHasTalentCoverage = relevantRecords.filter((record) => record.buildSource !== 'spec_fallback').length >= 6;
       const comparisonMode: 'talent' | 'spec_fallback' = specHasTalentCoverage && (player.talents?.length || 0) > 0 ? 'talent' : 'spec_fallback';
       const grouped = new Map<string, BuildComparisonHistoricalRecord[]>();
 
@@ -251,10 +292,11 @@ export function buildBuildSignificanceReport(args: {
 
       const currentTalents = uniqueStrings(player.talents || []);
       const betterTalents = uniqueStrings(bestGroup.talents || []);
+      const canNameSpecificSwap = areNamedTalents(currentTalents) && areNamedTalents(betterTalents);
       const removedTalent = currentTalents.find((talent) => !betterTalents.includes(talent));
       const addedTalent = betterTalents.find((talent) => !currentTalents.includes(talent));
       const exactTalentSwapText =
-        comparisonMode === 'talent' && removedTalent && addedTalent
+        comparisonMode === 'talent' && canNameSpecificSwap && removedTalent && addedTalent
           ? `${player.name} is currently on ${removedTalent}, while the strongest stored completion build leans toward ${addedTalent}.`
           : undefined;
 
@@ -276,7 +318,9 @@ export function buildBuildSignificanceReport(args: {
           note:
             confidence === 'low'
               ? 'This is still beta. Sample size is not large enough to treat the build swap as mandatory.'
-              : `Comparison uses ${bestGroup.samples} stored ${player.spec} samples on this boss.`,
+              : !canNameSpecificSwap
+                ? `Comparison uses ${bestGroup.samples} observed tree signatures for ${player.spec} on this boss, not fully named talent labels yet.`
+                : `Comparison uses ${bestGroup.samples} stored ${player.spec} samples on this boss.`,
         };
       }
 
@@ -321,6 +365,7 @@ export function buildBuildSignificanceReport(args: {
       totalRecords,
       killRecords,
       talentCoverageRecords,
+      namedTalentCoverageRecords,
       supportedSpecs,
       requestedDifficulty: args.requestedDifficulty,
       scope,

@@ -81,9 +81,10 @@ export interface FightPlayerRecord {
   role: 'tank' | 'healer' | 'dps';
   className: string;
   spec: string;
+  region?: string;
   talents?: string[];
   buildSignature?: string;
-  buildSource?: 'talent_profile' | 'spec_fallback';
+  buildSource?: 'talent_profile' | 'wcl_talent_tree' | 'spec_fallback' | 'profile_snapshot';
   itemLevel: number;
   server?: string;
   dps: number;

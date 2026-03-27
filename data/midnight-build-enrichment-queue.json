@@ -1,0 +1,290 @@
+{
+  "generatedAt": "2026-03-27T15:48:57.043Z",
+  "sourceSummary": {
+    "bossSpecPairs": 158,
+    "collectionPriorities": 12,
+    "publicReports": 25
+  },
+  "queue": [
+    {
+      "key": "Chimaerus the Undreamt God::mQq8WxapY1KDPjJc",
+      "bossName": "Chimaerus the Undreamt God",
+      "spec": "Marksmanship",
+      "role": "dps",
+      "reportCode": "mQq8WxapY1KDPjJc",
+      "reportTitle": "Team Candle Day 2",
+      "guildName": "Liquid",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner",
+        "Chimaerus the Undreamt God",
+        "Imperator Averzian"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 2,
+      "currentKillRecords": 0,
+      "priorityScore": 120
+    },
+    {
+      "key": "Chimaerus the Undreamt God::tvkgC7cVPTAQdGBh",
+      "bossName": "Chimaerus the Undreamt God",
+      "spec": "Marksmanship",
+      "role": "dps",
+      "reportCode": "tvkgC7cVPTAQdGBh",
+      "reportTitle": "Tornado Watch Raiding",
+      "guildName": "comma",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Vorasius",
+        "Chimaerus the Undreamt God",
+        "Fallen-King Salhadaar"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 2,
+      "currentKillRecords": 0,
+      "priorityScore": 120
+    },
+    {
+      "key": "Chimaerus the Undreamt God::HQhjm9CZdAgLqbfp",
+      "bossName": "Chimaerus the Undreamt God",
+      "spec": "Marksmanship",
+      "role": "dps",
+      "reportCode": "HQhjm9CZdAgLqbfp",
+      "reportTitle": "its thursday ",
+      "guildName": "comma",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Vorasius",
+        "Chimaerus the Undreamt God",
+        "Fallen-King Salhadaar"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 2,
+      "currentKillRecords": 0,
+      "priorityScore": 120
+    },
+    {
+      "key": "Crown of the Cosmos::mQq8WxapY1KDPjJc",
+      "bossName": "Crown of the Cosmos",
+      "spec": "Retribution",
+      "role": "dps",
+      "reportCode": "mQq8WxapY1KDPjJc",
+      "reportTitle": "Team Candle Day 2",
+      "guildName": "Liquid",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner",
+        "Chimaerus the Undreamt God",
+        "Imperator Averzian"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 4,
+      "currentKillRecords": 1,
+      "priorityScore": 104
+    },
+    {
+      "key": "Crown of the Cosmos::FyVd2B7LhMjA9vJ6",
+      "bossName": "Crown of the Cosmos",
+      "spec": "Retribution",
+      "role": "dps",
+      "reportCode": "FyVd2B7LhMjA9vJ6",
+      "reportTitle": "VS / DR / MQD",
+      "guildName": "Internet Explorers",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner",
+        "Imperator Averzian"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 4,
+      "currentKillRecords": 1,
+      "priorityScore": 104
+    },
+    {
+      "key": "Crown of the Cosmos::x2dCHjbJfVMZTG31",
+      "bossName": "Crown of the Cosmos",
+      "spec": "Retribution",
+      "role": "dps",
+      "reportCode": "x2dCHjbJfVMZTG31",
+      "reportTitle": "VS / DR / MQD",
+      "guildName": "Internet Explorers",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Crown of the Cosmos",
+        "Alleria Windrunner"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 4,
+      "currentKillRecords": 1,
+      "priorityScore": 104
+    },
+    {
+      "key": "Crown of the Cosmos::LCNYzTVZXPpmagr8",
+      "bossName": "Crown of the Cosmos",
+      "spec": "Retribution",
+      "role": "dps",
+      "reportCode": "LCNYzTVZXPpmagr8",
+      "reportTitle": "VS / DR / MQD",
+      "guildName": "Internet Explorers",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Imperator Averzian",
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 4,
+      "currentKillRecords": 1,
+      "priorityScore": 104
+    },
+    {
+      "key": "Crown of the Cosmos::vRFfW91GMDQ7pLNH",
+      "bossName": "Crown of the Cosmos",
+      "spec": "Retribution",
+      "role": "dps",
+      "reportCode": "vRFfW91GMDQ7pLNH",
+      "reportTitle": "VS / DR / MQD",
+      "guildName": "Internet Explorers",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Imperator Averzian",
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos"
+      ],
+      "reason": "Observed tree signatures exist, but named talent labels are still missing.",
+      "currentTalentTaggedRecords": 4,
+      "currentKillRecords": 1,
+      "priorityScore": 104
+    },
+    {
+      "key": "Alleria Windrunner::mQq8WxapY1KDPjJc",
+      "bossName": "Alleria Windrunner",
+      "spec": "Unknown",
+      "role": "dps",
+      "reportCode": "mQq8WxapY1KDPjJc",
+      "reportTitle": "Team Candle Day 2",
+      "guildName": "Liquid",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner",
+        "Chimaerus the Undreamt God",
+        "Imperator Averzian"
+      ],
+      "reason": "No stored talent-tagged pulls yet.",
+      "currentTalentTaggedRecords": 0,
+      "currentKillRecords": 0,
+      "priorityScore": 85
+    },
+    {
+      "key": "Alleria Windrunner::FyVd2B7LhMjA9vJ6",
+      "bossName": "Alleria Windrunner",
+      "spec": "Unknown",
+      "role": "dps",
+      "reportCode": "FyVd2B7LhMjA9vJ6",
+      "reportTitle": "VS / DR / MQD",
+      "guildName": "Internet Explorers",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner",
+        "Imperator Averzian"
+      ],
+      "reason": "No stored talent-tagged pulls yet.",
+      "currentTalentTaggedRecords": 0,
+      "currentKillRecords": 0,
+      "priorityScore": 85
+    },
+    {
+      "key": "Alleria Windrunner::x2dCHjbJfVMZTG31",
+      "bossName": "Alleria Windrunner",
+      "spec": "Unknown",
+      "role": "dps",
+      "reportCode": "x2dCHjbJfVMZTG31",
+      "reportTitle": "VS / DR / MQD",
+      "guildName": "Internet Explorers",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Crown of the Cosmos",
+        "Alleria Windrunner"
+      ],
+      "reason": "No stored talent-tagged pulls yet.",
+      "currentTalentTaggedRecords": 0,
+      "currentKillRecords": 0,
+      "priorityScore": 85
+    },
+    {
+      "key": "Alleria Windrunner::8q3hcLzkHVmGtbpC",
+      "bossName": "Alleria Windrunner",
+      "spec": "Unknown",
+      "role": "dps",
+      "reportCode": "8q3hcLzkHVmGtbpC",
+      "reportTitle": "Split the first",
+      "guildName": "comma",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Imperator Averzian",
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner"
+      ],
+      "reason": "No stored talent-tagged pulls yet.",
+      "currentTalentTaggedRecords": 0,
+      "currentKillRecords": 0,
+      "priorityScore": 85
+    },
+    {
+      "key": "Alleria Windrunner::RCHty67paNVgLjhv",
+      "bossName": "Alleria Windrunner",
+      "spec": "Unknown",
+      "role": "dps",
+      "reportCode": "RCHty67paNVgLjhv",
+      "reportTitle": "Real Raiding!",
+      "guildName": "comma",
+      "guildServerRegion": "US",
+      "matchedBosses": [
+        "Imperator Averzian",
+        "Vorasius",
+        "Fallen-King Salhadaar",
+        "Vaelgor & Ezzorak",
+        "Lightblinded Vanguard",
+        "Crown of the Cosmos",
+        "Alleria Windrunner"
+      ],
+      "reason": "No stored talent-tagged pulls yet.",
+      "currentTalentTaggedRecords": 0,
+      "currentKillRecords": 0,
+      "priorityScore": 85
+    }
+  ]
+}

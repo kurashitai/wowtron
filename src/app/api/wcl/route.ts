@@ -79,6 +79,7 @@ function extractPlayerTalentNames(
   const detailCandidates = [
     playerDetailsEntry.talents,
     playerDetailsEntry.combatantInfo?.talents,
+    playerDetailsEntry.combatantInfo,
     playerDetailsEntry.combatantInfo?.pvpTalents,
   ];
 
@@ -695,6 +696,7 @@ export async function GET(request: NextRequest) {
             class: className,
             spec: playerSpec,
             role: playerRole,
+            region: playerDetailsEntry?.region,
             talents: playerTalents,
             itemLevel: entry.itemLevel || fight.averageItemLevel || 480,
             server: actor?.server || 'Unknown',
@@ -773,6 +775,9 @@ export async function GET(request: NextRequest) {
             if (!player.talents || player.talents.length === 0) {
               const playerDetailsEntry = playerDetailsLookup.get(entry.name.toLowerCase());
               player.talents = extractPlayerTalentNames(entry.talents, playerDetailsEntry);
+              if (!player.region && playerDetailsEntry?.region) {
+                player.region = playerDetailsEntry.region;
+              }
             }
             player.hps = hps;
             player.hpsMax = hps;
@@ -816,6 +821,7 @@ export async function GET(request: NextRequest) {
               class: className,
               spec: playerSpec,
               role: playerRole,
+              region: playerDetailsEntry?.region,
               talents: playerTalents,
               itemLevel: entry.itemLevel || fight.averageItemLevel || 480,
               server: actor?.server || 'Unknown',
@@ -1095,9 +1101,9 @@ export async function GET(request: NextRequest) {
         
         // Include playerDetails from WCL for accurate role detection in phase2 analysis
         playerDetails: playerDetails ? {
-          tanks: (playerDetails.tanks || []).map((t: any) => ({ name: t.name, class: t.class || 'Unknown', spec: t.spec || 'Unknown' })),
-          healers: (playerDetails.healers || []).map((h: any) => ({ name: h.name, class: h.class || 'Unknown', spec: h.spec || 'Unknown' })),
-          dps: (playerDetails.dps || []).map((d: any) => ({ name: d.name, class: d.class || 'Unknown', spec: d.spec || 'Unknown' }))
+          tanks: (playerDetails.tanks || []).map((t: any) => ({ name: t.name, class: t.class || 'Unknown', spec: t.spec || 'Unknown', region: t.region || undefined, talents: t.talents || undefined, combatantInfo: t.combatantInfo || undefined })),
+          healers: (playerDetails.healers || []).map((h: any) => ({ name: h.name, class: h.class || 'Unknown', spec: h.spec || 'Unknown', region: h.region || undefined, talents: h.talents || undefined, combatantInfo: h.combatantInfo || undefined })),
+          dps: (playerDetails.dps || []).map((d: any) => ({ name: d.name, class: d.class || 'Unknown', spec: d.spec || 'Unknown', region: d.region || undefined, talents: d.talents || undefined, combatantInfo: d.combatantInfo || undefined }))
         } : undefined
       };
 

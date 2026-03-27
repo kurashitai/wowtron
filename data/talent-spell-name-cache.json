@@ -1,0 +1,208 @@
+{
+  "generatedAt": "2026-03-27T15:48:54.449Z",
+  "totalResolved": 33,
+  "unresolvedCount": 1292,
+  "blizzardConfigured": true,
+  "localResolvedCount": 4,
+  "blizzardResolvedCount": 29,
+  "spells": {
+    "115675": {
+      "spellId": 115675,
+      "name": "Boundless Conviction",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:08.792Z"
+    },
+    "117405": {
+      "spellId": 117405,
+      "name": "Binding Shot",
+      "source": "local_wcl",
+      "resolvedAt": "2026-03-27T15:25:00.010Z"
+    },
+    "117418": {
+      "spellId": 117418,
+      "name": "Fists of Fury",
+      "source": "local_wcl",
+      "resolvedAt": "2026-03-27T15:25:00.010Z"
+    },
+    "117526": {
+      "spellId": 117526,
+      "name": "Binding Shot",
+      "source": "local_wcl",
+      "resolvedAt": "2026-03-27T15:25:00.010Z"
+    },
+    "117588": {
+      "spellId": 117588,
+      "name": "Meteor",
+      "source": "local_wcl",
+      "resolvedAt": "2026-03-27T15:25:00.010Z"
+    },
+    "124694": {
+      "spellId": 124694,
+      "name": "Way of the Grill",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:44:21.055Z"
+    },
+    "137005": {
+      "spellId": 137005,
+      "name": "Death Knight",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:29.282Z"
+    },
+    "137006": {
+      "spellId": 137006,
+      "name": "Frost Death Knight",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:29.565Z"
+    },
+    "137007": {
+      "spellId": 137007,
+      "name": "Unholy Death Knight",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:29.852Z"
+    },
+    "137011": {
+      "spellId": 137011,
+      "name": "Feral Druid",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:14.308Z"
+    },
+    "137012": {
+      "spellId": 137012,
+      "name": "Restoration Druid",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:14.588Z"
+    },
+    "137013": {
+      "spellId": 137013,
+      "name": "Balance Druid",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:14.869Z"
+    },
+    "137014": {
+      "spellId": 137014,
+      "name": "Hunter",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:44:52.290Z"
+    },
+    "137015": {
+      "spellId": 137015,
+      "name": "Beast Mastery Hunter",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:44:52.570Z"
+    },
+    "137016": {
+      "spellId": 137016,
+      "name": "Marksmanship Hunter",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:44:52.863Z"
+    },
+    "137023": {
+      "spellId": 137023,
+      "name": "Brewmaster Monk",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:48.691Z"
+    },
+    "137024": {
+      "spellId": 137024,
+      "name": "Mistweaver Monk",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:48.965Z"
+    },
+    "137025": {
+      "spellId": 137025,
+      "name": "Windwalker Monk",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:46:49.257Z"
+    },
+    "137026": {
+      "spellId": 137026,
+      "name": "Paladin",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:45:22.020Z"
+    },
+    "137027": {
+      "spellId": 137027,
+      "name": "Retribution Paladin",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:45:22.298Z"
+    },
+    "137028": {
+      "spellId": 137028,
+      "name": "Protection Paladin",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:45:22.577Z"
+    },
+    "137029": {
+      "spellId": 137029,
+      "name": "Holy Paladin",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:48:17.586Z"
+    },
+    "137030": {
+      "spellId": 137030,
+      "name": "Priest",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:48:17.864Z"
+    },
+    "137031": {
+      "spellId": 137031,
+      "name": "Holy Priest",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:48:18.135Z"
+    },
+    "137032": {
+      "spellId": 137032,
+      "name": "Discipline Priest",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:43:51.453Z"
+    },
+    "137033": {
+      "spellId": 137033,
+      "name": "Shadow Priest",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:43:51.729Z"
+    },
+    "137034": {
+      "spellId": 137034,
+      "name": "Rogue",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:43:52.008Z"
+    },
+    "137038": {
+      "spellId": 137038,
+      "name": "Shaman",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:45:12.027Z"
+    },
+    "137039": {
+      "spellId": 137039,
+      "name": "Restoration Shaman",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:45:12.369Z"
+    },
+    "137040": {
+      "spellId": 137040,
+      "name": "Elemental Shaman",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:45:12.645Z"
+    },
+    "137044": {
+      "spellId": 137044,
+      "name": "Demonology Warlock",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:48:34.993Z"
+    },
+    "137046": {
+      "spellId": 137046,
+      "name": "Destruction Warlock",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:48:35.516Z"
+    },
+    "137050": {
+      "spellId": 137050,
+      "name": "Fury Warrior",
+      "source": "blizzard_api",
+      "resolvedAt": "2026-03-27T15:43:28.275Z"
+    }
+  }
+}

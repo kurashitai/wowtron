@@ -111,6 +111,7 @@ function normalizeFightPlayers(fight: FightData, reportCode: string): FightPlaye
     role: player.role,
     className: player.class,
     spec: player.spec,
+    region: player.region,
     talents: player.talents || [],
     itemLevel: player.itemLevel,
     server: player.server,

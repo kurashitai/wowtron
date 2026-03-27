@@ -15,7 +15,10 @@ function safeArray(value) {
 }
 
 function countNonEmptyCombatantInfo(entries = []) {
-  return safeArray(entries).filter((entry) => safeArray(entry?.combatantInfo).length > 0).length;
+  return safeArray(entries).filter((entry) => {
+    const combatantInfo = entry?.combatantInfo;
+    return combatantInfo && typeof combatantInfo === 'object' && Object.keys(combatantInfo).length > 0;
+  }).length;
 }
 
 function countEntriesWithSpecs(entries = []) {
@@ -24,6 +27,10 @@ function countEntriesWithSpecs(entries = []) {
 
 function countEntriesWithTalents(entries = []) {
   return safeArray(entries).filter((entry) => safeArray(entry?.talents).length > 0).length;
+}
+
+function countEntriesWithTalentTree(entries = []) {
+  return safeArray(entries).filter((entry) => safeArray(entry?.combatantInfo?.talentTree).length > 0).length;
 }
 
 function countTableTalents(tableData) {
@@ -56,6 +63,7 @@ async function main() {
       playerDetailsWithSpecs: countEntriesWithSpecs(detailEntries),
       playerDetailsWithTalents: countEntriesWithTalents(detailEntries),
       playerDetailsWithCombatantInfo: countNonEmptyCombatantInfo(detailEntries),
+      playerDetailsWithTalentTree: countEntriesWithTalentTree(detailEntries),
       damageEntriesWithTalents: countTableTalents(payload.damageDone),
       healingEntriesWithTalents: countTableTalents(payload.healingDone),
       damageTakenEntriesWithTalents: countTableTalents(payload.damageTaken),
@@ -68,6 +76,7 @@ async function main() {
     bundlesWithSpecCoverage: samples.filter((sample) => sample.playerDetailsWithSpecs > 0).length,
     bundlesWithPlayerTalentCoverage: samples.filter((sample) => sample.playerDetailsWithTalents > 0).length,
     bundlesWithCombatantInfoCoverage: samples.filter((sample) => sample.playerDetailsWithCombatantInfo > 0).length,
+    bundlesWithTalentTreeCoverage: samples.filter((sample) => sample.playerDetailsWithTalentTree > 0).length,
     bundlesWithTableTalentCoverage: samples.filter(
       (sample) =>
         sample.damageEntriesWithTalents > 0 ||
@@ -80,10 +89,13 @@ async function main() {
     summary.sampledBundles === 0
       ? 'No sampled WCL fight bundles yet.'
       : summary.bundlesWithPlayerTalentCoverage === 0 &&
+          summary.bundlesWithTalentTreeCoverage === 0 &&
           summary.bundlesWithCombatantInfoCoverage === 0 &&
           summary.bundlesWithTableTalentCoverage === 0
         ? 'Current WCL fight ingestion provides role/spec identity, but no usable build detail. Treat this as a source/query blocker and do not force talent-mode comparisons yet.'
-        : 'At least some build detail is reaching the platform. Expand capture and persistence until boss/spec pairs have enough talent-tagged kills.';
+        : summary.bundlesWithTalentTreeCoverage > 0
+          ? 'Observed talent-tree signatures are reaching the platform. Persist them and build corpus coverage before forcing named talent swaps.'
+          : 'At least some build detail is reaching the platform. Expand capture and persistence until boss/spec pairs have enough talent-tagged kills.';
 
   const payload = {
     generatedAt: new Date().toISOString(),

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-27T14:16:55.603Z",
-  "reportCount": 25,
-  "pullCount": 836,
+  "generatedAt": "2026-03-27T14:59:02.092Z",
+  "reportCount": 26,
+  "pullCount": 838,
   "completePullCount": 470,
   "cachedPartialPullCount": 349,
   "processedCodes": [
@@ -29,7 +29,8 @@
     "jaJXqpF9DRTyc2kz",
     "bTK8YtW1kgDJmcX3",
     "MXmQ1VaTWbPYkF9c",
-    "f46adXpmzJtDHynT"
+    "f46adXpmzJtDHynT",
+    "AQxjYvgGX64JTNhk"
   ],
   "pendingCodes": [],
   "bosses": {
@@ -62,9 +63,9 @@
       "longestPullSec": 361
     },
     "Crown of the Cosmos": {
-      "totalPulls": 110,
+      "totalPulls": 112,
       "kills": 22,
-      "wipes": 88,
+      "wipes": 90,
       "bestWipeHP": 0,
       "longestPullSec": 612
     },
@@ -18872,6 +18873,36 @@
         "Vorasius"
       ],
       "dataSource": "report_summary"
+    },
+    {
+      "code": "AQxjYvgGX64JTNhk",
+      "reportTitle": "AQxjYvgGX64JTNhk",
+      "guildName": "local-fight-record",
+      "fightId": 29,
+      "bossName": "Crown of the Cosmos",
+      "difficulty": "Normal",
+      "kill": false,
+      "durationSec": 475,
+      "bossHPPercent": 0,
+      "matchedBosses": [
+        "Crown of the Cosmos"
+      ],
+      "dataSource": "fight_record"
+    },
+    {
+      "code": "AQxjYvgGX64JTNhk",
+      "reportTitle": "AQxjYvgGX64JTNhk",
+      "guildName": "local-fight-record",
+      "fightId": 34,
+      "bossName": "Crown of the Cosmos",
+      "difficulty": "Normal",
+      "kill": false,
+      "durationSec": 288,
+      "bossHPPercent": 0,
+      "matchedBosses": [
+        "Crown of the Cosmos"
+      ],
+      "dataSource": "fight_record"
     }
   ]
 }

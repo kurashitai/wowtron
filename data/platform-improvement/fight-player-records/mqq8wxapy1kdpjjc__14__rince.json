@@ -8,6 +8,7 @@
   "role": "healer",
   "className": "Priest",
   "spec": "Holy",
+  "region": "US",
   "talents": [],
   "itemLevel": 250,
   "server": "Whisperwind",

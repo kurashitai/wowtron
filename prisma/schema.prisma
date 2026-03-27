@@ -325,6 +325,7 @@ model FightPlayerRecord {
   role                String
   className           String
   spec                String
+  region              String?
   talents             Json?
   buildSignature      String?
   buildSource         String?

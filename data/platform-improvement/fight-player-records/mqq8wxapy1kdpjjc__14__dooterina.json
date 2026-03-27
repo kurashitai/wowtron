@@ -8,6 +8,7 @@
   "role": "healer",
   "className": "Priest",
   "spec": "Holy",
+  "region": "US",
   "talents": [],
   "itemLevel": 248,
   "server": "Zul'jin",

@@ -31,6 +31,9 @@ export default async function BuildSignificanceHealthPage() {
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <MetricCard title="Talent-tagged records" value={String(summary.talentTaggedRecords || 0)} subtitle={`of ${summary.totalRecords || 0} stored fight-player records`} />
           <MetricCard title="Coverage rate" value={`${summary.talentCoverageRate || 0}%`} subtitle="How much of the corpus has usable build detail" />
+          <MetricCard title="Named labels" value={String(summary.namedTalentRecords || 0)} subtitle="Observed builds with human-readable talent names" />
+          <MetricCard title="Spell-name cache" value={String((summary.talentNameCache as Record<string, unknown> | undefined)?.resolvedSpellNames || 0)} subtitle="Resolved talent spell names cached locally" />
+          <MetricCard title="Blizzard labels" value={String((summary.talentNameCache as Record<string, unknown> | undefined)?.blizzardResolvedSpellNames || 0)} subtitle={Boolean((summary.talentNameCache as Record<string, unknown> | undefined)?.blizzardConfigured) ? 'Resolved from Blizzard API' : 'Blizzard API not configured yet'} />
           <MetricCard title="Talent-ready pairs" value={String(summary.talentReadyPairs || 0)} subtitle={`of ${summary.bossSpecPairs || 0} boss/spec pairs`} />
           <MetricCard title="Fallback pairs" value={String((summary.betaFallbackPairs || 0) + (summary.insufficientPairs || 0))} subtitle="Pairs still not ready for strong talent-mode calls" />
         </section>
@@ -69,6 +72,7 @@ export default async function BuildSignificanceHealthPage() {
             <div className="mt-4 space-y-3 text-sm">
               <RuleLine title="Talent ready" text="8+ talent-tagged pulls and 4+ kills for the boss/spec pair." />
               <RuleLine title="Beta fallback" text="Enough boss/spec history to compare spec baselines, but still not enough to force talent-level calls." />
+              <RuleLine title="Observed tree" text="Build detail exists, but the platform still needs more named spell labels before it can explain the tree cleanly." />
               <RuleLine title="Insufficient" text="Too little history even for a reliable baseline. Keep collecting before recommending." />
             </div>
           </div>

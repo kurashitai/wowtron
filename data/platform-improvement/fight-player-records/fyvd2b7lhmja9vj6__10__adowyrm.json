@@ -8,6 +8,7 @@
   "role": "healer",
   "className": "Evoker",
   "spec": "Preservation",
+  "region": "US",
   "talents": [],
   "itemLevel": 263,
   "server": "Kael'thas",

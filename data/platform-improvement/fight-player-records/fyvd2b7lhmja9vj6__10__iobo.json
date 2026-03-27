@@ -8,6 +8,7 @@
   "role": "dps",
   "className": "DemonHunter",
   "spec": "Devourer",
+  "region": "US",
   "talents": [],
   "itemLevel": 261,
   "server": "Moonrunner",

@@ -76,7 +76,7 @@ export async function persistFightBundleToDb(
 
       // Some long-lived dev runtimes may still hold an older Prisma model shape.
       // Fall back to the stable player payload instead of failing the whole fight ingest.
-      const stablePlayers = players.map(({ talents, buildSignature, buildSource, ...player }) => player);
+      const stablePlayers = players.map(({ talents, buildSignature, buildSource, region, ...player }) => player);
       await playerModel.createMany({ data: stablePlayers });
     }
   }

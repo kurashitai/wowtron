@@ -115,12 +115,14 @@ export interface WCLPlayerDetailEntry {
   type?: string;
   class?: string;
   spec?: string;
+  region?: string;
   specs?: Array<{ spec?: string; count?: number }>;
   server?: string;
   talents?: unknown[];
   combatantInfo?: {
     talents?: unknown[];
     pvpTalents?: unknown[];
+    talentTree?: Array<{ id?: number; nodeID?: number; rank?: number }>;
     gear?: unknown[];
     covenantID?: number;
     soulbindID?: number;
