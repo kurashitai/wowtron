@@ -67,6 +67,7 @@ interface AnalysisResult {
   summary: {
     killPotential: boolean;
     whyWiped: string[];
+    outcomeNarrativeLabel?: string;
     keyIssues: Issue[];
     fightEfficiency?: {
       actualTime: number;
@@ -866,13 +867,13 @@ export default function LogAnalysis() {
       `Root cause: ${analysis.wipeCause?.primary || 'mixed'}`,
       `Role scores: ${roleScores}`,
       `Kill probability: ${analysis.killProbability ?? 'N/A'}%`,
-      `Biggest blocker: ${analysis.commandView?.biggestBlocker?.summary || 'No clear blocker.'}`,
-      `Most likely next wipe: ${analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}`,
+      `${analysis.commandView?.biggestBlockerLabel || 'Biggest blocker'}: ${analysis.commandView?.biggestBlocker?.summary || 'No clear blocker.'}`,
+      `${analysis.commandView?.mostLikelyNextWipeLabel || 'Most likely next wipe'}: ${analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}`,
       '',
       'Top 3 actions:',
       formatBriefInsights(analysis.briefInsights) || '1. Clean up avoidable deaths before adding more throughput pressure.',
       '',
-      'Next pull plan:',
+      `${analysis.commandView?.nextActionsLabel || 'Next pull plan'}:`,
       nextPullPlan || '- No explicit next-pull actions were generated.',
       '',
       'Plan vs execution:',
@@ -924,16 +925,17 @@ export default function LogAnalysis() {
       .join('\n');
 
     return [
-      `${fight.kill ? 'Fight Summary' : 'Wipe Summary'} - ${fight.bossName}`,
+      `${fight.kill ? 'Kill Review' : 'Wipe Summary'} - ${fight.bossName}`,
       `Grade: ${analysis.raidEfficiency?.grade || 'N/A'} (${analysis.raidEfficiency?.overall ?? 'N/A'}%)`,
       `Root death: ${rootDeath}`,
-      `Biggest blocker: ${analysis.commandView?.biggestBlocker?.summary || 'No clear blocker.'}`,
-      `Most likely next wipe: ${analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}`,
+      `Headline: ${analysis.commandView?.headline || (fight.kill ? 'Review what was still unstable on the kill.' : 'Find the main failure that needs to change.')}`,
+      `${analysis.commandView?.biggestBlockerLabel || 'Biggest blocker'}: ${analysis.commandView?.biggestBlocker?.summary || 'No clear blocker.'}`,
+      `${analysis.commandView?.mostLikelyNextWipeLabel || 'Most likely next wipe'}: ${analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}`,
       '',
-      'Why this pull failed:',
-      formatBulletList(analysis.summary.whyWiped, '- No clear wipe driver detected.'),
+      `${analysis.commandView?.whyLabel || 'Why this pull failed'}:`,
+      formatBulletList(analysis.summary.whyWiped, fight.kill ? '- No major instability was detected on the kill.' : '- No clear wipe driver detected.'),
       '',
-      'Next pull plan:',
+      `${analysis.commandView?.nextActionsLabel || 'Next pull plan'}:`,
       nextPullPlan || '- No explicit next-pull actions were generated.',
       '',
       'Highest-priority brief insights:',
@@ -1292,9 +1294,15 @@ export default function LogAnalysis() {
 
           {(analysis.commandView?.biggestBlocker || analysis.commandView?.mostLikelyNextWipe || (analysis.nextPullActions && analysis.nextPullActions.length > 0)) && (
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+              {analysis.commandView?.headline ? (
+                <div className="xl:col-span-3 rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4">
+                  <p className="text-xs uppercase tracking-[0.24em] text-cyan-300/80">Command Read</p>
+                  <p className="mt-2 text-sm font-medium text-tron-silver-200">{analysis.commandView.headline}</p>
+                </div>
+              ) : null}
               <div className="bg-dark-800/50 rounded-lg p-4 border border-red-500/20">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <AlertCircle className="h-5 w-5 text-red-400" /> Biggest Blocker
+                  <AlertCircle className="h-5 w-5 text-red-400" /> {analysis.commandView?.biggestBlockerLabel || 'Biggest Blocker'}
                 </h3>
                 <p className="text-sm font-semibold text-tron-silver-200">
                   {analysis.commandView?.biggestBlocker?.summary || 'No clear blocker detected.'}
@@ -1310,7 +1318,7 @@ export default function LogAnalysis() {
 
               <div className="bg-dark-800/50 rounded-lg p-4 border border-amber-500/20">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <ShieldAlert className="h-5 w-5 text-amber-400" /> Most Likely Next Wipe
+                  <ShieldAlert className="h-5 w-5 text-amber-400" /> {analysis.commandView?.mostLikelyNextWipeLabel || 'Most Likely Next Wipe'}
                 </h3>
                 <p className="text-sm font-semibold text-tron-silver-200">
                   {analysis.commandView?.mostLikelyNextWipe?.summary || 'No repeat wipe point flagged.'}
@@ -1326,7 +1334,7 @@ export default function LogAnalysis() {
 
               <div className="bg-dark-800/50 rounded-lg p-4 border border-wow-gold/20">
                 <h3 className="text-base font-semibold text-tron-silver-200 flex items-center gap-2 mb-3">
-                  <Target className="h-5 w-5 text-wow-gold" /> Next Pull Plan
+                  <Target className="h-5 w-5 text-wow-gold" /> {analysis.commandView?.nextActionsLabel || 'Next Pull Plan'}
                 </h3>
                 <div className="space-y-2">
                   {(analysis.nextPullActions || []).slice(0, 3).map((action) => (
@@ -1818,11 +1826,11 @@ export default function LogAnalysis() {
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Primary Cause</p>
+                    <p className="text-tron-silver-400 text-xs">{fightData.kill ? 'Outcome Read' : 'Primary Cause'}</p>
                     <p className="text-tron-silver-200 font-medium">{analysis.wipeCause?.details || 'No dominant cause detected.'}</p>
                   </div>
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
-                    <p className="text-tron-silver-400 text-xs">Avoidable Deaths</p>
+                    <p className="text-tron-silver-400 text-xs">{fightData.kill ? 'Avoidable Errors' : 'Avoidable Deaths'}</p>
                     <p className="text-tron-silver-200 font-medium">{analysis.deaths.avoidable.length} on this pull</p>
                   </div>
                   <div className="p-2 rounded-md bg-dark-700/50 border border-dark-600">
@@ -1873,7 +1881,7 @@ export default function LogAnalysis() {
             {analysis.wipeCause && (
               <div className="bg-dark-800/50 rounded-lg p-4 border border-dark-700">
                 <h3 className="text-base font-semibold text-tron-silver-200 mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-amber-400" /> Pull Root Cause
+                  <AlertCircle className="h-5 w-5 text-amber-400" /> {fightData.kill ? 'Kill Review' : 'Pull Root Cause'}
                 </h3>
                 <Badge className="mb-2 bg-amber-500/20 text-amber-400">
                   {analysis.wipeCause.primary}

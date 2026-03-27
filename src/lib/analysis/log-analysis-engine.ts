@@ -34,6 +34,7 @@ export interface AnalysisResult {
   summary: {
     killPotential: boolean;
     whyWiped: string[];
+    outcomeNarrativeLabel?: string;
     keyIssues: Issue[];
     fightEfficiency?: {
       actualTime: number;
@@ -330,6 +331,18 @@ const formatNumber = (n: number): string => {
   if (n >= 1000) return `${(n / 1000).toFixed(0)}K`;
   return n.toString();
 };
+
+function getOutcomeMode(args: {
+  kill: boolean;
+  totalDeaths: number;
+  avoidableDeaths: number;
+  averageReliability: number;
+}) {
+  if (!args.kill) return 'wipe_diagnosis' as const;
+  if (args.totalDeaths >= 4 || args.avoidableDeaths >= 3 || args.averageReliability < 75) return 'messy_kill' as const;
+  if (args.totalDeaths === 0 && args.avoidableDeaths === 0 && args.averageReliability >= 88) return 'farm_ready' as const;
+  return 'clean_kill' as const;
+}
 export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanInput = EMPTY_ASSIGNMENT_PLAN, reportFights = [] }: AnalyzeLogFightParams): AnalysisResult {
     const players = fight.players || [];
     const bossContext = fight.bossContext as BossContext | undefined;
@@ -547,9 +560,20 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
     );
     const optimalTime = expectedRaidDps > 0 ? Math.floor((expectedRaidDps * fightDuration) / Math.max(1, totalDPS)) : fightDuration;
     const timeSaved = fight.duration - optimalTime;
+    const totalDeaths = deaths.length;
+    const averageReliability = playerStats.length > 0
+      ? Math.floor(playerStats.reduce((sum, p) => sum + (p.reliabilityScore || 0), 0) / playerStats.length)
+      : 0;
+    const cooldownGaps = generateCooldownGaps(fight, players);
 
     const whyWiped: string[] = [];
     let fightEfficiency: { actualTime: number; optimalTime: number; timeSaved: number; dpsLoss: number } | undefined;
+    const outcomeMode = getOutcomeMode({
+      kill: Boolean(fight.kill),
+      totalDeaths,
+      avoidableDeaths: avoidableDeaths.length,
+      averageReliability,
+    });
 
     if (!fight.kill) {
       if (deathCascade && deathCascade.rootDeath) {
@@ -560,6 +584,21 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
       if (lowPerformers.length > 2) whyWiped.push(`${lowPerformers.length} players were below the expected output.`);
       if (whyWiped.length === 0) whyWiped.push('The pull was close. Small execution fixes should convert it.');
     } else {
+      if (avoidableDeaths.length > 0) {
+        whyWiped.push(`${avoidableDeaths.length} avoidable death(s) still happened in a pull that converted.`);
+      }
+      if (totalDeaths > 0) {
+        whyWiped.push(`${totalDeaths} death(s) happened on the kill, so this is not stable yet.`);
+      }
+      if (lowPerformers.length > 0) {
+        whyWiped.push(`${lowPerformers.length} player(s) were still below the stored baseline even though the boss died.`);
+      }
+      if (cooldownGaps.length > 0) {
+        whyWiped.push(`${cooldownGaps.length} cooldown coverage gap(s) were still visible on the kill.`);
+      }
+      if (whyWiped.length === 0) {
+        whyWiped.push('The kill stayed clean. Keep the same structure and use this as the baseline pattern.');
+      }
       fightEfficiency = {
         actualTime: fight.duration,
         optimalTime: Math.max(30, optimalTime),
@@ -574,7 +613,6 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
     const dpsScore = Math.min(100, Math.max(0, Math.floor(dpsRatio * 100)));
     
     // Survival score - based on deaths (0 deaths = 100, each death reduces)
-    const totalDeaths = deaths.length;
     const survivalScore = Math.max(0, 100 - totalDeaths * 10);
     
     // Mechanics score - based on avoidable deaths (each avoidable death reduces more)
@@ -586,9 +624,6 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
     
     // Overall score - weighted average
     const overallScore = Math.floor(dpsScore * 0.35 + survivalScore * 0.30 + mechanicsScore * 0.25 + consumablesScore * 0.10);
-    const averageReliability = playerStats.length > 0
-      ? Math.floor(playerStats.reduce((sum, p) => sum + (p.reliabilityScore || 0), 0) / playerStats.length)
-      : 0;
     
     // Grade based on overall score
     let grade = 'C';
@@ -610,9 +645,6 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
         suggestion: death.tip,
       });
     });
-
-    // NEW: Generate Cooldown Gap Analysis
-    const cooldownGaps = generateCooldownGaps(fight, players);
 
     // NEW: Generate Burst Window Analysis
     const burstWindows = generateBurstWindows(fight, players);
@@ -664,7 +696,7 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
       .slice(0, 2)
       .map((p) => p.player);
 
-    const nextPullActions: NextPullAction[] = [
+    const nextPullActions: NextPullAction[] = !fight.kill ? [
       {
         priority: 1,
         title: topAvoidableAbility
@@ -696,6 +728,39 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
         reason: lowPerformers.length > 0
           ? `Estimated total gap of ${formatNumber(lowPerformers.slice(0, 2).reduce((sum, p) => sum + p.gap, 0))} DPS across the main underperformers.`
           : 'This is the next incremental gain toward a kill.',
+      },
+    ] : [
+      {
+        priority: 1,
+        title: topAvoidableAbility
+          ? `Remove the remaining risk in ${topAvoidableAbility[0]}`
+          : 'Lock in the same execution for the next kill',
+        owner: topAvoidableAbility
+          ? Array.from(topAvoidableAbility[1].players).slice(0, 3).join(', ')
+          : 'Raid',
+        reason: topAvoidableAbility
+          ? `${topAvoidableAbility[1].count} avoidable death(s) still showed up on the kill.`
+          : 'This kill should become the baseline pattern, not a one-off.',
+      },
+      {
+        priority: 2,
+        title: cooldownGaps.length > 0
+          ? `Tighten raid-CD coverage at ${formatTime(cooldownGaps[0].time)}`
+          : 'Keep healer CDs mapped for the same checkpoints',
+        owner: healerNames.length > 0 ? healerNames.join(', ') : 'Healers + RL',
+        reason: cooldownGaps.length > 0
+          ? `${cooldownGaps.length} cooldown gap(s) still existed even on the kill.`
+          : 'Stable CD mapping is what turns this into a repeatable kill.',
+      },
+      {
+        priority: 3,
+        title: topThroughputPlayers.length > 0
+          ? `Raise consistency for ${topThroughputPlayers.join(' + ')}`
+          : 'Push this pull toward farm-ready consistency',
+        owner: topThroughputPlayers.length > 0 ? topThroughputPlayers.join(', ') : 'Raid',
+        reason: lowPerformers.length > 0
+          ? `Execution and output are still uneven across the weakest performers.`
+          : 'The next gain is consistency, not survival.',
       },
     ];
 
@@ -1596,7 +1661,9 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
         priorityScore: getSeverityWeight(severity) + getConfidenceWeight(confidence) + Math.min(25, Math.round(totalGap / 80000)),
         owner: throughputGap.map((player) => player.player).join(', ') || 'DPS Core',
         phase: dominantPhase?.phase || 'Full Fight',
-        summary: 'Throughput is below the level needed for a clean progression pull.',
+        summary: fight.kill
+          ? 'Throughput still has room before this becomes a stable baseline kill.'
+          : 'Throughput is below the level needed for a clean progression pull.',
         evidence: `${formatNumber(totalGap)} estimated DPS gap across the biggest underperformers.`,
         confidenceReasons: [
           `${throughputGap.length} low performers are driving the gap.`,
@@ -2090,7 +2157,9 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
       const biggestBlocker = (() => {
         if (topAssignmentFailure && topAssignmentFailure.status === 'failing') {
           return {
-            summary: `${topAssignmentFailure.mechanic} is still breaking the pull.`,
+            summary: fight.kill
+              ? `${topAssignmentFailure.mechanic} is still the biggest risk inside this kill.`
+              : `${topAssignmentFailure.mechanic} is still breaking the pull.`,
             owner: topAssignmentFailure.owner,
             phase: topAssignmentFailure.phase,
             reason: topAssignmentFailure.evidence,
@@ -2170,7 +2239,22 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
         return undefined;
       })();
 
+      const headline =
+        outcomeMode === 'wipe_diagnosis'
+          ? 'This pull still needs a clear correction before it will convert.'
+          : outcomeMode === 'messy_kill'
+            ? 'The boss died, but the kill is still fragile.'
+            : outcomeMode === 'farm_ready'
+              ? 'This kill looked stable enough to use as the baseline pattern.'
+              : 'The pull converted, but there are still weak points to clean up.';
+
       return {
+        mode: outcomeMode,
+        headline,
+        whyLabel: fight.kill ? 'Why this kill was still risky' : 'Why this pull failed',
+        biggestBlockerLabel: fight.kill ? 'Biggest risk' : 'Biggest blocker',
+        mostLikelyNextWipeLabel: fight.kill ? 'First place this kill breaks' : 'Most likely next wipe',
+        nextActionsLabel: fight.kill ? 'Next kill cleanup' : 'Next pull plan',
         biggestBlocker,
         mostLikelyNextWipe,
       };
@@ -2182,6 +2266,7 @@ export function analyzeLogFight({ fight, historicalFights = [], assignmentPlanIn
       summary: {
         killPotential: fight.kill || (fight.bossHPPercent && fight.bossHPPercent < 10),
         whyWiped,
+        outcomeNarrativeLabel: fight.kill ? 'kill_review' : 'wipe_diagnosis',
         keyIssues: keyIssues.slice(0, 5),
         fightEfficiency,
       },

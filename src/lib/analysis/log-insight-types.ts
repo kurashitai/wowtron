@@ -71,6 +71,12 @@ export interface AssignmentPlanOverview {
 }
 
 export interface CommandDecision {
+  mode?: 'wipe_diagnosis' | 'messy_kill' | 'clean_kill' | 'farm_ready';
+  headline?: string;
+  whyLabel?: string;
+  biggestBlockerLabel?: string;
+  mostLikelyNextWipeLabel?: string;
+  nextActionsLabel?: string;
   biggestBlocker?: {
     summary: string;
     owner: string;
